@@ -23,3 +23,7 @@
   added     = yellow
   changed   = green
   untracked = cyan
+
+[core]
+  autocrlf = input
+  safecrlf = true
