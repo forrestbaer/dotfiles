@@ -11,7 +11,6 @@ set nosmartindent
 set autoindent
 set hidden
 set autoread
-set nowrap
 set wildmenu
 set ignorecase
 set smartcase
@@ -29,10 +28,12 @@ set title
 set nobackup
 set nowritebackup
 set directory=$HOME/.vim/tmp//,.
-set tabstop=4
+set tabstop=2
+set softtabstop=2
 set splitright
 set splitbelow
-set shiftwidth=4
+set expandtab
+set shiftwidth=2
 set laststatus=2
 set statusline=%<%f%h%m%r%h%w\ (%{&ff})\ lastmod:\ %{strftime(\"%x\ %X\",getftime(expand(\"%:p\")))}%=\ lin:%l\,%L\ col:%c%V\ ascii:%b\ [%P]
 set t_Co=256
