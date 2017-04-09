@@ -6,7 +6,7 @@ let isNpmInstalled = executable("npm")
 let s:defaultNodeModules = '~/.vim/node_modules/.bin/'
 let iCanHazVundle=1
 let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
-if !filereadable(vundle_readme) 
+if !filereadable(vundle_readme)
     echo "Installing Vundle.."
     echo ""
     silent !mkdir -p ~/.vim/bundle
@@ -38,7 +38,7 @@ if iCanHazVundle == 0
     echo ""
     :PluginInstall
 endif
-call vundle#end() 
+call vundle#end()
 
 if isNpmInstalled
     if !executable(expand(s:defaultNodeModules . 'jshint'))
@@ -57,7 +57,6 @@ let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_by_filename = 1
 let g:ctrlp_switch_buffer = 0
-"let g:ctrlp_working_path_mode = 0
 let g:ctrlp_use_caching = 0
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
@@ -135,13 +134,16 @@ command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow!|redraw!
 nnoremap \ :Ag<SPACE>
 
 " Colorscheme for airline
-let g:airline_theme='raven'
+let g:airline_theme='mininmal_dark'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline_skip_empty_sections = 1
 let g:airline_section_y = ''
 let g:airline_section_x = ''
+let g:airline#extensions#whitespace#show_message = 0
+let g:airline_detect_whitespace=0
 
 " regular settings
 set nocompatible
@@ -164,7 +166,7 @@ set smarttab                            " smart backspacing over tabs
 set expandtab                           " tab expansion??
 set splitbelow                          " open new splits below
 set shiftwidth=4                        " 4 spaces when backspacing tabs
-set laststatus=2                        " always show last status 
+set laststatus=2                        " always show last status
 set t_Co=256                            "terminal option for number of colors
 "set statusline=%<%f%h%m%r%h%w\ (%{&ff})\ lastmod:\ %{strftime(\"%x\ %X\",getftime(expand(\"%:p\")))}%=\ lin:%l\,%L\ col:%c%V\ [%P]
 
@@ -181,7 +183,7 @@ nnoremap <silent><Space> :silent noh<Bar>echo<CR>
 
 " remap semicolon
 nnoremap ; :
- 
+
 " show/hide NERDTree
 nmap <leader><tab> :NERDTreeToggle<CR>
 
@@ -229,7 +231,7 @@ if has("autocmd")
 	autocmd FileType python setl shiftwidth=4 softtabstop=4
 	autocmd FileType python syntax match Error "\t"
 	autocmd BufReadPost * if line("'\"") > 0 && line ("'\"") <= line("$") | exe "normal! g'\"" | endif
-	au BufRead,BufNewFile /etc/nginx/sites-available/* set ft=nginx 
+	au BufRead,BufNewFile /etc/nginx/sites-available/* set ft=nginx
 	au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
 	augroup END
 endif
