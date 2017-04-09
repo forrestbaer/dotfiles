@@ -2,7 +2,7 @@
 
 dir=~/code/dotfiles
 backupdir=dotfile_backup
-files="vimrc zshrc zsh"
+files="vimrc zshrc gitconfig zsh"
 
 cd $dir
 mkdir $backupdir

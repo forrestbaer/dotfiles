@@ -30,7 +30,6 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'kien/ctrlp.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'jelera/vim-javascript-syntax'
-Plugin 'hai2u/vim-css3-syntax'
 Plugin 'forrestbaer/minimal_dark'
 
 if iCanHazVundle == 0
