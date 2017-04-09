@@ -7,4 +7,4 @@ if [[ $TERM != 'dumb' ]]; then
 fi
 
 export CLICOLOR=1
-export LSCOLORS=dxfxcxdxbxegedabagacad
+export LSCOLORS=dxfxcxdxGxegedabagacad
