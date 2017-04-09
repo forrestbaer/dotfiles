@@ -134,11 +134,12 @@ command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow!|redraw!
 nnoremap \ :Ag<SPACE>
 
 " Colorscheme for airline
-let g:airline_theme='mininmal_dark'
+let g:airline_theme='minimal_dark'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline_skip_empty_sections = 1
 let g:airline_section_y = ''
 let g:airline_section_x = ''
@@ -183,6 +184,9 @@ nnoremap <silent><Space> :silent noh<Bar>echo<CR>
 
 " remap semicolon
 nnoremap ; :
+
+" open a new tab with a file browser
+nnoremap <leader>n :tabe %:p:h<CR>
 
 " show/hide NERDTree
 nmap <leader><tab> :NERDTreeToggle<CR>
