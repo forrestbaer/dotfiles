@@ -8,7 +8,7 @@ alias c='clear'
 # Git
 
 alias st='git status'
-alias gs='git status'
+alias gstatus='git status'
 alias gc='git commit'
 alias gd='git diff'
 alias gp='git push'

@@ -225,13 +225,11 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
 if has("autocmd")
 	augroup module
 	autocmd BufRead,BufNewFile *.tt set filetype=tt
-	autocmd FileType css setlocal foldmethod=indent shiftwidth=2 tabstop=2
 	autocmd VimEnter * set vb t_vb=
 	autocmd FileType python setl shiftwidth=4 softtabstop=4
 	autocmd FileType python syntax match Error "\t"
 	autocmd BufReadPost * if line("'\"") > 0 && line ("'\"") <= line("$") | exe "normal! g'\"" | endif
 	au BufRead,BufNewFile /etc/nginx/sites-available/* set ft=nginx 
-	au BufNewFile,BufRead *.json set ai filetype=javascript
 	au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
 	augroup END
 endif
