@@ -129,7 +129,7 @@ function! NumberToggle()
     endif
 endfunction
 
-nnoremap <leader>l :call NumberToggle()<CR>
+nnoremap <leader>l :call NumberToggle()<cr>
 
 " bind \ (backward slash) to grep shortcut
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow!|redraw!
