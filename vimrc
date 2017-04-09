@@ -59,6 +59,8 @@ let g:ctrlp_by_filename = 1
 let g:ctrlp_switch_buffer = 0
 let g:ctrlp_use_caching = 0
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+
 
 " automatically open files in a new tab
 let g:ctrlp_prompt_mappings = {
@@ -130,7 +132,7 @@ endfunction
 nnoremap <leader>l :call NumberToggle()<CR>
 
 " bind \ (backward slash) to grep shortcut
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow!|redraw!
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow!|redraw!
 nnoremap \ :Ag<SPACE>
 
 " Colorscheme for airline
