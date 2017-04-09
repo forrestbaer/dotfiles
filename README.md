@@ -3,6 +3,7 @@
 ### General Configuration:
 
     - Font: [Iosevka](https://be5invis.github.io/Iosevka/)
+    - Uses the Silver Searcher (AG): brew install the_silver_searcher
     - Convert CAPSLOCK -> ESC
     - Make key repeat as fast as possible
 

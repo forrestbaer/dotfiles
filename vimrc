@@ -31,6 +31,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'forrestbaer/minimal_dark'
+Plugin 'rking/ag.vim'
 
 if iCanHazVundle == 0
     echo "Installing Vundles, please ignore key map error messages"
@@ -51,10 +52,25 @@ endif
 "-------------------------
 " CtrlP settings
 
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_by_filename = 1
 let g:ctrlp_switch_buffer = 0
-let g:ctrlp_working_path_mode = 0
+"let g:ctrlp_working_path_mode = 0
+let g:ctrlp_use_caching = 0
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+
+" automatically open files in a new tab
+let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': ['<2-LeftMouse>'],
+    \ 'AcceptSelection("t")': ['<cr>'],
+    \ }
+
+"-------------------------
+" Replace grep with ag
+
+set grepprg=ag\ --nocolor\ --nogroup\ 
 
 "-------------------------
 " Syntastic
@@ -73,7 +89,6 @@ function! s:FindSyntasticExecPath(toolName)
     endwhile
 
     return  s:defaultNodeModules . a:toolName
-
 endfunction
 
 " setting up jshint csslint and jscs if available
@@ -90,15 +105,34 @@ let g:syntastic_always_populate_loc_list = 1
 
 " check json files with jshint
 let g:syntastic_filetype_map = { "json": "javascript", }
-
 let g:syntastic_javascript_checkers = ["jshint", "jscs"]
 
 " open quicfix window with all error found
-nmap <silent> <leader>ll :Errors<cr>
+nmap <silent> <leader>e :Errors<cr>
 " previous syntastic error
 nmap <silent> [ :lprev<cr>
 " next syntastic error
 nmap <silent> ] :lnext<cr>
+
+" need to paste something? use F1
+set pastetoggle=<F1>
+
+" toggle types of line numbers
+function! NumberToggle()
+    if(&nu == 1)
+        set nu!
+        set rnu
+    else
+        set nornu
+        set nu
+    endif
+endfunction
+
+nnoremap <leader>l :call NumberToggle()<CR>
+
+" bind \ (backward slash) to grep shortcut
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow!|redraw!
+nnoremap \ :Ag<SPACE>
 
 " Colorscheme for airline
 let g:airline_theme='raven'
@@ -139,6 +173,8 @@ set t_Co=256                            "terminal option for number of colors
 " set the leader key to comma
 let mapleader = ","
 
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " hit spacebar to clear search highlights
 nnoremap <silent><Space> :silent noh<Bar>echo<CR>
@@ -148,6 +184,18 @@ nnoremap ; :
  
 " show/hide NERDTree
 nmap <leader><tab> :NERDTreeToggle<CR>
+
+" Go to tab by number
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+noremap <leader>0 :tablast<cr>
 
 " mapping the jumping between splits. Hold control while using vim nav.
 nmap <C-J> <C-W>j
@@ -167,6 +215,11 @@ map <leader>c :clo<cr>
 
 " ,ev to edit vimrc
 map <leader>ev :vsp ~/.vimrc<cr>
+
+" determine what color is under the cursor
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " autocmd stuff for filetypes
 if has("autocmd")
