@@ -29,7 +29,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'kien/ctrlp.vim'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'jelera/vim-javascript-syntax'
+Plugin 'pangloss/vim-javascript'
 Plugin 'forrestbaer/minimal_dark'
 Plugin 'rking/ag.vim'
 
@@ -74,6 +74,10 @@ let g:ctrlp_prompt_mappings = {
 set grepprg=ag\ --nocolor\ --nogroup\ 
 
 "-------------------------
+" Javascript stuff
+let g:javascript_plugin_jsdoc = 1
+
+"-------------------------
 " Syntastic
 
 function! s:FindSyntasticExecPath(toolName)
@@ -107,6 +111,11 @@ let g:syntastic_always_populate_loc_list = 1
 " check json files with jshint
 let g:syntastic_filetype_map = { "json": "javascript", }
 let g:syntastic_javascript_checkers = ["jshint", "jscs"]
+
+" ignore for html files
+let g:syntastic_mode_map={ 'mode': 'active',
+                     \ 'active_filetypes': [],
+                     \ 'passive_filetypes': ['html'] }
 
 " open quicfix window with all error found
 nmap <silent> <leader>e :Errors<cr>
