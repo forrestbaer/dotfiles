@@ -253,6 +253,7 @@ endif
 
 " COLORSCHEME "
 color minimal_dark
+set guifont=Iosevka\ Extralight:h15
 
 syntax enable
 filetype plugin indent on
