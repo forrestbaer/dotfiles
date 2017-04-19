@@ -171,6 +171,7 @@ set ruler                               " show cursor position
 set incsearch                           " search as we type
 set hlsearch                            " highlight all search finds
 set wrap                                " wrap text
+set viminfo=                            " no viminfo files please
 set scrolloff=3                         " lets us see 3 lines ahead/behind
 set nobackup                            " don't make backups everywhere
 set softtabstop=4                       " soft tab stop to 4
