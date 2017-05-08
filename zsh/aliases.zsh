@@ -1,4 +1,4 @@
-alias ls='ls -GhFa'
+alias ls='ls -GhF'
 alias ll='ls -GhlaF' # long format listing; add / to end of directories
 alias la='ls -GalaF' # include dot files in listing; add / to end of directories
 alias mv='mv -i' # prompt before moving a file that would overwrite an existing file

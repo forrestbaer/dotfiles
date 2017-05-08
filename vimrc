@@ -21,6 +21,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
+Plugin 'maksimr/vim-jsbeautify'
 Plugin 'tpope/vim-markdown'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
@@ -254,7 +255,7 @@ endif
 
 " COLORSCHEME "
 color minimal_dark
-set guifont=Iosevka\ Extralight:h15
+set guifont=Iosevka\ ExtraLight:h15
 
 syntax enable
 filetype plugin indent on
