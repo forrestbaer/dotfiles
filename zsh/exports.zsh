@@ -6,5 +6,5 @@ fi
 
 export CLICOLOR=1
 export LSCOLORS=dxfxcxdxGxegedabagacad
-export GOPATH="/Users/forrest/code/go"
+export GOPATH="/Users/forrest/Cloud/Code/go"
 export PATH=$GOPATH/bin:/usr/local/bin:/usr/local/sbin:~/bin:$PATH
