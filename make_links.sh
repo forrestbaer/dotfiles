@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dir=~/Cloud/code/dotfiles
+dir=~/code/dotfiles
 backupdir=dotfile_backup
 files="vimrc zshrc gitconfig zsh"
 
