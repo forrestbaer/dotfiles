@@ -30,3 +30,5 @@
     - `c - create new window
     - `, - rename window
     - `arrow - switch pane
+    - `[ - go into copy mode
+    - `pgUp - scroll back, or use mouse
