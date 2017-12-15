@@ -128,19 +128,6 @@ nmap <silent> ] :lnext<cr>
 " need to paste something? use F1
 set pastetoggle=<F1>
 
-" toggle types of line numbers
-function! NumberToggle()
-    if(&nu == 1)
-        set nu!
-        set rnu
-    else
-        set nornu
-        set nu
-    endif
-endfunction
-
-nnoremap <leader>l :call NumberToggle()<cr>
-
 " bind \ (backward slash) to grep shortcut
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow!|redraw!
 nnoremap \ :Ag<SPACE>
@@ -182,7 +169,6 @@ set splitbelow                          " open new splits below
 set shiftwidth=4                        " 4 spaces when backspacing tabs
 set laststatus=2                        " always show last status
 set t_Co=256                            "terminal option for number of colors
-"set statusline=%<%f%h%m%r%h%w\ (%{&ff})\ lastmod:\ %{strftime(\"%x\ %X\",getftime(expand(\"%:p\")))}%=\ lin:%l\,%L\ col:%c%V\ [%P]
 
 " KEY MAPPINGS "
 
@@ -253,9 +239,21 @@ if has("autocmd")
 	augroup END
 endif
 
+" toggle types of line numbers
+function! NumberToggle()
+    if(&nu == 1)
+        set nu!
+        set rnu
+    else
+        set nornu
+        set nu
+    endif
+endfunction
+
+nnoremap <leader>l :call NumberToggle()<CR>
+
 " COLORSCHEME "
 color minimal_dark
-set guifont=Iosevka\ ExtraLight:h15
 
 syntax enable
 filetype plugin indent on

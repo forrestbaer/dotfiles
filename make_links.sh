@@ -2,7 +2,7 @@
 
 dir=~/code/dotfiles
 backupdir=dotfile_backup
-files="vimrc zshrc gitconfig zsh"
+files="vimrc zshrc gitconfig zsh tmux.conf"
 
 cd $dir
 mkdir $backupdir

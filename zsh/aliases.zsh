@@ -15,3 +15,7 @@ alias gp='git push'
 alias getch='git fetch'
 alias hist='git hist'
 alias ga='git add'
+
+# tmux
+
+alias tmux='tmux att || tmux'
