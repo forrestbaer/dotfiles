@@ -20,3 +20,7 @@ alias ga='git add'
 # tmux
 
 alias tmux='tmux att || tmux'
+
+# vim
+
+alias vi='vim'
