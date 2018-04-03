@@ -186,9 +186,6 @@ nnoremap ; :
 " open a new tab with a file browser
 nnoremap <leader>n :tabe %:p:h<CR>
 
-" show/hide NERDTree
-nmap <leader><tab> :NERDTreeToggle<CR>
-
 " Go to tab by number
 noremap <leader>1 1gt
 noremap <leader>2 2gt
