@@ -23,7 +23,6 @@ Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 Plugin 'maksimr/vim-jsbeautify'
 Plugin 'tpope/vim-markdown'
-Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'elzr/vim-json'
 Plugin 'vim-airline/vim-airline'
@@ -186,9 +185,6 @@ nnoremap ; :
 
 " open a new tab with a file browser
 nnoremap <leader>n :tabe %:p:h<CR>
-
-" show/hide NERDTree
-nmap <leader><tab> :NERDTreeToggle<CR>
 
 " Go to tab by number
 noremap <leader>1 1gt

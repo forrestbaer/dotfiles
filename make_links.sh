@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 dir=~/code/dotfiles
 backupdir=dotfile_backup
