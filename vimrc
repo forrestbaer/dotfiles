@@ -21,6 +21,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
+Plugin 'junegunn/goyo.vim'
 Plugin 'maksimr/vim-jsbeautify'
 Plugin 'tpope/vim-markdown'
 Plugin 'scrooloose/syntastic'
@@ -155,9 +156,12 @@ set wildmenu                            " use dat wild menu, yeewahawahhaaa
 set wildmode=list:longest               " wild settings, gettin wild!
 set number                              " show line numbers
 set ruler                               " show cursor position
+set ignorecase                          " ignore case sensitive searching
+set smartcase                           " use smart case searching
 set incsearch                           " search as we type
 set hlsearch                            " highlight all search finds
 set wrap                                " wrap text
+set linebreak                           " shift long words to the next line
 set viminfo=                            " no viminfo files please
 set scrolloff=3                         " lets us see 3 lines ahead/behind
 set nobackup                            " don't make backups everywhere
@@ -197,6 +201,8 @@ noremap <leader>7 7gt
 noremap <leader>8 8gt
 noremap <leader>9 9gt
 noremap <leader>0 :tablast<cr>
+
+noremap <leader>o :Sex<cr>
 
 " mapping the jumping between splits. Hold control while using vim nav.
 nmap <C-J> <C-W>j
