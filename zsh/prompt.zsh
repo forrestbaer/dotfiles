@@ -11,11 +11,17 @@ set_term_tab() {
 function set_prompt() {
   branch_name=$(git_branch_name)
   author_name=$(git_author_name)
+
+  if (( $(id -u) ==0 )); then
+      isroot='%F{red}'
+  else
+      isroot='%F{cyan}'
+  fi
   
-  export PS1='%{$reset_color$bold_color$fg[black]%}[%{$reset_color%}%t%{$reset_color$bold_color$fg[black]%}] %{$reset_color$fg[cyan]%}%2/ %{$reset_color$bold_color$fg[cyan]%}$ %{$reset_color%}'
+  PS1='%{$reset_color$bold_color$fg[black]%}[%{$reset_color%}%t%{$reset_color$bold_color$fg[black]%}] %{$isroot%}%2/ %{%B$isroot%}$ %{$reset_color%}'
  
   if [ -n "$branch_name" ]; then
-	  export PS1='%{$reset_color$bold_color$fg[black]%}[%{$reset_color%}%t%{$reset_color$bold_color$fg[black]%}] %{$reset_color$fg[magenta]%}$branch_name %{$reset_color$fg[cyan]%}%2/ %{$reset_color$bold_color$fg[cyan]%}$ %{$reset_color%}'
+	  PS1='%{$reset_color$bold_color$fg[black]%}[%{$reset_color%}%t%{$reset_color$bold_color$fg[black]%}] %{$reset_color$fg[magenta]%}$branch_name %{$isroot%}%2/ %{%B$isroot%}$ %{$reset_color%}'
   fi
 }
 
