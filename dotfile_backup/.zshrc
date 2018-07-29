@@ -1,1 +1,0 @@
-/home/monk/code/dotfiles/zshrc
