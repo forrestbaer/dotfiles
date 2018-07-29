@@ -19,7 +19,7 @@ alias ga='git add'
 
 # tmux
 
-alias tmux='tmux att || tmux'
+alias tmux='tmux att -d'
 
 # vim
 
