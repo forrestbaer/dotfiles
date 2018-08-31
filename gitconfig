@@ -36,3 +36,7 @@
     hist = log --all --pretty=format:\"%C(yellow)%h %C(bold blue)%ad %C(black)| %C(reset)%C(normal)%s%d %C(dim magenta)[%an]%C(reset)\" --graph --date=short
     type = cat-file -t
     dump = cat-file -p
+
+[pager]
+    diff = diff-so-fancy | less --tabs=1,5 -RFX
+    show = diff-so-fancy | less --tabs=1,5 -RFX
