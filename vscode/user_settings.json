@@ -43,7 +43,8 @@
       "<C-w>": false,
       "<C-s>": false,
       "<C-b>": false,
-      "<C-`>": false
+      "<C-`>": false,
+      "<C-o>": false
     },
     "vim.searchHighlightColor": "#fffec3",
     "vim.useSystemClipboard": true,
