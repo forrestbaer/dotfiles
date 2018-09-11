@@ -1,4 +1,25 @@
-// Empty
-[
-
+[{
+        "key": "alt+enter",
+        "command": "todo.toggleBox",
+        "when": "editorTextFocus && editorLangId == 'todo'"
+    },
+    {
+        "key": "alt+a",
+        "command": "todo.archive",
+        "when": "editorTextFocus && editorLangId == 'todo'"
+    },
+    {
+        "key": "alt+j",
+        "command": "editor.action.moveLinesUpAction",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "alt+k",
+        "command": "editor.action.moveLinesDownAction",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+`",
+        "command": "workbench.action.terminal.focus"
+    }
 ]
