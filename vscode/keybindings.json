@@ -1,4 +1,5 @@
-[{
+[
+    {
         "key": "alt+enter",
         "command": "todo.toggleBox",
         "when": "editorTextFocus && editorLangId == 'todo'"
@@ -20,6 +21,12 @@
     },
     {
         "key": "ctrl+`",
-        "command": "workbench.action.terminal.focus"
+        "command": "workbench.action.terminal.focus",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+`",
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when": "terminalFocus"
     }
 ]
