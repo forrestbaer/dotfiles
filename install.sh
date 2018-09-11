@@ -29,7 +29,8 @@ done
 
 echo "*** Copying VS Code configurations"
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
+if [ "$OSTYPE" == "darwin"* ]
+then
     # $HOME/Library/Application Support/Code/User/settings.json
     echo "*** OSX, copying to"
 else
