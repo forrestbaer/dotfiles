@@ -27,13 +27,8 @@ for file in $files; do
     fi
 done
 
-echo "*** Copying VS Code configurations"
-
-if [ "$OSTYPE" == "darwin"* ]
+if [ $(uname -s) == "Darwin" ]
 then
-    # $HOME/Library/Application Support/Code/User/settings.json
-    echo "*** OSX, copying to"
-else
-    # $HOME/.config/Code/User/settings.json
-    echo "*** Other Unix, copying to"
+    echo "*** Copying VS Code configurations"
+    cp -R ./vscode/* $HOME/Library/Application\ Support/Code/User/
 fi

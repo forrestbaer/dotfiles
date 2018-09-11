@@ -10,9 +10,16 @@ function CopyPowershellConfig {
 
     if (!(Test-Path $CurrentUserProfile)) {
         # profile does not currently exist
-        Copy-Item .\powershell\profile.ps1 $CurrentUserProfile -Force
-        Write-Host "** PS: Updated $CurrentUserProfile"
-        . $CurrentUserProfile
+        try {
+            Copy-Item .\powershell\profile.ps1 $CurrentUserProfile -Force
+        }
+        catch {
+            Write-Host "** PS: Unable to copy!" -ForegroundColor Red
+        }
+        finally {
+            Write-Host "** PS: Updated $CurrentUserProfile"
+            . $CurrentUserProfile
+        }
     }
     else {
         # profile exists, back it up first, then try again
@@ -27,7 +34,7 @@ function CopyPowershellConfig {
             Remove-Item $CurrentUserProfile -Force
         }
         catch {
-            Write-Host "** PS: Unable to perform fs maintenance for existing powershell files!" -ForegroundColor Red
+            Write-Host "** PS: Unable to backup existing powershell files!" -ForegroundColor Red
         }
         finally {
             CopyPowershellConfig
@@ -54,7 +61,7 @@ function CopyVisualStudioCodeConfig {
         }
     }
     else {
-        Write-Host "VS: Unable to find VS Code config path." -ForegroundColor Red
+        Write-Host "VS: Unable to find VS Code config path" -ForegroundColor Red
     }
 }
 
