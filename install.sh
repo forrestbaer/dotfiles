@@ -2,7 +2,9 @@
 
 dir=${PWD}
 backupdir="$dir/dotfile_backup"
-files="vimrc zshrc gitconfig zsh tmux.conf"
+files="vimrc zshrc gitconfig zsh tmux.conf eslintrc.js"
+
+echo "*** Linking dotfiles into home directory"
 
 for file in $files; do
     if [ ! -L ~/.$file ] &&
@@ -24,3 +26,14 @@ for file in $files; do
     	ln -sfn $dir/$file ~/.$file
     fi
 done
+
+echo
+echo "*** Copying VS Code configurations"
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # $HOME/Library/Application Support/Code/User/settings.json
+    echo "*** OSX, copying to"
+else
+    # $HOME/.config/Code/User/settings.json
+    echo "*** Other Unix, copying to"
+fi
