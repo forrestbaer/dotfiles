@@ -27,7 +27,6 @@ for file in $files; do
     fi
 done
 
-echo
 echo "*** Copying VS Code configurations"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
