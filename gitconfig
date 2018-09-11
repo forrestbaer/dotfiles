@@ -1,6 +1,6 @@
 [user]
-	name = Forrest Baer
-	email = gfbaer@gmail.com
+    name = Forrest Baer
+    email = gfbaer@gmail.com
 
 [color]
     branch = auto
@@ -25,7 +25,7 @@
     untracked = cyan
 
 [core]
-	autocrlf = true
+    autocrlf = false
 
 [alias]
     co = checkout
