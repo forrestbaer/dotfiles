@@ -1,20 +1,26 @@
-#!/bin/sh
+#!/bin/sh 
 
 dir=${PWD}
-backupdir=dotfile_backup
+backupdir="$dir/dotfile_backup"
 files="vimrc zshrc gitconfig zsh tmux.conf"
 
-cd $dir
-
-if [ ! -d "$backupdir"]; then
-    mkdir $backupdir
-fi
-
 for file in $files; do
-    echo "Copying existing files to $backupdir if they exist."
-    if [ -f "$file" ]; then
-        mv ~/.$file ./$backupdir/
+    if [ ! -L ~/.$file ] &&
+       [ -e ~/.$file ]
+    then
+	if [ ! -d $backupdir ]
+	then
+	    echo "*** Found existing configurations, creating backup directory."
+	    mkdir $backupdir
+	fi
+
+	echo "*** Copying ~/.$file to $backupdir/$file."
+        mv ~/.$file $backupdir/$file
     fi
-    echo "Creating symlink to $file in home directory."
-    ln -s $dir/$file ~/.$file
+
+    if [ ! -e ~/.$file ]
+    then
+    	echo "*** Creating symlink to $file in home directory."
+    	ln -sfn $dir/$file ~/.$file
+    fi
 done

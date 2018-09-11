@@ -13,6 +13,7 @@ if !filereadable(vundle_readme)
     silent !git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/vundle
     let iCanHazVundle=0
 endif
+
 set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/vundle/
@@ -62,12 +63,6 @@ let g:ctrlp_use_caching = 0
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
-
-" automatically open files in a new tab
-let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': ['<2-LeftMouse>'],
-    \ 'AcceptSelection("t")': ['<cr>'],
-    \ }
 
 "-------------------------
 " Replace grep with ag
@@ -135,10 +130,6 @@ nnoremap \ :Ag<SPACE>
 " Colorscheme for airline
 let g:airline_theme='minimal_dark'
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 0
-let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline_skip_empty_sections = 1
 let g:airline_section_y = ''
 let g:airline_section_x = ''
@@ -146,15 +137,15 @@ let g:airline#extensions#whitespace#show_message = 0
 let g:airline_detect_whitespace=0
 
 " regular settings
+set fileencoding=utf-8			" set default file encoding to utf-8
 set nocompatible
 set showmode                            " show editing mode
 set showmatch                           " show matching parens
 set backspace=indent,eol,start          " make backspace back over everything
 set autoindent                          " copy indentation from previous line
 set autoread                            " automatically show outside changes
-set wildmenu                            " use dat wild menu, yeewahawahhaaa
-set wildmode=list:longest               " wild settings, gettin wild!
 set number                              " show line numbers
+set autochdir                           " set the working dir to where the open file lives
 set ruler                               " show cursor position
 set ignorecase                          " ignore case sensitive searching
 set smartcase                           " use smart case searching
@@ -162,12 +153,10 @@ set incsearch                           " search as we type
 set hlsearch                            " highlight all search finds
 set wrap                                " wrap text
 set linebreak                           " shift long words to the next line
+set hidden                              " hide buffers when abandoned
 set viminfo=                            " no viminfo files please
 set scrolloff=3                         " lets us see 3 lines ahead/behind
 set nobackup                            " don't make backups everywhere
-set softtabstop=4                       " soft tab stop to 4
-set smarttab                            " smart backspacing over tabs
-set expandtab                           " tab expansion??
 set splitbelow                          " open new splits below
 set shiftwidth=4                        " 4 spaces when backspacing tabs
 set laststatus=2                        " always show last status
@@ -192,20 +181,6 @@ nnoremap <leader>g :Goyo<CR>
 
 " open a new tab with a file browser
 nnoremap <leader>n :tabe %:p:h<CR>
-
-" Go to tab by number
-noremap <leader>1 1gt
-noremap <leader>2 2gt
-noremap <leader>3 3gt
-noremap <leader>4 4gt
-noremap <leader>5 5gt
-noremap <leader>6 6gt
-noremap <leader>7 7gt
-noremap <leader>8 8gt
-noremap <leader>9 9gt
-noremap <leader>0 :tablast<cr>
-
-noremap <leader>o :Sex<cr>
 
 " mapping the jumping between splits. Hold control while using vim nav.
 nmap <C-J> <C-W>j
