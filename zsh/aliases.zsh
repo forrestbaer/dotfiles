@@ -1,6 +1,7 @@
 alias ls='ls -GhF'
 alias ll='ls -GhlFa' # long format listing; add / to end of directories
 alias la='ls -GalaF' # include dot files in listing; add / to end of directories
+alias eject='diskutil list | grep FB64 | awk '\''{ print $NF }'\'' | xargs diskutil unmount'
 alias mv='mv -i' # prompt before moving a file that would overwrite an existing file
 alias grep='grep --color --line-number'
 alias c='clear'
