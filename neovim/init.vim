@@ -2,7 +2,6 @@
 " This is my .vimrc. There are many like it, but this one is mine.
 
 " set up packages if they dont' exist
-let isNpmInstalled = executable("npm")
 let s:defaultNodeModules = '~/.vim/node_modules/.bin/'
 let iCanHazVundle=1
 let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
@@ -16,22 +15,24 @@ endif
 
 set nocompatible
 filetype off
+
 set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
+
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
+Plugin 'othree/html5.vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'alvan/vim-closetag'
 Plugin 'junegunn/goyo.vim'
-Plugin 'maksimr/vim-jsbeautify'
 Plugin 'tpope/vim-markdown'
-Plugin 'scrooloose/syntastic'
 Plugin 'elzr/vim-json'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'kien/ctrlp.vim'
+Plugin 'w0rp/ale'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'pangloss/vim-javascript'
+Plugin 'kien/ctrlp.vim'
 Plugin 'forrestbaer/minimal_dark'
 Plugin 'rking/ag.vim'
 
@@ -42,14 +43,11 @@ if iCanHazVundle == 0
 endif
 call vundle#end()
 
-if isNpmInstalled
-    if !executable(expand(s:defaultNodeModules . 'jshint'))
-        silent ! echo 'Installing jshint' && npm --prefix ~/.vim/ install jshint
-    endif
-    if !executable(expand(s:defaultNodeModules . 'csslint'))
-        silent ! echo 'Installing csslint' && npm --prefix ~/.vim/ install csslint
-    endif
-endif
+"-------------------------
+" Javascript plugin
+
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_flow = 1
 
 "-------------------------
 " CtrlP settings
@@ -61,67 +59,39 @@ let g:ctrlp_by_filename = 1
 let g:ctrlp_switch_buffer = 0
 let g:ctrlp_use_caching = 0
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|.git'
+let g:ctrlp_working_path_mode = 'c'
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " Linux/MacOSX
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
 "-------------------------
-" Replace grep with ag
+" ALE Config
 
-set grepprg=ag\ --nocolor\ --nogroup\ 
+let g:ale_linters_explicit = 1
+let g:ale_set_highlights = 0
+let g:airline#extensions#ale#enabled = 1
+
+let g:ale_linters = {}
+let g:ale_linters['javascript'] = ['eslint']
+let g:ale_linters['json'] = ['jq']
+
+let g:ale_fixers = {}
+let g:ale_fixers['javascript'] = ['prettier']
+let g:ale_fixers['json'] = ['fixjson']
+
+let g:ale_javascript_prettier_options = '--single-quote --no-semi --tab-width 4'
 
 "-------------------------
-" Javascript stuff
+" closetag config
 
-let g:javascript_plugin_jsdoc = 1
-
-"-------------------------
-" Syntastic
-
-function! s:FindSyntasticExecPath(toolName)
-    if executable(a:toolName)
-        return a:toolName
-    endif
-
-    let fullPath=fnamemodify('.', ':p:h')
-    while fullPath != fnamemodify('/', ':p:h')
-        if filereadable(expand(fullPath . '/node_modules/.bin/' . a:toolName))
-            return fullPath . '/node_modules/.bin/' . a:toolName
-        endif
-        let fullPath = fnamemodify(fullPath . '/../', ':p:h')
-    endwhile
-
-    return  s:defaultNodeModules . a:toolName
-endfunction
-
-" setting up jshint csslint and jscs if available
-let g:syntastic_javascript_jshint_exec = s:FindSyntasticExecPath('jshint')
-let g:syntastic_javascript_jscs_exec = s:FindSyntasticExecPath('jscs')
-let g:syntastic_css_csslint_exec= s:FindSyntasticExecPath('csslint')
-
-" Enable autochecks
-let g:syntastic_check_on_open=1
-let g:syntastic_enable_signs=1
-
-" For correct works of next/previous error navigation
-let g:syntastic_always_populate_loc_list = 1
-
-" check json files with jshint
-let g:syntastic_filetype_map = { "json": "javascript", }
-let g:syntastic_javascript_checkers = ["jshint", "jscs"]
-
-" ignore for html files
-let g:syntastic_mode_map={ 'mode': 'active',
-                     \ 'active_filetypes': [],
-                     \ 'passive_filetypes': ['html'] }
-
-" open quicfix window with all error found
-nmap <silent> <leader>e :Errors<cr>
-" previous syntastic error
-nmap <silent> [ :lprev<cr>
-" next syntastic error
-nmap <silent> ] :lnext<cr>
-
-" need to paste something? use F1
-set pastetoggle=<F1>
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.cshtml'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+let g:closetag_filetypes = 'cshtml,html,xhtml,phtml'
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+let g:closetag_emptyTags_caseSensitive = 1
+let g:closetag_shortcut = '>'
+let g:closetag_close_shortcut = '<leader>>'
 
 " bind \ (backward slash) to grep shortcut
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow!|redraw!
@@ -135,11 +105,16 @@ let g:airline_section_y = ''
 let g:airline_section_x = ''
 let g:airline#extensions#whitespace#show_message = 0
 let g:airline_detect_whitespace=0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 " regular settings
-set fileencoding=utf-8			" set default file encoding to utf-8
 set nocompatible
+set fileencoding=utf-8                  " set default file encoding to utf-8
 set showmode                            " show editing mode
+set expandtab                           " expand tabs to spaces
+set shiftwidth=4                        " 4 spaces when backspacing tabs
+set tabstop=4                           " ^^
 set showmatch                           " show matching parens
 set backspace=indent,eol,start          " make backspace back over everything
 set autoindent                          " copy indentation from previous line
@@ -158,29 +133,27 @@ set viminfo=                            " no viminfo files please
 set scrolloff=3                         " lets us see 3 lines ahead/behind
 set nobackup                            " don't make backups everywhere
 set splitbelow                          " open new splits below
-set shiftwidth=4                        " 4 spaces when backspacing tabs
 set laststatus=2                        " always show last status
-set t_Co=256                            "terminal option for number of colors
+set t_Co=256                            " terminal option for number of colors
+set grepprg=rg\ --vimgrep               " grep program
+set pastetoggle=<F1>                    " paste toggle with f1 if needed
 
 " KEY MAPPINGS "
 
 " set the leader key to comma
 let mapleader = ","
 
-" bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
 " hit spacebar to clear search highlights
-nnoremap <silent><Space> :silent noh<Bar>echo<CR>
+nnoremap <silent><Space> :silent noh<Bar>echo<cr>
+
+" map something simple to repeat the normal macro
+nnoremap <C-Q> @q
 
 " remap semicolon
 nnoremap ; :
 
 " Open Goyo for distraction free editing
-nnoremap <leader>g :Goyo<CR>
-
-" open a new tab with a file browser
-nnoremap <leader>n :tabe %:p:h<CR>
+nnoremap <leader>g :Goyo<cr>
 
 " mapping the jumping between splits. Hold control while using vim nav.
 nmap <C-J> <C-W>j
@@ -192,31 +165,35 @@ nmap <C-L> <C-W>l
 map <leader>q :q!<cr>
 nnoremap Q @q
 
+" buffers
+nmap <leader>t :enew<cr>
+
 " ,w save quick
 map <leader>w :w!<cr>
 
 " ,c to close
 map <leader>c :clo<cr>
 
-" ,ev to edit vimrc
-map <leader>ev :vsp ~/.vimrc<cr>
+" ,d to delete buffer
+map <leader>d :bd<cr>
 
-" determine what color is under the cursor
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+" ,ev to edit vimrc
+map <leader>ev :vsp ~/.config/nvim/init.vim<cr>
+
+" ,rv to reload vimrc
+map <leader>rv :so ~/.config/nvim/init.vim<cr>
 
 " autocmd stuff for filetypes
 if has("autocmd")
-	augroup module
-	autocmd BufRead,BufNewFile *.tt set filetype=tt
-	autocmd VimEnter * set vb t_vb=
-	autocmd FileType python setl shiftwidth=4 softtabstop=4
-	autocmd FileType python syntax match Error "\t"
-	autocmd BufReadPost * if line("'\"") > 0 && line ("'\"") <= line("$") | exe "normal! g'\"" | endif
-	au BufRead,BufNewFile /etc/nginx/sites-available/* set ft=nginx
-	au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
-	augroup END
+    augroup module
+    autocmd BufRead,BufNewFile *.tt set filetype=tt
+    autocmd VimEnter * set vb t_vb=
+    autocmd FileType python setl shiftwidth=4 softtabstop=4
+    autocmd FileType python syntax match Error "\t"
+    autocmd BufReadPost * if line("'\"") > 0 && line ("'\"") <= line("$") | exe "normal! g'\"" | endif
+    au BufRead,BufNewFile /etc/nginx/sites-available/* set ft=nginx
+    au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru} set ft=ruby
+    augroup END
 endif
 
 " toggle types of line numbers
@@ -230,11 +207,10 @@ function! NumberToggle()
     endif
 endfunction
 
-nnoremap <leader>l :call NumberToggle()<CR>
+nnoremap <leader>l :call NumberToggle()<cr>
 
 " COLORSCHEME "
 color minimal_dark
-
 syntax enable
 filetype plugin indent on
 
@@ -259,3 +235,7 @@ endfunction
 
 autocmd! User GoyoEnter call <SID>goyo_enter()
 autocmd! User GoyoLeave call <SID>goyo_leave()
+
+cnoreabbrev fmt ALEFix
+cnoreabbrev hs vsplit
+cnoreabbrev vs split

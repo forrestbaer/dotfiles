@@ -5,6 +5,9 @@ alias eject='diskutil list | grep FB64 | awk '\''{ print $NF }'\'' | xargs disku
 alias mv='mv -i' # prompt before moving a file that would overwrite an existing file
 alias grep='grep --color --line-number'
 alias c='clear'
+alias cat='bat'
+alias mail='neomutt'
+alias mutt='neomutt'
 
 # Git
 
@@ -24,4 +27,5 @@ alias tmux='tmux att -d'
 
 # vim
 
-alias vi='vim'
+alias vi='nvim'
+alias vim='nvim'

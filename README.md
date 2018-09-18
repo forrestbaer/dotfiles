@@ -14,3 +14,8 @@
 ### VS Code Addons to install
 
     - auto close tag, beautify, c#, emotionally mute theme, eslint, powershell, sqlite, todo, vim, vscode-icons
+
+### Hints
+
+    - ysiw" - surround word in quotes
+    - pbcopy > file.whatever to copy that file into copy buffer 
