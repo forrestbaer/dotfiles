@@ -2,7 +2,6 @@ set realname="Forrest Baer"
 set from="gfbaer@gmail.com"
 
 set imap_user="gfbaer@gmail.com"
-set imap_pass="63G[;9#^$s4J8Y8&Q8E+"
 # set imap_pass=`/usr/bin/security find-generic-password -w -a 'mail.vpal@gmail.com' -s 'Gmail'`
 
 set folder=imaps://imap.gmail.com/

@@ -1,8 +1,9 @@
 #!/bin/sh 
+# TODO: Refactor th big for loop into several functions so this works better
 
 dir=${PWD}
 backupdir="$dir/dotfile_backup"
-files="vimrc zshrc gitconfig zsh tmux.conf eslintrc.js"
+files="xsessionrc Xdefaults zshrc gitconfig zsh tmux.conf eslintrc.js"
 
 echo "*** Linking dotfiles into home directory"
 

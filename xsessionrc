@@ -1,0 +1,2 @@
+xsetroot -solid "#222222"
+setxkbmap -option ctrl:nocaps
