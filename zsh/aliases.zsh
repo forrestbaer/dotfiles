@@ -6,8 +6,12 @@ alias mv='mv -i' # prompt before moving a file that would overwrite an existing 
 alias grep='grep --color --line-number'
 alias c='clear'
 alias cat='bat'
+alias cal='khal'
 alias mail='neomutt'
 alias mutt='neomutt'
+alias gtd='grep -R TODO *'
+alias vdisc='vdirsyncer discover'
+alias vsync='vdirsyncer sync'
 
 # Git
 

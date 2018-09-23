@@ -1,0 +1,145 @@
+#GLOBAL SETTINGS
+
+set sendmail="/usr/bin/msmtp"
+set quote_regexp="^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+set sleep_time=0
+set sort=threads
+set sort_browser=date
+set sort_aux=reverse-last-date-received
+set collapse_unread
+set mail_check_stats
+set timeout = 30
+set imap_keepalive = 600
+set mailcap_path="~/.config/neomutt/mailcap"
+set edit_headers
+set use_from
+set envelope_from
+set tilde
+set copy
+set delete
+set nobeep
+set pager_stop
+set smart_wrap
+set menu_scroll
+set sidebar_width=20
+set sidebar_visible
+set sidebar_short_path
+set sidebar_folder_indent
+set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
+set index_format = "%2C %Z [%{%b %d}] %-15.15L | %s"
+set status_chars = " *%A"
+set status_format = "- [ Folder: %f ] — [%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ] %>—— %?p?( %p postponed )?"
+set attach_keyword = "\\<attach(|ed|ments?)\\>"
+set abort_noattach = ask-yes
+
+unset help
+unset mark_old
+
+auto_view text/html
+alternative_order text/plain text/enriched text/html
+
+
+# BINDINGS
+
+set query_command= "khard email --parsable '%s'"
+bind editor <Tab> complete-query
+bind editor ^T    complete
+
+bind attach,index,pager \cd next-page
+bind attach,index,pager \cu previous-page
+bind attach,index g first-entry
+bind attach,index G last-entry
+
+bind index,pager \cp sidebar-prev
+bind index,pager \cn sidebar-next
+bind index,pager \co sidebar-open
+
+macro index ,i "<next-unread-mailbox><enter>"
+macro index ,a "<change-folder>=Archive<enter>"
+macro index ,s "<change-folder>=Sent<enter>"
+macro index ,d "<change-folder>=Drafts<enter>"
+macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+bind index <delete> delete-message
+bind index p recall-message
+
+bind compose p postpone-message
+
+macro pager \cb <pipe-entry>'urlview'<enter> 'Follow links with urlview'
+bind pager g top
+bind pager G bottom
+bind pager k previous-line
+bind pager j next-line
+bind pager h previous-undeleted
+bind pager l next-undeleted
+
+
+# COLORSCHEME
+color normal     white         default
+
+# main colors
+color status     black         cyan
+color indicator  brightwhite   brightblue
+color tree       blue          black
+color error      brightred     black
+color message    white  black
+
+# uncolor certain messages
+uncolor index "~P"
+uncolor index "~N"
+uncolor index "~T"
+uncolor index "~F"
+uncolor index "~D"
+uncolor index "~O"
+
+# and recolor them appropriately
+color index      brightwhite    default "~N"
+color index		 brightmagenta	default "~F"
+color index      brightcyan     default "~T"
+color index      brightred      default "~D"
+color index      yellow         default "~O"
+
+# set up the headers
+color header     cyan           default "^from:"
+color header     cyan           default "^to:"
+color header     cyan           default "^cc:"
+color header     brightcyan     default "^date:"
+color header     brightwhite    default "^subject:"
+
+# message bodies
+color attachment brightblack   default
+color search     brightyellow  black
+color signature  cyan          default
+color tilde      brightblack   default
+
+# sidebar
+color sidebar_divider brightblack black
+color sidebar_new brightwhite black
+color sidebar_indicator brightwhite brightblue
+color sidebar_flagged magenta black
+color sidebar_highlight brightwhite brightblue
+
+# urls
+color body       brightblue    default "(^|<| )mailto:[^ ]+@[^ ]( |>|$)"
+color body       brightblue    default "(^|<| )(http|https|ftp|file|telnet|news|finger)://[^ ]+( |>|$)"
+
+# *bold*, _underline_, and /italic/
+color body       brightcyan    default "(^| )\\*[^ ]+\\*( |$)"
+color body       brightcyan    default "(^| )_[^ ]+_( |$)"
+color body       brightcyan    default "(^| )/[^ ]+/( |$)"
+
+# quote blocks
+color quoted     magenta       default
+color quoted1    cyan          default
+color quoted2    green         default
+color quoted3    magenta       default
+color quoted4    cyan          default
+color quoted5    green         default
+color quoted6    magenta       default
+color quoted7    cyan          default
+
+
+# ACCOUNT DATA
+# these files should be have correct permissions and contain:
+# imap_user, imap_pass, smtp_url, smtp_pass, smtp_authenticators
+# realname, from, folder, spoolfile, record, postponed, mailboxes
+source ~/.config/neomutt/forrestbaer.com

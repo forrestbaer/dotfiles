@@ -1,0 +1,18 @@
+[calendars]
+
+[[calendars_local]]
+path = ~/.calendars/*
+type = discover
+color = dark green
+
+[locale]
+timeformat = %I:%M %p
+dateformat = %m/%d/%Y
+longdateformat = %m/%d/%Y
+datetimeformat = %m/%d/%Y %I:%M %p
+longdatetimeformat = %m/%d/%Y %I:%M %p
+
+[default]
+default_calendar = Forrest
+highlight_event_days = True
+timedelta = 4d

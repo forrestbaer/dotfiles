@@ -1,2 +1,5 @@
-xsetroot -solid "#222222"
+xsetroot -solid "#666666"
 setxkbmap -option ctrl:nocaps
+setxkbmap -option altwin:swap_alt_win
+xinput set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
+xinput set-prop 12 145 0.500000, 0.000000, 0.000000, 0.000000, 0.500000, 0.000000, 0.000000, 0.000000, 1.000000

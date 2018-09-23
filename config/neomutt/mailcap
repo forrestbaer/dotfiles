@@ -1,0 +1,2 @@
+text/html; /usr/bin/w3m -cols 90 -dump -T text/html '%s'; copiousoutput
+application/ics; khal import %s

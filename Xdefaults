@@ -1,10 +1,12 @@
 URxvt.transparent:	false
 URxvt.shading:		15
 URxvt.cursorBlink:	1
-URxvt.termName:		rxvt-256color
-URxvt.font:		xft:Fira Code:pixelsize=15,style=regular
-URxvt.boldFont:		xft:Fira Code:pixelsize=15,style=bold
-URxvt.letterSpace:	-1	
+URxvt.internalBorder:  0
+URxvt.termName:		rxvt-unicode-256color
+!URxvt.font:		    xft:Fira Code:pixelsize=14:style=regular:antialias=true
+URxvt.font:		    xft:Iosevka:pixelsize=16:style=regular:antialias=true
+URxvt.boldFont:	    xft:Iosevka:pixelsize=16:style=regular:antialias=true
+!URxvt.letterSpacing: -1
 URxvt.urlLauncher:	firefox
 URxvt.matcher.button:	3
 URxvt.visualBell:	true
@@ -23,7 +25,7 @@ URxvt.background:	#000000
 *color4: #0000AA
 *color5: #AA00AA
 *color6: #00AAAA
-*color7: #A8A8A8
+*color7: #CCCCCC
 *color8: #545454
 *color9: #DF4A4A
 *color10: #4CE54C

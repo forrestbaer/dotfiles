@@ -1,0 +1,40 @@
+general {
+	colors = true
+	color_good = "#BBBBBB"
+	color_bad = "#CC1616"
+	color_degraded = "#55858E"
+	interval = 2
+}
+
+order += "battery all"
+order += "cpu_usage"
+order += "wireless wlp3s0"
+order += "volume master"
+order += "tztime local"
+
+volume master {
+	format = " ♪ %volume " 
+	device = "default"
+	mixer = "Master"
+	mixer_idx = 0
+}
+
+cpu_usage {
+	format = " CPU %usage "
+}
+
+battery all {
+        format = "⚡ %percentage %remaining"
+        format_down = "No battery"
+        path = "/sys/class/power_supply/BAT%d/uevent"
+        low_threshold = 10
+}
+
+wireless wlp3s0 {
+	format_up = " %essid%quality (%ip) "
+	format_down = " ☡ WiFi "
+}
+
+tztime local {
+	format = " %h-%d %I:%M%p ☰ "
+}
