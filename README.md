@@ -3,13 +3,16 @@
 ### General Configuration:
 
     - Font: [Fira Code](https://github.com/tonsky/FiraCode)
-    - Convert CAPSLOCK -> ESC
+    - Font: [Iosevka](https://github.com/be5invis/Iosevka)
+    - Convert CAPSLOCK -> CONTROL
+    - Convert ALT -> WINDOWS (in Linux)
     - Make key repeat as fast as possible
 
 ### Installation
 
     - in unix/osx run install.sh
     - in windows run install.ps1
+    - there are a ton of dependencies, rg, khal, khard, neomutt, neovim, the_silver_searcher, urxvt, i3, i3status, bat, vdirsyncer, tmux, diff-so-fancy, msmtp, pbcopy, and more!
 
 ### VS Code Addons to install
 
@@ -17,5 +20,4 @@
 
 ### Hints
 
-    - ysiw" - surround word in quotes
     - pbcopy > file.whatever to copy that file into copy buffer 
