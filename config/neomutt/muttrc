@@ -19,9 +19,10 @@ set copy
 set delete
 set nobeep
 set pager_stop
-set smart_wrap
+#set smart_wrap
 set menu_scroll
-set sidebar_width=20
+set wrap = 80
+set sidebar_width = 20
 set sidebar_visible
 set sidebar_short_path
 set sidebar_folder_indent
@@ -34,6 +35,7 @@ set abort_noattach = ask-yes
 
 unset help
 unset mark_old
+unset markers
 
 auto_view text/html
 alternative_order text/plain text/enriched text/html
@@ -61,6 +63,8 @@ macro index ,d "<change-folder>=Drafts<enter>"
 macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 bind index <delete> delete-message
 bind index p recall-message
+bind index h previous-line
+bind index l next-line
 
 bind compose p postpone-message
 
