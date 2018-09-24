@@ -149,4 +149,4 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
 
 exec --no-startup-id nm-applet
 
-bindsym $mod+Shift+Return exec xscreensaver-command -lock
+bindsym $mod+Shift+Escape exec xscreensaver-command -lock

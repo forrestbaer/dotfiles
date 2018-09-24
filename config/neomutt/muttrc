@@ -142,6 +142,15 @@ color quoted6    magenta       default
 color quoted7    cyan          default
 
 
+# FOLDER HOOKS
+
+folder-hook .art$       'unset from; my_hdr From: The Mad Monk <monk@forrestbaer.com>'
+folder-hook .bills$     'unset from; my_hdr From: Forrest Baer <bills@forrestbaer.com>'
+folder-hook .work$      'unset from; my_hdr From: Forrest Baer <work@forrestbaer.com>'
+folder-hook .private$   'unset from; my_hdr From: Forrest Baer <forrest@forrestbaer.com>'
+folder-hook .public$    'unset from; my_hdr From: Forrest Baer <public@forrestbaer.com>'
+
+
 # ACCOUNT DATA
 # these files should be have correct permissions and contain:
 # imap_user, imap_pass, smtp_url, smtp_pass, smtp_authenticators
