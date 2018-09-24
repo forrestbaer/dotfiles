@@ -19,7 +19,8 @@ set copy
 set delete
 set nobeep
 set pager_stop
-#set smart_wrap
+set smart_wrap
+set editor="nvim -c 'set spell spelllang=en'"
 set menu_scroll
 set wrap = 80
 set sidebar_width = 20
