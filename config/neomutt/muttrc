@@ -103,7 +103,7 @@ uncolor index "~O"
 color index      brightwhite    default "~N"
 color index		 brightmagenta	default "~F"
 color index      brightcyan     default "~T"
-color index      brightred      default "~D"
+color index      brightblack    default "~D"
 color index      yellow         default "~O"
 
 # set up the headers
