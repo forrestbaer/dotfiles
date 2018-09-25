@@ -1,11 +1,14 @@
 #GLOBAL SETTINGS
 
+set header_cache     = "$HOME/.mailcache"
+set message_cachedir = "$HOME/.mailcache"
+
 set sendmail="/usr/bin/msmtp"
 set quote_regexp="^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
 set sleep_time=0
-set sort=threads
 set sort_browser=date
 set sort_aux=reverse-last-date-received
+set sort=threads
 set collapse_unread
 set mail_check_stats
 set timeout = 30
@@ -37,6 +40,7 @@ set abort_noattach = ask-yes
 unset help
 unset mark_old
 unset markers
+unset wait_key
 
 auto_view text/html
 alternative_order text/plain text/enriched text/html
@@ -53,40 +57,40 @@ bind attach,index,pager \cu previous-page
 bind attach,index g first-entry
 bind attach,index G last-entry
 
-bind index,pager \cp sidebar-prev
-bind index,pager \cn sidebar-next
-bind index,pager \co sidebar-open
+bind index,pager \ck sidebar-prev
+bind index,pager \cj sidebar-next
+bind index,pager \cl sidebar-open
+bind index,pager \ch sidebar-open
 
-macro index ,i "<next-unread-mailbox><enter>"
+macro index ,n "<next-unread-mailbox><enter>"
 macro index ,a "<change-folder>=Archive<enter>"
 macro index ,s "<change-folder>=Sent<enter>"
 macro index ,d "<change-folder>=Drafts<enter>"
 macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 bind index <delete> delete-message
 bind index p recall-message
-bind index h previous-line
-bind index l next-line
-
 bind compose p postpone-message
 
-macro pager \cb <pipe-entry>'urlview'<enter> 'Follow links with urlview'
 bind pager g top
 bind pager G bottom
 bind pager k previous-line
 bind pager j next-line
-bind pager h previous-undeleted
-bind pager l next-undeleted
+bind pager d next-page
+bind pager u previous-page
+bind pager n next-unread
 
+macro index,pager \cb "<pipe-message> urlscan -c<Enter>" "call urlscan to extract URLs out of a message"
+macro attach,compose \cb "<pipe-entry> urlscan -c<Enter>" "call urlscan to extract URLs out of a message"
 
 # COLORSCHEME
 color normal     white         default
 
 # main colors
 color status     black         cyan
-color indicator  brightwhite   brightblue
+color indicator  black    magenta
 color tree       blue          black
 color error      brightred     black
-color message    white  black
+color message    brightwhite  black
 
 # uncolor certain messages
 uncolor index "~P"
@@ -117,11 +121,10 @@ color signature  cyan          default
 color tilde      brightblack   default
 
 # sidebar
-color sidebar_divider brightblack black
-color sidebar_new brightwhite black
-color sidebar_indicator brightwhite brightblue
-color sidebar_flagged magenta black
-color sidebar_highlight brightwhite brightblue
+color sidebar_divider   brightblack black
+color sidebar_new       brightwhite black
+color sidebar_flagged   magenta     black
+color sidebar_indicator white       brightblack
 
 # urls
 color body       brightblue    default "(^|<| )mailto:[^ ]+@[^ ]( |>|$)"

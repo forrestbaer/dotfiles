@@ -20,14 +20,14 @@ volume master {
 }
 
 cpu_usage {
-	format = " CPU %usage "
+	format = " %usage CPU "
 }
 
 battery all {
-        format = "⚡ %percentage %remaining"
-        format_down = "No battery"
-        path = "/sys/class/power_supply/BAT%d/uevent"
-        low_threshold = 10
+    format = "⚡ %percentage %emptytime "
+    format_down = "No battery"
+    path = "/sys/class/power_supply/BAT%d/uevent"
+    low_threshold = 10
 }
 
 wireless wlp3s0 {
