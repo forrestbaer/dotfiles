@@ -59,8 +59,7 @@ bind attach,index G last-entry
 
 bind index,pager \ck sidebar-prev
 bind index,pager \cj sidebar-next
-bind index,pager \cl sidebar-open
-bind index,pager \ch sidebar-open
+bind index,pager \co sidebar-open
 
 macro index ,n "<next-unread-mailbox><enter>"
 macro index ,a "<change-folder>=Archive<enter>"
@@ -148,7 +147,6 @@ color quoted7    cyan          default
 
 # FOLDER HOOKS
 
-folder-hook .art$       'unset from; my_hdr From: The Mad Monk <monk@forrestbaer.com>'
 folder-hook .bills$     'unset from; my_hdr From: Forrest Baer <bills@forrestbaer.com>'
 folder-hook .work$      'unset from; my_hdr From: Forrest Baer <work@forrestbaer.com>'
 folder-hook .private$   'unset from; my_hdr From: Forrest Baer <forrest@forrestbaer.com>'
