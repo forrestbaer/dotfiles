@@ -39,25 +39,23 @@ for file in $files; do
 
     if [ `dirname $dir` = "config" ]
     then
-	if [ ! -d ~/.config ]
-	then
-	    echo "${cb}[${chg}+${cb}] ${nc}~/.config/ missing, creating."
-	    mkdir ~/.config
-    	fi
+	    if [ ! -d ~/.config ]
+	    then
+	        echo "${cb}[${chg}+${cb}] ${nc}~/.config/ missing, creating."
+	        mkdir ~/.config
+        fi
 
-	if [ ! -d ~/.config/$conf_dir ]
-	then
-	    echo "${cb}[${cg}^${cb}] ${nc}Directory ~/.config/$conf_dir missing, creating."
-	    mkdir ~/.config/$conf_dir
-	fi
+	    if [ ! -d ~/.config/$conf_dir ]
+	    then
+	        echo "${cb}[${cg}^${cb}] ${nc}Directory ~/.config/$conf_dir missing, creating."
+	        mkdir ~/.config/$conf_dir
+	    fi
     fi
 
-    if [ ! -L ~/.$file ]
-    then
-	links_made=$((links_made + 1))	
-    	echo "${cb}[${chg}+${cb}] ${nc}Creating symlink : ~/.$file => ${PWD}/$file"
-     	ln -sfn ${PWD}/$file ~/.$file
-    fi
+    rm ~/.$file
+    links_made=$((links_made + 1))
+  	echo "${cb}[${chg}+${cb}] ${nc}Creating symlink : ~/.$file => ${PWD}/$file"
+   	ln -sfn ${PWD}/$file ~/.$file
 done
 
 if [ $links_made = 0 ]
@@ -67,6 +65,6 @@ fi
 
 if [ `uname -s` = "Darwin" ]
 then
-    echo "*** Copying VS Code configurations"
+    echo "${cc}*** ${nc}Copying VS Code configurations"
     cp -R ./vscode/* $HOME/Library/Application\ Support/Code/User/
 fi
