@@ -82,9 +82,9 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 # switch to workspace
-bindsym $mod+1 workspace number 1 mail
+bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2 www
-bindsym $mod+3 workspace number 3
+bindsym $mod+3 workspace number 3 mail
 bindsym $mod+4 workspace number 4
 bindsym $mod+5 workspace number 5
 bindsym $mod+6 workspace number 6
@@ -94,9 +94,9 @@ bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace number 1 mail
+bindsym $mod+Shift+1 move container to workspace number 1
 bindsym $mod+Shift+2 move container to workspace number 2 www
-bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+3 move container to workspace number 3 mail
 bindsym $mod+Shift+4 move container to workspace number 4
 bindsym $mod+Shift+5 move container to workspace number 5
 bindsym $mod+Shift+6 move container to workspace number 6

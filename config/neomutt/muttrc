@@ -5,6 +5,7 @@ set message_cachedir = "$HOME/.mailcache"
 
 set sendmail="/usr/bin/msmtp"
 set quote_regexp="^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+set status_format='%* ( %f [%n/%m] )'
 set sleep_time=0
 set sort_browser=date
 set sort_aux=reverse-last-date-received
@@ -31,9 +32,8 @@ set sidebar_visible
 set sidebar_short_path
 set sidebar_folder_indent
 set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
-set index_format = "%2C %Z [%{%b %d}] %-15.15L | %s"
+set index_format = "%2C %Z [%{%b %d}] %-15.15L │ %s"
 set status_chars = " *%A"
-set status_format = "- [ Folder: %f ] — [%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ] %>—— %?p?( %p postponed )?"
 set attach_keyword = "\\<attach(|ed|ments?)\\>"
 set abort_noattach = ask-yes
 
@@ -86,7 +86,7 @@ color normal     white         default
 
 # main colors
 color status     black         cyan
-color indicator  black    magenta
+color indicator  white         blue
 color tree       blue          black
 color error      brightred     black
 color message    brightwhite  black
@@ -107,11 +107,11 @@ color index      brightblack    default "~D"
 color index      yellow         default "~O"
 
 # set up the headers
-color header     cyan           default "^from:"
+color header     brightcyan     default "^from:"
 color header     cyan           default "^to:"
 color header     cyan           default "^cc:"
-color header     brightcyan     default "^date:"
-color header     brightwhite    default "^subject:"
+color header     white    brightblack "^date:"
+color header     brightwhite          default "^subject:"
 
 # message bodies
 color attachment brightblack   default
@@ -151,6 +151,30 @@ folder-hook .bills$     'unset from; my_hdr From: Forrest Baer <bills@forrestbae
 folder-hook .work$      'unset from; my_hdr From: Forrest Baer <work@forrestbaer.com>'
 folder-hook .private$   'unset from; my_hdr From: Forrest Baer <forrest@forrestbaer.com>'
 folder-hook .public$    'unset from; my_hdr From: Forrest Baer <public@forrestbaer.com>'
+
+
+
+# INDEX COLOR, neomutt only
+# Entire index line
+#color index white black '.*'
+# Author name, %A %a %F %L %n
+# Give the author column a dark grey background
+color index_author magenta black '.*'
+# Message flags, %S %Z
+# Highlight the flags for flagged (~F) emails
+color index_flags default brightmagenta '~F'
+# Subject, %s
+# Look for a particular subject (~s)
+# Number of messages in a collapsed thread, %M
+color index_collapsed default brightblue
+# Date field
+color index_date cyan default
+# Message label, %y %Y
+color index_label default brightgreen
+# Message number, %C
+color index_number brightblack default
+# Message size, %c %l
+color index_size cyan default
 
 
 # ACCOUNT DATA

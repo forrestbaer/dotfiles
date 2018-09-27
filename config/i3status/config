@@ -24,7 +24,7 @@ cpu_usage {
 }
 
 battery all {
-    format = "⚡ %percentage %emptytime "
+    format = "⚡ %status %percentage (%emptytime %consumption) "
     format_down = "No battery"
     path = "/sys/class/power_supply/BAT%d/uevent"
     low_threshold = 10
