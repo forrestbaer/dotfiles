@@ -5,7 +5,6 @@ set message_cachedir = "$HOME/.mailcache"
 
 set sendmail="/usr/bin/msmtp"
 set quote_regexp="^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
-set status_format='%* ( %f [%n/%m] )'
 set sleep_time=0
 set sort_browser=date
 set sort_aux=reverse-last-date-received
@@ -24,18 +23,27 @@ set delete
 set nobeep
 set pager_stop
 set smart_wrap
-set editor="nvim -c 'set spell spelllang=en'"
+#set editor="nvim -c 'set spell spelllang=en'"
+set editor="nvim '+/^$' -c 'set nohlsearch spell spelllang=en ft=mail'"
 set menu_scroll
 set wrap = 80
 set sidebar_width = 20
 set sidebar_visible
 set sidebar_short_path
 set sidebar_folder_indent
-set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
-set index_format = "%2C %Z [%{%b %d}] %-15.15L │ %s"
 set status_chars = " *%A"
 set attach_keyword = "\\<attach(|ed|ments?)\\>"
 set abort_noattach = ask-yes
+
+set pager_index_lines = 20
+set pager_context = 5
+
+set status_format="%* ( %f [%n/%m] )"
+set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
+set index_format = ">%2C %Z [%{%b %d}] %-20.20L │ %s"
+set date_format = "!%a, %b %d, %Y at %I:%M%p (%Z)"
+set attribution = "On %d, %v (%a) said:" 
+set pager_format = "%* a:%X [%P]"
 
 unset help
 unset mark_old
@@ -75,6 +83,8 @@ bind pager G bottom
 bind pager k previous-line
 bind pager j next-line
 bind pager d next-page
+bind index,pager h previous-entry
+bind index,pager l next-entry
 bind pager u previous-page
 bind pager n next-unread
 
@@ -87,9 +97,9 @@ color normal     white         default
 # main colors
 color status     black         cyan
 color indicator  white         blue
-color tree       blue          black
+color tree       green         black
 color error      brightred     black
-color message    brightwhite  black
+color message    brightwhite   black
 
 # uncolor certain messages
 uncolor index "~P"
@@ -100,10 +110,7 @@ uncolor index "~D"
 uncolor index "~O"
 
 # and recolor them appropriately
-color index      brightwhite    default "~N"
-color index		 brightmagenta	default "~F"
 color index      brightcyan     default "~T"
-color index      brightblack    default "~D"
 color index      yellow         default "~O"
 
 # set up the headers
@@ -144,6 +151,22 @@ color quoted5    green         default
 color quoted6    magenta       default
 color quoted7    cyan          default
 
+color index             green           black       '.*'
+color index             red             default     ~D
+color index             brightwhite     default     ~N
+color index_author      white           black       '.*'
+color index_author      red             black       ~D
+color index_author      magenta         black       ~F
+color index_flags       brightmagenta   default     ~F
+color index_subject     white           default     ~A
+color index_subject     red             default     ~D
+color index_subject     brightmagenta   default     ~F
+color index_collapsed   default         brightblue
+color index_date        brightblack     default
+color index_label       default         brightgreen
+color index_number      blue            default
+color index_size        cyan            default
+
 
 # FOLDER HOOKS
 
@@ -151,30 +174,7 @@ folder-hook .bills$     'unset from; my_hdr From: Forrest Baer <bills@forrestbae
 folder-hook .work$      'unset from; my_hdr From: Forrest Baer <work@forrestbaer.com>'
 folder-hook .private$   'unset from; my_hdr From: Forrest Baer <forrest@forrestbaer.com>'
 folder-hook .public$    'unset from; my_hdr From: Forrest Baer <public@forrestbaer.com>'
-
-
-
-# INDEX COLOR, neomutt only
-# Entire index line
-#color index white black '.*'
-# Author name, %A %a %F %L %n
-# Give the author column a dark grey background
-color index_author magenta black '.*'
-# Message flags, %S %Z
-# Highlight the flags for flagged (~F) emails
-color index_flags default brightmagenta '~F'
-# Subject, %s
-# Look for a particular subject (~s)
-# Number of messages in a collapsed thread, %M
-color index_collapsed default brightblue
-# Date field
-color index_date cyan default
-# Message label, %y %Y
-color index_label default brightgreen
-# Message number, %C
-color index_number brightblack default
-# Message size, %c %l
-color index_size cyan default
+folder-hook . 'set record="^"'
 
 
 # ACCOUNT DATA
