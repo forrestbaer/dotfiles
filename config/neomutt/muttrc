@@ -23,12 +23,11 @@ set delete
 set nobeep
 set pager_stop
 set smart_wrap
-#set editor="nvim -c 'set spell spelllang=en'"
 set editor="nvim '+/^$' -c 'set nohlsearch spell spelllang=en ft=mail'"
 set menu_scroll
 set wrap = 80
 set sidebar_width = 20
-set sidebar_visible
+# set sidebar_visible
 set sidebar_short_path
 set sidebar_folder_indent
 set status_chars = " *%A"
@@ -38,12 +37,14 @@ set abort_noattach = ask-yes
 set pager_index_lines = 20
 set pager_context = 5
 
-set status_format="%* ( %f [%n/%m] )"
+set status_format="%* %f [N:%n F:%F T:%m] %l "
 set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
-set index_format = ">%2C %Z [%{%b %d}] %-20.20L │ %s"
+set index_format = " %2C │ %Z %{%b %d} (%4c) %-20.20L │ %s %?M?[%M] ?%?y?(%.15y) ?"
 set date_format = "!%a, %b %d, %Y at %I:%M%p (%Z)"
 set attribution = "On %d, %v (%a) said:" 
 set pager_format = "%* a:%X [%P]"
+
+unignore x-label
 
 unset help
 unset mark_old
@@ -73,8 +74,16 @@ macro index ,n "<next-unread-mailbox><enter>"
 macro index ,a "<change-folder>=Archive<enter>"
 macro index ,s "<change-folder>=Sent<enter>"
 macro index ,d "<change-folder>=Drafts<enter>"
+macro index ,i "<change-folder>!\n"
 macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+
+macro index,pager c "<change-folder>?"
+macro index,pager @ "<edit-label>\n"
+bind index,pager y edit-label
+bind index,pager H display-toggle-weed
+
 bind index <delete> delete-message
+bind index,pager d delete-message
 bind index p recall-message
 bind compose p postpone-message
 
@@ -82,11 +91,13 @@ bind pager g top
 bind pager G bottom
 bind pager k previous-line
 bind pager j next-line
-bind pager d next-page
+bind pager \cd next-page
 bind index,pager h previous-entry
 bind index,pager l next-entry
-bind pager u previous-page
+bind pager \cu previous-page
 bind pager n next-unread
+
+bind index <tab> collapse-thread
 
 macro index,pager \cb "<pipe-message> urlscan -c<Enter>" "call urlscan to extract URLs out of a message"
 macro attach,compose \cb "<pipe-entry> urlscan -c<Enter>" "call urlscan to extract URLs out of a message"
@@ -95,30 +106,18 @@ macro attach,compose \cb "<pipe-entry> urlscan -c<Enter>" "call urlscan to extra
 color normal     white         default
 
 # main colors
-color status     black         cyan
-color indicator  white         blue
-color tree       green         black
+color status     black         brightblack
+color indicator  black         green
+color tree       yellow        black
 color error      brightred     black
 color message    brightwhite   black
 
-# uncolor certain messages
-uncolor index "~P"
-uncolor index "~N"
-uncolor index "~T"
-uncolor index "~F"
-uncolor index "~D"
-uncolor index "~O"
-
-# and recolor them appropriately
-color index      brightcyan     default "~T"
-color index      yellow         default "~O"
-
 # set up the headers
-color header     brightcyan     default "^from:"
-color header     cyan           default "^to:"
-color header     cyan           default "^cc:"
-color header     white    brightblack "^date:"
-color header     brightwhite          default "^subject:"
+color header     brightcyan     default     "^from:"
+color header     cyan           default     "^to:"
+color header     cyan           default     "^cc:"
+color header     magenta           default     "^date:"
+color header     brightwhite    default     "^subject:"
 
 # message bodies
 color attachment brightblack   default
@@ -151,30 +150,36 @@ color quoted5    green         default
 color quoted6    magenta       default
 color quoted7    cyan          default
 
-color index             green           black       '.*'
+# index coloring
+color index             cyan           black       ~A 
 color index             red             default     ~D
 color index             brightwhite     default     ~N
-color index_author      white           black       '.*'
+color index             brightcyan      default     ~T
+color index             yellow          default     ~v
+
+color index_author      white           black       ~A
 color index_author      red             black       ~D
 color index_author      magenta         black       ~F
+color index_author      brightcyan      black       ~T
+
+color index_flags       brightblack     default     ~A
+color index_flags       brightwhite     default     ~N
 color index_flags       brightmagenta   default     ~F
+color index_flags       brightred       default     ~D
+
 color index_subject     white           default     ~A
 color index_subject     red             default     ~D
 color index_subject     brightmagenta   default     ~F
-color index_collapsed   default         brightblue
-color index_date        brightblack     default
-color index_label       default         brightgreen
-color index_number      blue            default
-color index_size        cyan            default
+color index_subject     brightcyan      default     ~T
 
+color index_collapsed   white         default
+#color index_date        white      default
+color index_size        brightblack            default
+color index_label       brightblue            black
+color index_number      brightblack            default
 
-# FOLDER HOOKS
-
-folder-hook .bills$     'unset from; my_hdr From: Forrest Baer <bills@forrestbaer.com>'
-folder-hook .work$      'unset from; my_hdr From: Forrest Baer <work@forrestbaer.com>'
-folder-hook .private$   'unset from; my_hdr From: Forrest Baer <forrest@forrestbaer.com>'
-folder-hook .public$    'unset from; my_hdr From: Forrest Baer <public@forrestbaer.com>'
-folder-hook . 'set record="^"'
+# folder hooks
+folder-hook . 'push <collapse-all>'
 
 
 # ACCOUNT DATA
