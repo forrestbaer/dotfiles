@@ -33,3 +33,9 @@ alias tmux='tmux att -d'
 
 alias vi='nvim'
 alias vim='nvim'
+
+# python
+
+alias py='python3'
+alias python='python3'
+alias pyvenv='python3 -m venv'

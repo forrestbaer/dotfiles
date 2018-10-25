@@ -1,7 +1,7 @@
 export EDITOR="nvim"
 
 if [[ $TERM != 'dumb' ]]; then
-    export TERM=rxvt-unicode-256color
+    export TERM=rxvt-256color
 fi
 
 export CLICOLOR=1
