@@ -12,6 +12,7 @@ alias mutt='neomutt'
 alias gtd='grep -R TODO *'
 alias vdisc='vdirsyncer discover'
 alias vsync='vdirsyncer sync'
+alias vnc='remmina'
 
 # Git
 
