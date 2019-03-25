@@ -35,6 +35,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'kien/ctrlp.vim'
 Plugin 'forrestbaer/minimal_dark'
 Plugin 'rking/ag.vim'
+Plugin 'tidalcycles/vim-tidal'
 
 if iCanHazVundle == 0
     echo "Installing Vundles, please ignore key map error messages"
