@@ -1,4 +1,4 @@
-" Forrest Baer's (gfbaer@gmail.com) .vimrc
+" Forrest Baer's (forrest@forrestbaer.com) .vimrc
 " This is my .vimrc. There are many like it, but this one is mine.
 
 " set up packages if they dont' exist
