@@ -179,10 +179,10 @@ map <leader>c :clo<cr>
 map <leader>d :bd<cr>
 
 " ,ev to edit vimrc
-map <leader>ev :vsp ~/.config/nvim/init.vim<cr>
+map <leader>ev :vsp ~/.vimrc<cr>
 
 " ,rv to reload vimrc
-map <leader>rv :so ~/.config/nvim/init.vim<cr>
+map <leader>rv :so ~/.vimrc<cr>
 
 " autocmd stuff for filetypes
 if has("autocmd")

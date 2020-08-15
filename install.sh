@@ -13,7 +13,7 @@ dir=${PWD}
 backupdir="$dir/dotfile_backup"
 links_made=0
 
-files="msmtprc xsessionrc Xdefaults zshrc gitconfig zsh tmux.conf eslintrc.js config/neomutt/mailcap config/neomutt/muttrc config/neomutt/forrestbaer.com config/i3/config config/i3status/config config/khard/khard.conf config/khal/config config/nvim/init.vim config/vdirsyncer/config"
+files="msmtprc xsessionrc Xdefaults zshrc gitconfig vimrc zsh tmux.conf config/i3/config config/i3status/config"
 
 echo "${cc}*** ${nc}Scanning your home folder for links."
 
