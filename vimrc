@@ -14,17 +14,13 @@ if !filereadable(vundle_readme)
 endif
 
 set nocompatible
-filetype off
+filetype on
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'alvan/vim-closetag'
 Plugin 'junegunn/goyo.vim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'airblade/vim-gitgutter'
 Plugin 'forrestbaer/minimal_dark'
 
 if iCanHazVundle == 0
@@ -32,27 +28,6 @@ if iCanHazVundle == 0
 endif
 call vundle#end()
 
-"-------------------------
-" closetag config
-
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.cshtml'
-let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
-let g:closetag_filetypes = 'cshtml,html,xhtml,phtml'
-let g:closetag_xhtml_filetypes = 'xhtml,jsx'
-let g:closetag_emptyTags_caseSensitive = 1
-let g:closetag_shortcut = '>'
-let g:closetag_close_shortcut = '<leader>>'
-
-" Colorscheme for airline
-let g:airline_theme='minimal_dark'
-let g:airline_powerline_fonts = 1
-let g:airline_skip_empty_sections = 1
-let g:airline_section_y = ''
-let g:airline_section_x = ''
-let g:airline#extensions#whitespace#show_message = 0
-let g:airline_detect_whitespace=0
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
 
 " regular settings
 set nocompatible
@@ -146,3 +121,5 @@ endfunction
 
 autocmd! User GoyoEnter call <SID>goyo_enter()
 autocmd! User GoyoLeave call <SID>goyo_leave()
+
+autocmd! BufNewFile,BufRead *.txt Goyo
