@@ -100,6 +100,10 @@ syntax enable
 filetype plugin indent on
 
 function! s:goyo_enter()
+    nnoremap j gj
+    nnoremap k gk
+    nnoremap 0 g0
+    nnoremap $ g$
     Limelight
     let b:quitting = 0
     let b:quitting_bang = 0
