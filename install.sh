@@ -13,7 +13,7 @@ dir=${PWD}
 backupdir="$dir/dotfile_backup"
 links_made=0
 
-files="msmtprc xsessionrc Xdefaults zshrc gitconfig vimrc zsh tmux.conf config/i3/config config/i3status/config"
+files="zshrc gitconfig vimrc zsh tmux.conf"
 
 echo "${cc}*** ${nc}Scanning your home folder for links."
 
@@ -61,10 +61,4 @@ done
 if [ $links_made = 0 ]
 then
     echo "${cb}[${chc}*${cb}] ${nc}No new links required!"
-fi
-
-if [ `uname -s` = "Darwin" ]
-then
-    echo "${cc}*** ${nc}Copying VS Code configurations"
-    cp -R ./vscode/* $HOME/Library/Application\ Support/Code/User/
 fi
