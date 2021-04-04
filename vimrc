@@ -14,13 +14,13 @@ if !filereadable(vundle_readme)
 endif
 
 set nocompatible
-filetype on
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'junegunn/goyo.vim'
+Plugin 'junegunn/limelight.vim'
 Plugin 'forrestbaer/minimal_dark'
 
 if iCanHazVundle == 0
@@ -30,7 +30,6 @@ call vundle#end()
 
 
 " regular settings
-set nocompatible
 set fileencoding=utf-8                  " set default file encoding to utf-8
 set showmode                            " show editing mode
 set expandtab                           " expand tabs to spaces
@@ -100,26 +99,31 @@ color minimal_dark
 syntax enable
 filetype plugin indent on
 
-" Goyo Stuff
 function! s:goyo_enter()
-  let b:quitting = 0
-  let b:quitting_bang = 0
-  autocmd QuitPre <buffer> let b:quitting = 1
-  cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
+    Limelight
+    let b:quitting = 0
+    let b:quitting_bang = 0
+    autocmd QuitPre <buffer> let b:quitting = 1
+    cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
+    set noshowmode
+    set noshowcmd
 endfunction
 
 function! s:goyo_leave()
-  " Quit Vim if this is the only remaining buffer
-  if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
-    if b:quitting_bang
-      qa!
-    else
-      qa
+    Limelight!
+    set showmode
+    set showcmd
+    if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+      if b:quitting_bang
+        qa!
+      else
+        qa
+      endif
     endif
-  endif
 endfunction
 
-autocmd! User GoyoEnter call <SID>goyo_enter()
-autocmd! User GoyoLeave call <SID>goyo_leave()
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
-autocmd! BufNewFile,BufRead *.txt Goyo
+" Filetype stuff
+autocmd BufNewFile,BufRead *.txt Goyo

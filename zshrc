@@ -8,5 +8,3 @@ source ~/.zsh/exports.zsh
 source ~/.zsh/history.zsh
 source ~/.zsh/prompt.zsh
 source ~/.zsh/set_options.zsh
-
-# TODO: alias dmenu all TODO items, open in nvim
