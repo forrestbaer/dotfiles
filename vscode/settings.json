@@ -1,0 +1,87 @@
+{
+  "editor.cursorStyle": "line",
+  "editor.accessibilitySupport": "off",
+  "editor.fontFamily": "Fira Code",
+  "editor.fontSize": 16,
+  "editor.fontLigatures": true,
+  "editor.lineHeight": 20,
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.enabled": true,
+  "editor.renderControlCharacters": true,
+  "editor.wordWrap": "off",
+  "explorer.openEditors.visible": 0,
+  "explorer.confirmDelete": false,
+  "terminal.integrated.fontSize": 14,
+  "workbench.sideBar.location": "left",
+  "workbench.activityBar.visible": true,
+  "workbench.colorTheme": "Emotionally Mute Theme",
+  "workbench.panel.defaultLocation": "right",
+  "C_Cpp.updateChannel": "Insiders",
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.acceptSuggestionOnEnter": "on",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.tabSize": 2,
+  "security.workspace.trust.untrustedFiles": "open",
+  "git.autofetch": true,
+  "scm.inputFontFamily": "Fira Code",
+  "debug.console.fontFamily": "Fira Code",
+  "terminal.integrated.fontFamily": "Fira Code",
+  "editor.inlayHints.fontFamily": "Fira Code",
+  "editor.codeLensFontFamily": "Fira Code",
+  "window.zoomLevel": 1,
+  "editor.linkedEditing": false,
+  "vim.easymotion": true,
+  "vim.incsearch": true,
+  "vim.useSystemClipboard": true,
+  "vim.useCtrlKeys": true,
+  "vim.hlsearch": true,
+  "vim.easymotionMarkerForegroundColorOneChar": "#478ed1",
+  "vim.visualModeKeyBindings": [
+    {
+      "before": [
+        ";"
+      ],
+      "commands": [
+        "workbench.action.showCommands"
+      ]
+    }
+  ],
+  "vim.normalModeKeyBindings": [
+    {
+      "before": [
+        ";"
+      ],
+      "commands": [
+        "workbench.action.showCommands",
+      ]
+    },
+    {
+      "before": [
+        "l"
+      ],
+      "after": [
+        "C-r"
+      ]
+    },
+    {
+      "before": [
+        "j"
+      ],
+      "after": [
+        "^"
+      ]
+    }
+  ],
+  "vim.insertModeKeyBindings": [
+    {
+      "before": [
+        ",",
+        ","
+      ],
+      "after": [
+        "<ESC>"
+      ]
+    }
+  ],
+  "terminal.external.osxExec": "iTerm.app"
+}

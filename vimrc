@@ -18,10 +18,14 @@ set nocompatible
 set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
 
+packadd termdebug
+let g:termdebug_wide=1
+
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
 Plugin 'forrestbaer/minimal_dark'
+Plugin 'Raimondi/delimitMate'
 
 if iCanHazVundle == 0
     :PluginInstall
@@ -72,6 +76,12 @@ nnoremap <C-Q> @q
 " remap semicolon
 nnoremap ; :
 
+" Remap arrow keys to resize window
+nnoremap <Up>    :resize -2<CR>
+nnoremap <Down>  :resize +2<CR>
+nnoremap <Left>  :vertical resize -2<CR>
+nnoremap <Right> :vertical resize +2<CR>
+
 " Open Goyo for distraction free editing
 nnoremap <leader>g :Goyo<cr>
 
@@ -93,6 +103,9 @@ map <leader>ev :vsp ~/.vimrc<cr>
 
 " ,rv to reload vimrc
 map <leader>rv :so ~/.vimrc<cr>
+
+" C stuff
+map <F5> :w <CR> :!gcc % -o %< && ./%< <CR>
 
 " COLORSCHEME "
 color minimal_dark
