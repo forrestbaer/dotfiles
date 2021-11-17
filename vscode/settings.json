@@ -2,17 +2,15 @@
   "editor.cursorStyle": "line",
   "editor.accessibilitySupport": "off",
   "editor.fontFamily": "Fira Code",
-  "editor.fontSize": 16,
+  "editor.fontSize": 18,
   "editor.fontLigatures": true,
-  "editor.lineHeight": 20,
-  "editor.minimap.renderCharacters": false,
-  "editor.minimap.enabled": true,
+  "editor.lineHeight": 22,
+  "editor.minimap.enabled": false,
   "editor.renderControlCharacters": true,
   "editor.wordWrap": "off",
   "explorer.openEditors.visible": 0,
   "explorer.confirmDelete": false,
-  "terminal.integrated.fontSize": 14,
-  "workbench.sideBar.location": "left",
+  "workbench.sideBar.location": "right",
   "workbench.activityBar.visible": true,
   "workbench.colorTheme": "Emotionally Mute Theme",
   "workbench.panel.defaultLocation": "right",
@@ -35,6 +33,7 @@
   "vim.useSystemClipboard": true,
   "vim.useCtrlKeys": true,
   "vim.hlsearch": true,
+  "vim.leader": ",",
   "vim.easymotionMarkerForegroundColorOneChar": "#478ed1",
   "vim.visualModeKeyBindings": [
     {
@@ -83,5 +82,6 @@
       ]
     }
   ],
-  "terminal.external.osxExec": "iTerm.app"
+  "terminal.external.osxExec": "iTerm.app",
+  "editor.renderLineHighlight": "gutter",
 }
