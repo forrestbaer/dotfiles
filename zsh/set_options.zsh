@@ -9,3 +9,5 @@ setopt inc_append_history       # Append history item as soon as command is exec
 setopt nobeep                   # Kill the fscking beep!
 setopt nohup			# In general, we don't kill background jobs upon logging out
 setopt prompt_subst             # parameter expansion, command substitution and arithmetic expansion is performed in prompts
+
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)

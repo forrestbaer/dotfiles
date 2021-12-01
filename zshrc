@@ -8,3 +8,7 @@ source ~/.zsh/exports.zsh
 source ~/.zsh/history.zsh
 source ~/.zsh/prompt.zsh
 source ~/.zsh/set_options.zsh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
+fpath=(~/.zsh $fpath)

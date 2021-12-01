@@ -37,21 +37,6 @@ for file in $files; do
         mv ~/.$file $backupdir/$file
     fi
 
-    if [ `dirname $dir` = "config" ]
-    then
-	    if [ ! -d ~/.config ]
-	    then
-	        echo "${cb}[${chg}+${cb}] ${nc}~/.config/ missing, creating."
-	        mkdir ~/.config
-        fi
-
-	    if [ ! -d ~/.config/$conf_dir ]
-	    then
-	        echo "${cb}[${cg}^${cb}] ${nc}Directory ~/.config/$conf_dir missing, creating."
-	        mkdir ~/.config/$conf_dir
-	    fi
-    fi
-
     rm ~/.$file
     links_made=$((links_made + 1))
   	echo "${cb}[${chg}+${cb}] ${nc}Creating symlink : ~/.$file => ${PWD}/$file"
