@@ -1,4 +1,5 @@
 export EDITOR="code"
+export SHELL=/bin/zsh
 
 if [[ $TERM != 'dumb' ]]; then
     export TERM=rxvt-256color

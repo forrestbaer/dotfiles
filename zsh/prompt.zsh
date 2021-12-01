@@ -18,10 +18,10 @@ function set_prompt() {
       isroot='%F{cyan}'
   fi
   
-  PS1='%{$reset_color$bold_color$fg[black]%}[%{$reset_color%}%n@%m%{$reset_color$bold_color$fg[black]%}] %{$reset_color%}%{$isroot%}%2/ %{%B$isroot%}$ %{$reset_color%}'
+  PS1='%(?.%F{green}√.%F{red}?%?)%f %B%F{7}%3~%f%b %# '
  
   if [ -n "$branch_name" ]; then
-	  PS1='%{$reset_color$bold_color$fg[black]%}[%{$reset_color%}%n@%m%{$reset_color$bold_color$fg[black]%}] %{$reset_color$fg[magenta]%}$branch_name %{$isroot%}%2/ %{%B$isroot%}$ %{$reset_color%}'
+  RPROMPT='%F{magenta}$branch_name%f'
   fi
 }
 
