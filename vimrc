@@ -22,29 +22,48 @@ packadd termdebug
 let g:termdebug_wide=1
 
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'tidalcycles/vim-tidal'
+Plugin 'tpope/vim-surround'
+Plugin 'vim-airline/vim-airline'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim'
 Plugin 'forrestbaer/minimal_dark'
-Plugin 'Raimondi/delimitMate'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
 
 if iCanHazVundle == 0
     :PluginInstall
 endif
 call vundle#end()
 
+let g:airline_powerline_fonts = 1
 
-" regular settings
+" Search pattern across repository files
+function! FzfExplore(...)
+    let inpath = substitute(a:1, "'", '', 'g')
+    if inpath == "" || matchend(inpath, '/') == strlen(inpath)
+        execute "cd" getcwd() . '/' . inpath
+        let cwpath = getcwd() . '/'
+        call fzf#run(fzf#wrap(fzf#vim#with_preview({'source': 'ls -1ap', 'dir': cwpath, 'sink': 'FZFExplore', 'options': ['--prompt', cwpath]})))
+    else
+        let file = getcwd() . '/' . inpath
+        execute "e" file
+    endif
+endfunction
+
+command! -nargs=* FZFExplore call FzfExplore(shellescape(<q-args>))
+
 set fileencoding=utf-8                  " set default file encoding to utf-8
 set showmode                            " show editing mode
-set expandtab                           " expand tabs to spaces
-set shiftwidth=4                        " 4 spaces when backspacing tabs
-set tabstop=4                           " ^^
+set tabstop=2                          " ^^
+set expandtab
 set showmatch                           " show matching parens
 set backspace=indent,eol,start          " make backspace back over everything
 set autoindent                          " copy indentation from previous line
 set autoread                            " automatically show outside changes
 set number                              " show line numbers
 set autochdir                           " set the working dir to where the open file lives
+set mouse=a
 set ruler                               " show cursor position
 set ignorecase                          " ignore case sensitive searching
 set smartcase                           " use smart case searching
@@ -62,28 +81,25 @@ set t_Co=256                            " terminal option for number of colors
 set grepprg=rg\ --vimgrep               " grep program
 set pastetoggle=<F1>                    " paste toggle with f1 if needed
 
+let g:airline_detect_spell = 0
+let g:airline_section_c_only_filename = 1
+
 " KEY MAPPINGS "
 
 " set the leader key to comma
 let mapleader = ","
 
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+
 " hit spacebar to clear search highlights
 nnoremap <silent><Space> :silent noh<Bar>echo<cr>
-
-" map something simple to repeat the normal macro
-nnoremap <C-Q> @q
 
 " remap semicolon
 nnoremap ; :
 
-" Remap arrow keys to resize window
-nnoremap <Up>    :resize -2<CR>
-nnoremap <Down>  :resize +2<CR>
-nnoremap <Left>  :vertical resize -2<CR>
-nnoremap <Right> :vertical resize +2<CR>
-
 " Open Goyo for distraction free editing
-nnoremap <leader>g :Goyo<cr>
+"nnoremap <leader>g :Goyo<cr>
 
 " ,q gtfo quick
 map <leader>q :q!<cr>
@@ -104,8 +120,8 @@ map <leader>ev :vsp ~/.vimrc<cr>
 " ,rv to reload vimrc
 map <leader>rv :so ~/.vimrc<cr>
 
-" C stuff
-map <F5> :w <CR> :!gcc % -o %< && ./%< <CR>
+" ctrlp to fzf
+nmap <C-p> :FZFExplore<cr>
 
 " COLORSCHEME "
 color minimal_dark
