@@ -4,6 +4,7 @@ alias la='ls -GalaF' # include dot files in listing; add / to end of directories
 alias mv='mv -i' # prompt before moving a file that would overwrite an existing file
 alias grep='grep --color --line-number'
 alias c='clear'
+alias md='mkdir'
 
 # Git
 
@@ -19,7 +20,8 @@ alias ga='git add'
 
 # Vim
 
-alias vi='vim'
+alias vi='neovide'
+alias vim='neovide'
 
 # tmux
 

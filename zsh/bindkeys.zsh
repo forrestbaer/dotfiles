@@ -1,1 +1,1 @@
-bindkey '^ ' autosuggest-accept
+bindkey '^o' autosuggest-accept
