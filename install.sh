@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh
 
 cg="\033[0;32m"
 chg="\033[1;32m"
@@ -13,7 +13,7 @@ dir=${PWD}
 backupdir="$dir/dotfile_backup"
 links_made=0
 
-files="zshrc gitconfig vimrc zsh tmux.conf"
+files="zshrc gitconfig zsh tmux.conf config/nvim/init.lua"
 
 echo "${cc}*** ${nc}Scanning your home folder for links."
 
@@ -33,8 +33,23 @@ for file in $files; do
             mkdir $backupdir
         fi
 
-        echo "*** Copying ~/.$file to $backupdir/$file."
+        echo "*** Moving ~/.$file to $backupdir/$file."
         mv ~/.$file $backupdir/$file
+    fi
+
+    if [ `dirname $dir` = "config" ]
+    then
+	    if [ ! -d ~/.config ]
+	    then
+	        echo "${cb}[${chg}+${cb}] ${nc}~/.config/ missing, creating."
+	        mkdir ~/.config
+        fi
+
+	    if [ ! -d ~/.config/$conf_dir ]
+	    then
+	        echo "${cb}[${cg}^${cb}] ${nc}Directory ~/.config/$conf_dir missing, creating."
+	        mkdir ~/.config/$conf_dir
+	    fi
     fi
 
     rm ~/.$file
@@ -47,3 +62,4 @@ if [ $links_made = 0 ]
 then
     echo "${cb}[${chc}*${cb}] ${nc}No new links required!"
 fi
+

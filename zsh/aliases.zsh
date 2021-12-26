@@ -20,8 +20,8 @@ alias ga='git add'
 
 # Vim
 
-alias vi='neovide'
-alias vim='neovide'
+alias vi='nvim'
+alias vim='nvim'
 
 # tmux
 

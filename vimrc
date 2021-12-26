@@ -15,14 +15,11 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 
 call plug#begin(stdpath('data') . '/plugged')
 
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
 Plug 'tpope/vim-surround'
 Plug 'tidalcycles/vim-tidal'
 Plug 'forrestbaer/minimal_dark'
 Plug 'vim-airline/vim-airline'
 Plug 'easymotion/vim-easymotion'
-Plug 'neoclide/coc.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
@@ -80,6 +77,7 @@ set splitbelow
 set laststatus=2
 set t_Co=256
 set grepprg=rg\ --vimgrep
+set updatetime=300
 let g:airline_powerline_fonts = 1
 let g:airline_detect_spell = 0
 let g:airline_section_c_only_filename = 1
@@ -96,6 +94,7 @@ let g:EasyMotion_smartcase = 1
 let g:EasyMotion_do_mapping = 0
 "let g:tidal_no_mappings = 1
 let g:tidal_target = "terminal"
+
 filetype plugin on
 
 " KEY MAPPINGS "
@@ -113,6 +112,9 @@ let mapleader = ","
 " easymotion
 map <leader>s <Plug>(easymotion-bd-f)
 nmap <leader>s <Plug>(easymotion-overwin-f)
+
+map <leader>p :TidalLookupSignature<cr>
+nmap <leader>p :TidalLookupSignature<cr>
 
 " hit spacebar to clear search highlights
 nnoremap <silent><Space> :silent noh<Bar>echo<cr>
@@ -140,7 +142,6 @@ color minimal_dark
 syntax enable
 filetype plugin indent on
 
-let maplocalleader=","
 set clipboard=unnamedplus
 
 autocmd BufWritePre * :%s/\s\+$//e
@@ -154,16 +155,5 @@ hi link EasyMotionTarget2Second IncSearch
 hi link EasyMotionMoveHL Search
 hi link EasyMotionIncSearch Search
 
-function OpenTerm()
-    call timer_start(1500, { tid -> execute('normal G')})
-    :exe "resize 10-"
-endfunction
+nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-function ExitTerm()
-    silent bd!
-    silent resize
-    let g:tidal_term=-1
-endfunction
-
-au TermOpen * call OpenTerm()
-au TermClose * call ExitTerm()
