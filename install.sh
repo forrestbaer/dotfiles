@@ -18,48 +18,48 @@ files="zshrc gitconfig zsh tmux.conf config/nvim/init.lua"
 echo "${cc}*** ${nc}Scanning your home folder for links."
 
 for file in $files; do
-    dir=`dirname $file`
-    fn=`basename $file`
-    conf_dir=`basename $dir`
+  dir=`dirname $file`
+  fn=`basename $file`
+  conf_dir=`basename $dir`
 
-    if [ ! -L ~/.$file ] &&
-       [ -e ~/.$file ]
+  if [ ! -L ~/.$file ] &&
+    [ -e ~/.$file ]
     then
-        echo "${cb}[${cr}!${cb}] ${nc}Found existing non-link files."
+      echo "${cb}[${cr}!${cb}] ${nc}Found existing non-linked files."
 
-        if [ ! -d $backupdir ]
-        then
-            echo "${cb}[${cr}!${cb}] ${nc}Creating backup directory."
-            mkdir $backupdir
-        fi
+      if [ ! -d $backupdir ]
+      then
+        echo "${cb}[${cr}!${cb}] ${nc}Creating backup directory."
+        mkdir $backupdir
+      fi
 
-        echo "*** Moving ~/.$file to $backupdir/$file."
-        mv ~/.$file $backupdir/$file
+      echo "*** Moving ~/.$file to $backupdir/$file."
+      mv ~/.$file $backupdir/$file
+  fi
+
+  if [ `dirname $dir` = "config" ]
+  then
+    if [ ! -d ~/.config ]
+    then
+      echo "${cb}[${chg}+${cb}] ${nc}~/.config/ missing, creating."
+      mkdir ~/.config
     fi
 
-    if [ `dirname $dir` = "config" ]
+    if [ ! -d ~/.config/$conf_dir ]
     then
-	    if [ ! -d ~/.config ]
-	    then
-	        echo "${cb}[${chg}+${cb}] ${nc}~/.config/ missing, creating."
-	        mkdir ~/.config
-        fi
-
-	    if [ ! -d ~/.config/$conf_dir ]
-	    then
-	        echo "${cb}[${cg}^${cb}] ${nc}Directory ~/.config/$conf_dir missing, creating."
-	        mkdir ~/.config/$conf_dir
-	    fi
+      echo "${cb}[${cg}^${cb}] ${nc}Directory ~/.config/$conf_dir missing, creating."
+      mkdir ~/.config/$conf_dir
     fi
+  fi
 
-    rm ~/.$file
-    links_made=$((links_made + 1))
-  	echo "${cb}[${chg}+${cb}] ${nc}Creating symlink : ~/.$file => ${PWD}/$file"
-   	ln -sfn ${PWD}/$file ~/.$file
+  rm ~/.$file
+  links_made=$((links_made + 1))
+  echo "${cb}[${chg}+${cb}] ${nc}Creating symlink : ~/.$file => ${PWD}/$file"
+  ln -sfn ${PWD}/$file ~/.$file
 done
 
 if [ $links_made = 0 ]
 then
-    echo "${cb}[${chc}*${cb}] ${nc}No new links required!"
+  echo "${cb}[${chc}*${cb}] ${nc}No new links required!"
 fi
 

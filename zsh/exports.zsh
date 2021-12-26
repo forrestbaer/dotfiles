@@ -2,7 +2,7 @@ export EDITOR="code"
 export SHELL=/bin/zsh
 
 if [[ $TERM != 'dumb' ]]; then
-    export TERM=rxvt-256color
+    export TERM=xterm-256color
 fi
 
 if command -v pyenv 1>/dev/null 2>&1; then
