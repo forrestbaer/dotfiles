@@ -10,6 +10,18 @@ local function map(mode, lhs, rhs, opts)
   vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
+local function nvim_create_augroups(definitions)
+    for group_name, definition in pairs(definitions) do
+        api.nvim_command('augroup '..group_name)
+        api.nvim_command('autocmd!')
+        for _, def in ipairs(definition) do
+            local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
+            api.nvim_command(command)
+        end
+        api.nvim_command('augroup END')
+    end
+end
+
 require 'paq' {
 	{'savq/paq-nvim'},
 	{'tpope/vim-surround'},
@@ -94,6 +106,18 @@ require'lspconfig'.sumneko_lua.setup{}
 -- npm i -g bash-language-server
 require'lspconfig'.bashls.setup{}
 
+local signs = { Error = "!", Warn = "?", Hint = "/", Info = "i" }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
+vim.diagnostic.config({
+  virtual_text = {
+    prefix = '●',
+  }
+})
+
 cmd 'colorscheme minimal_dark'
 
 -- options
@@ -118,6 +142,8 @@ opt.backup = false
 opt.splitbelow = true
 opt.grepprg = 'rg'
 opt.updatetime = 300
+opt.undofile = true
+opt.undodir = '~/tmp'
 
 --
 -- global opts
@@ -148,8 +174,6 @@ map('t', '<Esc>', '<C-\\><C-n>')
 map('', '<leader>s', '<Plug>(easymotion-bd-f)', { noremap = false })
 map('n', '<leader>s', '<Plug>(easymotion-overwin-f)', { noremap = false })
 
-map('', '<leader>p', '<cmd>TidalLookupSignature<cr>')
-
 map('', '<Space>', ':silent noh<Bar>echo<cr>')
 
 map('', '<leader>ff', '<cmd>Telescope find_files<CR>')
@@ -158,8 +182,6 @@ map('', '<leader>fb', '<cmd>Telescope buffers<CR>')
 map('', '<leader>ft', '<cmd>Telescope lsp_document_symbols<CR>')
 map('', '<leader>fd', '<cmd>Telescope diagnostics<CR>')
 map('', '<leader>fm', '<cmd>Telescope marks<CR>')
-
-map('', '<leader>gg', '<cmd>G<CR>')
 map('', '<leader>gs', '<cmd>Telescope git_status<CR>')
 map('', '<leader>gb', '<cmd>Telescope git_branches<CR>')
 map('', '<leader>gc', '<cmd>Telescope git_commits<CR>')
@@ -178,20 +200,21 @@ map('', '<leader><S-Tab>', '<cmd>bprevious<cr>')
 map('n', '<leader>ev', '<cmd>sp ~/.config/nvim/init.lua<CR>')
 map('n', '<leader>rv', '<cmd>so ~/.config/nvim/init.lua<CR>')
 
+map('', '<leader>;', '<cmd>sp | term<CR>')
+
 map("v", "<", "<gv", { noremap = true, silent = true })
 map("v", ">", ">gv", { noremap = true, silent = true })
 
-function Init_term()
-  cmd 'setlocal nonumber norelativenumber'
-  cmd 'setlocal nospell'
-  cmd 'setlocal signcolumn=auto'
-end
+local autocmds = {
+    terminal_job = {
+      { 'TermOpen', '*', 'startinsert' },
+      { 'TermOpen', '*', 'setlocal nonumber norelativenumber nospell' },
+      { 'TermOpen', '*', ':normal <S-G>' },
+      { 'TermOpen', '*', ':resize15' }
+    }
+}
 
-function Toggle_wrap()
-  wo.breakindent = not wo.breakindent
-  wo.linebreak = not wo.linebreak
-  wo.wrap = not wo.wrap
-end
+nvim_create_augroups(autocmds)
 
 vim.cmd([[
 augroup MyColors
@@ -206,7 +229,14 @@ hi SignColumn ctermfg=White ctermbg=Black
 hi GitGutterAdd ctermfg=28 ctermbg=Black
 hi GitGutterChange ctermfg=135 ctermbg=Black
 hi GitGutterDelete ctermfg=124 ctermbg=Black
-hi LspDiagnosticsVirtualTextWarning ctermfg=135 ctermbg=Black
+hi DiagnosticError ctermfg=124 ctermbg=Black
+hi DiagnosticWarn ctermfg=135 ctermbg=234
+hi DiagnosticInfo ctermfg=24
+hi DiagnosticUnderlineWarn ctermfg=135 ctermbg=234
+hi DiagnosticHint ctermfg=117 ctermbg=234
+hi MarkSignNumHL ctermfg=116
+hi MarkSignHL ctermfg=73
+hi Operator ctermfg=43
 augroup end
 ]])
 
