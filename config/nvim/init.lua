@@ -34,6 +34,7 @@ require 'paq' {
   {'neovim/nvim-lspconfig'},
   {'kabouzeid/nvim-lspinstall'},
   {'hrsh7th/nvim-cmp'},
+  {'sophacles/vim-processing'},
   {'tpope/vim-fugitive'},
   {'tpope/vim-rhubarb'},
   {'tpope/vim-commentary'},
@@ -143,7 +144,7 @@ opt.splitbelow = true
 opt.grepprg = 'rg'
 opt.updatetime = 300
 opt.undofile = true
-opt.undodir = '~/tmp'
+opt.undodir = '/Users/forrestbaer/tmp'
 
 --
 -- global opts
@@ -211,6 +212,9 @@ local autocmds = {
       { 'TermOpen', '*', 'setlocal nonumber norelativenumber nospell' },
       { 'TermOpen', '*', ':normal <S-G>' },
       { 'TermOpen', '*', ':resize15' }
+    },
+    comment_strings = {
+      { 'FileType', 'tidal', 'setlocal commentstring=--%s' },
     }
 }
 
