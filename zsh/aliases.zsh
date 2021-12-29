@@ -24,3 +24,7 @@ alias vi='vim'
 # tmux
 
 alias tmux='tmux att -d'
+
+# ad hoc
+
+alias cdds='cd ~/code/design-system'
