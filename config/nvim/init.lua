@@ -3,6 +3,7 @@
 local api, cmd, fn, g, lsp = vim.api, vim.cmd, vim.fn, vim.g, vim.lsp
 local opt, wo = vim.opt, vim.wo
 local fmt = string.format
+local paq = require('paq')
 
 local function map(mode, lhs, rhs, opts)
   local options = {noremap = true}
@@ -29,11 +30,13 @@ require 'paq' {
 	{'forrestbaer/minimal_dark'},
 	{'vim-airline/vim-airline'},
 	{'easymotion/vim-easymotion'},
+  {'kyazdani42/nvim-web-devicons'},
   {'nvim-lua/plenary.nvim'},
   {'nvim-telescope/telescope.nvim'},
   {'neovim/nvim-lspconfig'},
   {'kabouzeid/nvim-lspinstall'},
   {'hrsh7th/nvim-cmp'},
+  {'folke/trouble.nvim'},
   {'sophacles/vim-processing'},
   {'tpope/vim-fugitive'},
   {'tpope/vim-rhubarb'},
@@ -70,7 +73,7 @@ require('telescope').setup{
     selection_strategy = "reset",
     sorting_strategy = "descending",
     layout_strategy = "vertical",
-    color_devicons = false,
+    color_devicons = true,
     layout_config = {
       vertical = {
         height = 0.6,
@@ -85,15 +88,14 @@ require('telescope').setup{
       },
     },
   },
-  pickers = {
-    file_browser = {
-      disable_devicons = true,
-    },
-  }
 }
 
 require('telescope').load_extension('fzf')
 require('marks').setup{}
+require('nvim-web-devicons').setup{
+  default = true;
+}
+require("trouble").setup {}
 
 -- lsp
 -- npm install -g @tailwindcss/language-server
@@ -106,8 +108,12 @@ require('lspconfig').tsserver.setup{}
 require'lspconfig'.sumneko_lua.setup{}
 -- npm i -g bash-language-server
 require'lspconfig'.bashls.setup{}
+-- npm i -g jsonls
+require'lspconfig'.jsonls.setup{}
 
-local signs = { Error = "!", Warn = "?", Hint = "/", Info = "i" }
+cmd 'colorscheme minimal_dark'
+
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
@@ -115,11 +121,21 @@ end
 
 vim.diagnostic.config({
   virtual_text = {
-    prefix = '●',
-  }
+    prefix = '', -- Could be '●', '▎', 'x'
+  },
+  signs = true,
+  underline = false,
+  update_in_insert = false,
+  severity_sort = true,
 })
 
-cmd 'colorscheme minimal_dark'
+g.gitgutter_sign_added = ''
+g.gitgutter_sign_modified = ''
+g.gitgutter_sign_removed = ''
+g.gitgutter_sign_removed_first_line = '^^'
+g.gitgutter_sign_removed_above_and_below = '{'
+g.gitgutter_sign_modified_removed = ''
+
 
 -- options
 --
@@ -130,7 +146,7 @@ opt.shiftwidth = 2
 opt.expandtab = true
 opt.showmatch = true
 opt.number = true
-opt.numberwidth = 3
+opt.numberwidth = 5
 opt.hidden = true
 opt.mouse = 'a'
 opt.ignorecase = true
@@ -172,6 +188,7 @@ map('n', 'l', '<C-r>')
 map('', '<C-w>', '<C-W>W')
 map('t', '<Esc>', '<C-\\><C-n>')
 
+map('', '<leader>d', '<cmd>lua vim.diagnostic.open_float(nil, {focus=false})<CR>')
 map('', '<leader>s', '<Plug>(easymotion-bd-f)', { noremap = false })
 map('n', '<leader>s', '<Plug>(easymotion-overwin-f)', { noremap = false })
 
@@ -181,7 +198,7 @@ map('', '<leader>ff', '<cmd>Telescope find_files<CR>')
 map('', '<leader>fg', '<cmd>Telescope live_grep<CR>')
 map('', '<leader>fb', '<cmd>Telescope buffers<CR>')
 map('', '<leader>ft', '<cmd>Telescope lsp_document_symbols<CR>')
-map('', '<leader>fd', '<cmd>Telescope diagnostics<CR>')
+map('', '<leader>fd', '<cmd>TroubleToggle<CR>')
 map('', '<leader>fm', '<cmd>Telescope marks<CR>')
 map('', '<leader>gs', '<cmd>Telescope git_status<CR>')
 map('', '<leader>gb', '<cmd>Telescope git_branches<CR>')
@@ -231,13 +248,15 @@ hi link EasyMotionMoveHL Search
 hi link EasyMotionIncSearch Search
 hi SignColumn ctermfg=White ctermbg=Black
 hi GitGutterAdd ctermfg=28 ctermbg=Black
-hi GitGutterChange ctermfg=135 ctermbg=Black
-hi GitGutterDelete ctermfg=124 ctermbg=Black
+hi GitGutterChange ctermfg=112 ctermbg=Black
+hi GitGutterDelete ctermfg=8 ctermbg=Black
 hi DiagnosticError ctermfg=124 ctermbg=Black
-hi DiagnosticWarn ctermfg=135 ctermbg=234
+hi DiagnosticWarn ctermfg=135
 hi DiagnosticInfo ctermfg=24
-hi DiagnosticUnderlineWarn ctermfg=135 ctermbg=234
-hi DiagnosticHint ctermfg=117 ctermbg=234
+hi DiagnosticUnderlineWarn ctermfg=135
+hi DiagnosticHint ctermfg=116
+hi DiagnosticVirtualTextHint ctermfg=238 ctermbg=233
+hi DiagnosticVirtualTextWarn ctermfg=242 ctermbg=233
 hi MarkSignNumHL ctermfg=116
 hi MarkSignHL ctermfg=73
 hi Operator ctermfg=43
