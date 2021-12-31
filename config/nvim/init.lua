@@ -1,14 +1,16 @@
--- brew install prettier
+--
+-- lua remappings
+--
+local opt, api, cmd, g = vim.opt, vim.api, vim.cmd, vim.g
 
-local api, cmd, fn, g, lsp = vim.api, vim.cmd, vim.fn, vim.g, vim.lsp
-local opt, wo = vim.opt, vim.wo
-local fmt = string.format
-local paq = require('paq')
 
+--
+-- helper functions
+--
 local function map(mode, lhs, rhs, opts)
   local options = {noremap = true}
   if opts then options = vim.tbl_extend('force', options, opts) end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+  api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
 local function nvim_create_augroups(definitions)
@@ -23,10 +25,14 @@ local function nvim_create_augroups(definitions)
     end
 end
 
+
+--
+-- Plugins
+--
 require 'paq' {
 	{'savq/paq-nvim'},
-	{'tpope/vim-surround'},
 	{'tidalcycles/vim-tidal'},
+  {'sophacles/vim-processing'},
 	{'forrestbaer/minimal_dark'},
 	{'vim-airline/vim-airline'},
 	{'easymotion/vim-easymotion'},
@@ -37,37 +43,42 @@ require 'paq' {
   {'kabouzeid/nvim-lspinstall'},
   {'hrsh7th/nvim-cmp'},
   {'folke/trouble.nvim'},
-  {'sophacles/vim-processing'},
-  {'tpope/vim-fugitive'},
-  {'tpope/vim-rhubarb'},
+	{'tpope/vim-surround'},
   {'tpope/vim-commentary'},
-  {'sbdchd/neoformat'},
   {'nvim-telescope/telescope-fzf-native.nvim'},
-  {'chentau/marks.nvim'},
-  {'nvim-treesitter/nvim-treesitter'},
   {'airblade/vim-gitgutter'},
+  {'akinsho/toggleterm.nvim'},
 }
 
+
+--
+-- lsp
+--
+require('lspconfig').tailwindcss.setup{}  -- npm install -g @tailwindcss/language-server
+require('lspconfig').eslint.setup{} -- npm i -g vscode-langservers-extracted
+require('lspconfig').tsserver.setup{} -- npm install -g typescript typescript-language-server
+require('lspconfig').sumneko_lua.setup{
+  settings = { Lua = { diagnostics = { globals = { 'vim' } } } } -- brew install lua-language-server
+}
+require'lspconfig'.bashls.setup{} -- npm i -g bash-language-server
+require'lspconfig'.jsonls.setup{} -- npm i -g jsonls
+
+
+--
+-- other plugin initializations
+--
+require('nvim-web-devicons').setup{ default = true }
+require("trouble").setup {}
+
+
+--
+-- telescope stuff
+--
 local actions = require('telescope.actions')
-local previewers = require("telescope.previewers")
 
-local new_maker = function(filepath, bufnr, opts)
-  opts = opts or {}
-
-  filepath = vim.fn.expand(filepath)
-  vim.loop.fs_stat(filepath, function(_, stat)
-    if not stat then return end
-    if stat.size > 100000 then
-      return
-    else
-      previewers.buffer_previewer_maker(filepath, bufnr, opts)
-    end
-  end)
-end
-
+require('telescope').load_extension('fzf')
 require('telescope').setup{
   defaults = {
-    buffer_preview_maker = new_maker,
     prompt_prefix = ' $ ',
     initial_mode = "insert",
     selection_strategy = "reset",
@@ -81,36 +92,60 @@ require('telescope').setup{
         mirror = false,
       },
     },
-    file_ignore_patterns = {},
+    file_ignore_patterns = {
+      "node_modules",
+      "vendor",
+      "__tests__",
+      "__snapshots__",
+    },
     mappings = {
       i = {
         ['<esc>'] = actions.close,
       },
     },
+    pickers = {
+      find_files = {
+        hidden = true,
+      },
+    },
   },
 }
 
-require('telescope').load_extension('fzf')
-require('marks').setup{}
-require('nvim-web-devicons').setup{
-  default = true;
+--
+-- toggleterm
+--
+require("toggleterm").setup{
+  size = 15,
+  hide_numbers = true,
+  start_in_insert = true,
+  insert_mappings = true,
+  persist_size = true,
+  direction = 'horizontal',
+  close_on_exit = true,
+  shell = '/bin/zsh',
 }
-require("trouble").setup {}
+local Terminal  = require('toggleterm.terminal').Terminal
+local gitui = Terminal:new({
+  cmd = "gitui",
+  dir = ".",
+  direction = "float",
+  close_on_exit = true,
+  float_opts = { border = "single", },
+  on_open = function(term)
+    vim.cmd("startinsert!")
+    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
+  end,
+})
 
--- lsp
--- npm install -g @tailwindcss/language-server
-require('lspconfig').tailwindcss.setup{}
--- npm i -g vscode-langservers-extracted
-require('lspconfig').eslint.setup{}
--- npm install -g typescript typescript-language-server
-require('lspconfig').tsserver.setup{}
--- brew install lua-language-server
-require'lspconfig'.sumneko_lua.setup{}
--- npm i -g bash-language-server
-require'lspconfig'.bashls.setup{}
--- npm i -g jsonls
-require'lspconfig'.jsonls.setup{}
+function GituiToggle()
+  gitui:toggle()
+end
 
+
+
+--
+-- visual setup
+--
 cmd 'colorscheme minimal_dark'
 
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -121,7 +156,7 @@ end
 
 vim.diagnostic.config({
   virtual_text = {
-    prefix = '', -- Could be '●', '▎', 'x'
+    prefix = '',
   },
   signs = true,
   underline = false,
@@ -137,6 +172,7 @@ g.gitgutter_sign_removed_above_and_below = '{'
 g.gitgutter_sign_modified_removed = ''
 
 
+--
 -- options
 --
 opt.fileencoding = 'utf-8'
@@ -149,6 +185,7 @@ opt.number = true
 opt.numberwidth = 5
 opt.hidden = true
 opt.mouse = 'a'
+opt.pumheight = 20
 opt.ignorecase = true
 opt.smartcase = true
 opt.remap = true
@@ -162,8 +199,9 @@ opt.updatetime = 300
 opt.undofile = true
 opt.undodir = '/Users/forrestbaer/tmp'
 
+
 --
--- global opts
+-- vim global opts
 --
 g.mapleader = ','
 g.gitgutter_terminal_reports_focus = 0
@@ -180,56 +218,55 @@ g.tidal_target = "terminal"
 g['airline#extensions#tabline#enabled'] = 1
 g['airline#extensions#tabline#fnamemod'] = ':t'
 
+
 --
 -- key mappings
 --
-map('n', 'l', '<C-r>')
 
+-- terminal
 map('', '<C-w>', '<C-W>W')
-map('t', '<Esc>', '<C-\\><C-n>')
+map('t', '<C-z>', '<C-\\><C-n>')
+map('', '<leader>t', '<cmd>ToggleTerm<CR>')
+map('t', '<leader>t', '<cmd>ToggleTerm<CR>')
+map("n", "<leader>g", "<cmd>lua GituiToggle()<CR>", {noremap = true, silent = true})
 
-map('', '<leader>d', '<cmd>lua vim.diagnostic.open_float(nil, {focus=false})<CR>')
+-- easymotion
 map('', '<leader>s', '<Plug>(easymotion-bd-f)', { noremap = false })
 map('n', '<leader>s', '<Plug>(easymotion-overwin-f)', { noremap = false })
 
-map('', '<Space>', ':silent noh<Bar>echo<cr>')
+-- diagnostic
+map('', '<leader>d', '<cmd>lua vim.diagnostic.open_float(nil, {focus=false})<CR>')
+map('', '<leader>fd', '<cmd>TroubleToggle<CR>')
 
+-- telescope
 map('', '<leader>ff', '<cmd>Telescope find_files<CR>')
 map('', '<leader>fg', '<cmd>Telescope live_grep<CR>')
 map('', '<leader>fb', '<cmd>Telescope buffers<CR>')
 map('', '<leader>ft', '<cmd>Telescope lsp_document_symbols<CR>')
-map('', '<leader>fd', '<cmd>TroubleToggle<CR>')
 map('', '<leader>fm', '<cmd>Telescope marks<CR>')
-map('', '<leader>gs', '<cmd>Telescope git_status<CR>')
-map('', '<leader>gb', '<cmd>Telescope git_branches<CR>')
-map('', '<leader>gc', '<cmd>Telescope git_commits<CR>')
 
-map('', 'gq', '<cmd>Neoformat<CR>')
-
+-- vim
+vim.cmd([[
+if &wildoptions =~ "pum"
+    cnoremap <expr> <up> pumvisible() ? "<C-p>" : "\\<up>"
+    cnoremap <expr> <down> pumvisible() ? "<C-n>" : "\\<down>"
+endif
+]])
+map('', '<Space>', ':silent noh<Bar>echo<cr>')
+map('n', 'l', '<C-r>')
 map('n', '<leader>q', ':q!<cr>')
 map('n', '<leader>w', ':w!<cr>')
-
--- " buffer stuff
-map('n', '<leader>t', '<cmd>enew<cr>')
+map('n', '<leader>n', '<cmd>enew<cr>')
 map('', '<leader>c', '<cmd>bd<cr>')
 map('', '<leader><Tab>', '<cmd>bNext<cr>')
 map('', '<leader><S-Tab>', '<cmd>bprevious<cr>')
-
-map('n', '<leader>ev', '<cmd>sp ~/.config/nvim/init.lua<CR>')
+map('n', '<leader>ev', '<cmd>e ~/.config/nvim/init.lua<CR>')
 map('n', '<leader>rv', '<cmd>so ~/.config/nvim/init.lua<CR>')
-
-map('', '<leader>;', '<cmd>sp | term<CR>')
 
 map("v", "<", "<gv", { noremap = true, silent = true })
 map("v", ">", ">gv", { noremap = true, silent = true })
 
 local autocmds = {
-    terminal_job = {
-      { 'TermOpen', '*', 'startinsert' },
-      { 'TermOpen', '*', 'setlocal nonumber norelativenumber nospell' },
-      { 'TermOpen', '*', ':normal <S-G>' },
-      { 'TermOpen', '*', ':resize15' }
-    },
     comment_strings = {
       { 'FileType', 'tidal', 'setlocal commentstring=--%s' },
     }
@@ -247,6 +284,8 @@ hi link EasyMotionTarget2Second IncSearch
 hi link EasyMotionMoveHL Search
 hi link EasyMotionIncSearch Search
 hi SignColumn ctermfg=White ctermbg=Black
+hi Comment ctermfg=236 ctermbg=Black
+hi Pmenu ctermfg=249 ctermbg=233
 hi GitGutterAdd ctermfg=28 ctermbg=Black
 hi GitGutterChange ctermfg=112 ctermbg=Black
 hi GitGutterDelete ctermfg=8 ctermbg=Black
