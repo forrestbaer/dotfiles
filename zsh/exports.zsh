@@ -1,4 +1,4 @@
-export EDITOR="code"
+export EDITOR="nvim"
 export SHELL=/bin/zsh
 
 if [[ $TERM != 'dumb' ]]; then
