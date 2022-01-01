@@ -25,6 +25,36 @@ local function nvim_create_augroups(definitions)
     end
 end
 
+local function dump(o)
+   if type(o) == 'table' then
+      local s = '{ '
+      for k,v in pairs(o) do
+         if type(k) ~= 'number' then k = '"'..k..'"' end
+         s = s .. '['..k..'] = ' .. dump(v) .. ','
+      end
+      return s .. '} '
+   else
+      return tostring(o)
+   end
+end
+
+-- converts contents of a register and converts to array of line terminated items
+local function split_multiline_reg(reg)
+  local st = {}
+  local ss = vim.fn.getreg(reg)
+  for s in ss:gmatch("[^\r\n]+") do
+      table.insert(st, s)
+  end
+  return st
+end
+
+-- sends contents of table to terminal
+local function send_to_terminal(t)
+  for k,v in ipairs(t) do
+    --vim.cmd(':TermExec --cmd="'..tostring(v)..'"')
+  end
+end
+
 
 --
 -- Plugins
@@ -198,6 +228,7 @@ opt.grepprg = 'rg'
 opt.updatetime = 300
 opt.undofile = true
 opt.undodir = '/Users/forrestbaer/tmp'
+opt.helpheight = 15
 
 
 --
@@ -242,16 +273,11 @@ map('', '<leader>fd', '<cmd>TroubleToggle<CR>')
 map('', '<leader>ff', '<cmd>Telescope find_files<CR>')
 map('', '<leader>fg', '<cmd>Telescope live_grep<CR>')
 map('', '<leader>fb', '<cmd>Telescope buffers<CR>')
-map('', '<leader>ft', '<cmd>Telescope lsp_document_symbols<CR>')
-map('', '<leader>fm', '<cmd>Telescope marks<CR>')
+map('', '<leader>ft', '<cmd>Telescope file_browser<CR>')
+map('', '<leader>fm', '<cmd>Telescope man_pages<CR>')
+map('', '<leader>fh', '<cmd>Telescope help_tags<CR>')
 
 -- vim
-vim.cmd([[
-if &wildoptions =~ "pum"
-    cnoremap <expr> <up> pumvisible() ? "<C-p>" : "\\<up>"
-    cnoremap <expr> <down> pumvisible() ? "<C-n>" : "\\<down>"
-endif
-]])
 map('', '<Space>', ':silent noh<Bar>echo<cr>')
 map('n', 'l', '<C-r>')
 map('n', '<leader>q', ':q!<cr>')
