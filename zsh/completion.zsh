@@ -18,8 +18,7 @@ zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 zstyle ':completion:*:prefix:*' add-space true
 #
-# Make the nice with git completion and others
-zstyle ':completion::*:(git|less|rm|emacs)' ignore-line true
+zstyle ':completion::*:(less|rm|vim)' ignore-line true
 #
 # SSH Completion
 zstyle ':completion:*:scp:*' tag-order files 'hosts:-domain:domain'
@@ -60,3 +59,5 @@ zstyle ':completion:*:manuals.(^1*)' insert-sections   true
 # Cache
 zstyle ':completion:*' use-cache off
 #
+# Git
+zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
