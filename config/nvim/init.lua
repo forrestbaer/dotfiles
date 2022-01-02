@@ -178,6 +178,7 @@ require'lualine'.setup {
     theme = 'auto',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
+    disabled_filetypes = {'toggleterm'},
     always_divide_middle = true,
     color = {
       fg = '#CCCCCC',
@@ -199,7 +200,7 @@ require'lualine'.setup {
       padding = 2,
       sections = { 'error', 'warn', 'info' }
     }},
-    lualine_c = {{'filename', separator = { right = ''}, padding = { left = 1}}},
+    lualine_c = {{'filename', separator = { right = ''}}},
     lualine_x = {{'encoding', separator = { left = ''}}, {'filetype', colored = false, color = { bg = '#222222' }}},
     lualine_y = {{
       'progress',
@@ -227,7 +228,6 @@ require'lualine'.setup {
     }},
     lualine_b = {}
   },
-  extensions = {'toggleterm','fzf'}
 }
 
 
