@@ -16,14 +16,14 @@ return require('packer').startup(function(use)
   use 'nvim-lua/plenary.nvim'
   use 'nvim-telescope/telescope.nvim'
   use 'neovim/nvim-lspconfig'
-  use 'kabouzeid/nvim-lspinstall'
-  use 'hrsh7th/nvim-cmp'
+  use 'williamboman/nvim-lsp-installer'
   use 'folke/trouble.nvim'
 	use 'tpope/vim-surround'
   use 'tpope/vim-commentary'
   use 'nvim-telescope/telescope-fzf-native.nvim'
   use 'airblade/vim-gitgutter'
   use 'akinsho/toggleterm.nvim'
+  use 'jamessan/vim-gnupg'
   use {
     'vimwiki/vimwiki',
     config = function()

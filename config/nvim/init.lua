@@ -69,7 +69,6 @@ end
 --
 -- lsp
 --
-require('lspconfig').tailwindcss.setup{}  -- npm install -g @tailwindcss/language-server
 require('lspconfig').sumneko_lua.setup{
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } } -- brew install lua-language-server
 }
@@ -86,12 +85,15 @@ end
 
 local function eslint_config_exists()
   local eslintrc = vim.fn.glob(".eslintrc*", 0, 1)
+  local packagejson = vim.fn.glob("package.json", 0, 1)
   if not vim.tbl_isempty(eslintrc) then
     return true
   end
-  if vim.fn.filereadable("package.json") then
-    if vim.fn.json_decode(vim.fn.readfile("package.json"))["eslintConfig"] then
-      return true
+  if not vim.tbl_isempty(packagejson) then
+    if vim.fn.filereadable("package.json") then
+      if vim.fn.json_decode(vim.fn.readfile("package.json"))["eslintConfig"] then
+        return true
+      end
     end
   end
 

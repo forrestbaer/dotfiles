@@ -1,5 +1,6 @@
 export EDITOR="nvim"
 export SHELL=/bin/zsh
+export GNUPGHOME=~/store/gpg
 
 if [[ $TERM != 'dumb' ]]; then
     export TERM=xterm-256color
