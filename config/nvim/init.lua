@@ -64,8 +64,8 @@ require 'paq' {
 	{'tidalcycles/vim-tidal'},
   {'sophacles/vim-processing'},
 	{'forrestbaer/minimal_dark'},
-	{'vim-airline/vim-airline'},
 	{'easymotion/vim-easymotion'},
+  {'nvim-lualine/lualine.nvim'},
   {'kyazdani42/nvim-web-devicons'},
   {'nvim-lua/plenary.nvim'},
   {'nvim-telescope/telescope.nvim'},
@@ -170,6 +170,55 @@ lspconfig.efm.setup {
 --
 require('nvim-web-devicons').setup{ default = true }
 require("trouble").setup {}
+
+require'lualine'.setup {
+  options = {
+    icons_enabled = true,
+    fmt = string.lower,
+    theme = 'auto',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    always_divide_middle = true,
+  },
+  sections = {
+    lualine_a = {{
+      'mode',
+      separator = { right = ''},
+      color = {
+        fg = '#000000',
+        bg = '#009933'
+      }
+    }},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'filetype'},
+    lualine_y = {{
+      'progress',
+      color = {
+        fg = '#FFFFFF',
+      }
+    }},
+    lualine_z = {{
+      'location',
+      separator = { left = '' },
+      color = {
+        fg = '#000000',
+        bg = '#009933'
+      }
+    }},
+  },
+  tabline = {
+    lualine_a = {{
+      'buffers',
+      buffers_color = {
+        active = { bg = '#DDDDDD'},
+        inactive = { bg = '#444444'}
+      }
+    }},
+    lualine_b = {}
+  },
+  extensions = {'toggleterm','fzf'}
+}
 
 
 --
@@ -291,6 +340,7 @@ opt.ignorecase = true
 opt.smartcase = true
 opt.remap = true
 opt.timeout = false
+opt.guicursor = 'i:ver20-blinkon100,n:blinkon100'
 opt.linebreak = true
 opt.scrolloff = 4
 opt.backup = false
@@ -307,18 +357,10 @@ opt.helpheight = 15
 --
 g.mapleader = ','
 g.gitgutter_terminal_reports_focus = 0
-g.airline_powerline_fonts = 1
-g.airline_detect_spell = 0
-g.airline_section_c_only_filename = 1
-g.airline_section_y = ''
-g.airline_section_x = ''
-g.airline_detect_whitespace=0
 g.terminal_color_3 = '#ac882f'
 g.EasyMotion_smartcase = 1
 g.EasyMotion_do_mapping = 0
 g.tidal_target = "terminal"
-g['airline#extensions#tabline#enabled'] = 1
-g['airline#extensions#tabline#fnamemod'] = ':t'
 
 
 --
@@ -328,6 +370,8 @@ g['airline#extensions#tabline#fnamemod'] = ':t'
 -- terminal
 map('', '<C-w>', '<C-W>W')
 map('t', '<C-z>', '<C-\\><C-n>')
+map('n', '<C-z>', '<C-w>W')
+map('i', '<C-z>', '<C-w>W')
 map('', '<leader>t', '<cmd>ToggleTerm<CR>')
 map('t', '<leader>t', '<cmd>ToggleTerm<CR>')
 map("n", "<leader>g", "<cmd>lua GituiToggle()<CR>", {noremap = true, silent = true})
@@ -381,7 +425,7 @@ hi link EasyMotionTarget2Second IncSearch
 hi link EasyMotionMoveHL Search
 hi link EasyMotionIncSearch Search
 hi SignColumn ctermfg=White ctermbg=Black
-hi Comment ctermfg=236 ctermbg=Black
+hi Comment ctermfg=240 ctermbg=Black
 hi Pmenu ctermfg=249 ctermbg=233
 hi GitGutterAdd ctermfg=28 ctermbg=Black
 hi GitGutterChange ctermfg=112 ctermbg=Black
