@@ -10,4 +10,3 @@ source ~/.zsh/prompt.zsh
 source ~/.zsh/set_options.zsh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-fpath=(~/.zsh $fpath)[ -f "/Users/forrestbaer/.ghcup/env" ] && source "/Users/forrestbaer/.ghcup/env" # ghcup-env

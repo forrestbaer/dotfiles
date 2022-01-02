@@ -1,7 +1,17 @@
 --
 -- lua remappings
 --
-local opt, api, cmd, g = vim.opt, vim.api, vim.cmd, vim.g
+local fn, opt, api, cmd, g = vim.fn, vim.opt, vim.api, vim.cmd, vim.g
+
+
+--
+-- Plugins
+--
+require('plugins')
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+if fn.empty(fn.glob(install_path)) > 0 then
+  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+end
 
 
 --
@@ -54,31 +64,6 @@ local function send_to_terminal(t)
     --vim.cmd(':TermExec --cmd="'..tostring(v)..'"')
   end
 end
-
-
---
--- Plugins
---
-require 'paq' {
-	{'savq/paq-nvim'},
-	{'tidalcycles/vim-tidal'},
-  {'sophacles/vim-processing'},
-	{'forrestbaer/minimal_dark'},
-	{'easymotion/vim-easymotion'},
-  {'nvim-lualine/lualine.nvim'},
-  {'kyazdani42/nvim-web-devicons'},
-  {'nvim-lua/plenary.nvim'},
-  {'nvim-telescope/telescope.nvim'},
-  {'neovim/nvim-lspconfig'},
-  {'kabouzeid/nvim-lspinstall'},
-  {'hrsh7th/nvim-cmp'},
-  {'folke/trouble.nvim'},
-	{'tpope/vim-surround'},
-  {'tpope/vim-commentary'},
-  {'nvim-telescope/telescope-fzf-native.nvim'},
-  {'airblade/vim-gitgutter'},
-  {'akinsho/toggleterm.nvim'},
-}
 
 
 --
@@ -331,6 +316,7 @@ g.gitgutter_sign_removed_above_and_below = '{'
 g.gitgutter_sign_modified_removed = ''
 
 
+
 --
 -- options
 --
@@ -411,6 +397,7 @@ map('', '<leader>c', '<cmd>bd<cr>')
 map('', '<leader><Tab>', '<cmd>bNext<cr>')
 map('', '<leader><S-Tab>', '<cmd>bprevious<cr>')
 map('n', '<leader>ev', '<cmd>e ~/.config/nvim/init.lua<CR>')
+map('n', '<leader>ep', '<cmd>e ~/.config/nvim/lua/plugins.lua<CR>')
 map('n', '<leader>rv', '<cmd>so ~/.config/nvim/init.lua<CR>')
 
 map("v", "<", "<gv", { noremap = true, silent = true })
