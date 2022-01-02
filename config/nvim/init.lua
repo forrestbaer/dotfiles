@@ -179,6 +179,10 @@ require'lualine'.setup {
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     always_divide_middle = true,
+    color = {
+      fg = '#CCCCCC',
+      bg = '#222222'
+    }
   },
   sections = {
     lualine_a = {{
@@ -189,9 +193,14 @@ require'lualine'.setup {
         bg = '#009933'
       }
     }},
-    lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {'filename'},
-    lualine_x = {'encoding', 'filetype'},
+    lualine_b = {{'branch', separator = { right = ''},color = { fg = '#999999'}}, 'diff', {
+      'diagnostics',
+      colored = false,
+      padding = 2,
+      sections = { 'error', 'warn', 'info' }
+    }},
+    lualine_c = {{'filename', separator = { right = ''}, padding = { left = 1}}},
+    lualine_x = {{'encoding', separator = { left = ''}}, {'filetype', colored = false, color = { bg = '#222222' }}},
     lualine_y = {{
       'progress',
       color = {
@@ -210,9 +219,10 @@ require'lualine'.setup {
   tabline = {
     lualine_a = {{
       'buffers',
+      separator = { right = '' },
       buffers_color = {
-        active = { bg = '#DDDDDD'},
-        inactive = { bg = '#444444'}
+        active = { fg = '#000000', bg = '#DDDDDD'},
+        inactive = { fg = '#000000', bg = '#444444'}
       }
     }},
     lualine_b = {}
@@ -260,6 +270,7 @@ require('telescope').setup{
     },
   },
 }
+
 
 --
 -- toggleterm
