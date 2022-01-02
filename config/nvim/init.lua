@@ -186,36 +186,36 @@ require'lualine'.setup {
     }
   },
   sections = {
-    lualine_a = {{
-      'mode',
-      separator = { right = ''},
-      color = {
-        fg = '#000000',
-        bg = '#009933'
-      }
-    }},
-    lualine_b = {{'branch', separator = { right = ''},color = { fg = '#999999'}}, 'diff', {
-      'diagnostics',
-      colored = false,
-      padding = 2,
-      sections = { 'error', 'warn', 'info' }
-    }},
-    lualine_c = {{'filename', separator = { right = ''}}},
-    lualine_x = {{'encoding', separator = { left = ''}}, {'filetype', colored = false, color = { bg = '#222222' }}},
-    lualine_y = {{
-      'progress',
-      color = {
-        fg = '#FFFFFF',
-      }
-    }},
+    lualine_a = {
+      {'mode',
+      separator = {right = ''},
+      color = {fg = '#000000', bg = '#009933'}}
+    },
+    lualine_b = {
+      {'branch',
+        separator = {right = ''},
+        color = {fg = '#999999'}},
+      {'diff', colored = false},
+      {'diagnostics',
+        colored = false,
+        padding = 2,
+        sections = { 'error', 'warn', 'info' }}
+    },
+    lualine_c = {
+      {'filename', separator = { right = ''}}
+    },
+    lualine_x = {
+      {'encoding', separator = { left = ''}},
+      {'filetype', colored = false, color = { bg = '#222222'}}
+    },
+    lualine_y = {
+      {'progress', color = { fg = '#FFFFFF'}}
+    },
     lualine_z = {{
       'location',
-      separator = { left = '' },
-      color = {
-        fg = '#000000',
-        bg = '#009933'
-      }
-    }},
+      separator = {left = '' },
+      color = {fg = '#000000', bg = '#009933' }}
+    }
   },
   tabline = {
     lualine_a = {{
@@ -297,11 +297,9 @@ local gitui = Terminal:new({
     vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
   end,
 })
-
 function GituiToggle()
   gitui:toggle()
 end
-
 
 
 --
@@ -423,9 +421,12 @@ local autocmds = {
       { 'FileType', 'tidal', 'setlocal commentstring=--%s' },
     }
 }
-
 nvim_create_augroups(autocmds)
 
+
+--
+-- extra colors
+--
 vim.cmd([[
 augroup MyColors
 autocmd!
@@ -436,12 +437,12 @@ hi link EasyMotionTarget2Second IncSearch
 hi link EasyMotionMoveHL Search
 hi link EasyMotionIncSearch Search
 hi SignColumn ctermfg=White ctermbg=Black
-hi Comment ctermfg=240 ctermbg=Black
+hi Comment ctermfg=242 ctermbg=234
 hi Pmenu ctermfg=249 ctermbg=233
 hi GitGutterAdd ctermfg=28 ctermbg=Black
 hi GitGutterChange ctermfg=112 ctermbg=Black
 hi GitGutterDelete ctermfg=8 ctermbg=Black
-hi DiagnosticError ctermfg=124 ctermbg=Black
+hi DiagnosticError ctermfg=5 ctermbg=Black
 hi DiagnosticWarn ctermfg=135
 hi DiagnosticInfo ctermfg=24
 hi DiagnosticUnderlineWarn ctermfg=135
@@ -453,4 +454,3 @@ hi MarkSignHL ctermfg=73
 hi Operator ctermfg=43
 augroup end
 ]])
-
