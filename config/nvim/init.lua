@@ -232,13 +232,6 @@ require('telescope').setup{
     sorting_strategy = "descending",
     layout_strategy = "vertical",
     color_devicons = true,
-    layout_config = {
-      vertical = {
-        height = 0.6,
-        preview_height = 0.4,
-        mirror = false,
-      },
-    },
     file_ignore_patterns = {
       "node_modules",
       "vendor",
@@ -310,12 +303,12 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
-g.gitgutter_sign_added = ''
-g.gitgutter_sign_modified = ''
-g.gitgutter_sign_removed = ''
+g.gitgutter_sign_added = '+'
+g.gitgutter_sign_modified = '~'
+g.gitgutter_sign_removed = '-'
 g.gitgutter_sign_removed_first_line = '^^'
 g.gitgutter_sign_removed_above_and_below = '{'
-g.gitgutter_sign_modified_removed = ''
+g.gitgutter_sign_modified_removed = '-'
 
 
 
@@ -393,7 +386,7 @@ map('', '<leader>fh', '<cmd>Telescope help_tags<CR>')
 map('', '<Space>', ':silent noh<Bar>echo<cr>')
 map('n', 'l', '<C-r>')
 map('n', '<leader>q', ':q!<cr>')
-map('n', '<leader>w', ':w!<cr>')
+map('n', '<leader>s', ':w!<cr>')
 map('n', '<leader>n', '<cmd>enew<cr>')
 map('', '<leader>c', '<cmd>bd<cr>')
 map('', '<leader><Tab>', '<cmd>bNext<cr>')
