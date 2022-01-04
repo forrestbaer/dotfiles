@@ -5,6 +5,7 @@ alias mv='mv -i' # prompt before moving a file that would overwrite an existing 
 alias grep='grep --color --line-number'
 alias c='clear'
 alias md='mkdir'
+alias ctags='/usr/local/bin/ctags'
 
 # Git
 

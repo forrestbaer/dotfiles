@@ -69,87 +69,28 @@ end
 --
 -- lsp
 --
+
+local nvim_lsp = require('lspconfig')
+
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+end
+
+
 require('lspconfig').sumneko_lua.setup{
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } } -- brew install lua-language-server
 }
-require'lspconfig'.bashls.setup{} -- npm i -g bash-language-server
-require'lspconfig'.jsonls.setup{} -- npm i -g jsonls
+local lspconfig = require('lspconfig')
+local servers = { 'bashls', 'jsonls', 'rome', 'hls', 'rust_analyzer', 'vimls', 'cssls', 'tsserver'}
 
-local lspconfig = require"lspconfig"
-
-local function set_lsp_config(client)
-  if client.resolved_capabilities.document_formatting then
-    vim.cmd [[autocmd! BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 300)]]
-  end
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup {
+    on_attach = on_attach,
+  }
 end
-
-local function eslint_config_exists()
-  local eslintrc = vim.fn.glob(".eslintrc*", 0, 1)
-  local packagejson = vim.fn.glob("package.json", 0, 1)
-  if not vim.tbl_isempty(eslintrc) then
-    return true
-  end
-  if not vim.tbl_isempty(packagejson) then
-    if vim.fn.filereadable("package.json") then
-      if vim.fn.json_decode(vim.fn.readfile("package.json"))["eslintConfig"] then
-        return true
-      end
-    end
-  end
-
-  return false
-end
-
-local eslint = {
-  lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-  lintStdin = true,
-  lintFormats = {"%f:%l:%c: %m"},
-  lintIgnoreExitCode = true,
-  formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
-  formatStdin = true
-}
-
-lspconfig.tsserver.setup {
-  on_attach = function(client)
-    if client.config.flags then
-      client.config.flags.allow_incremental_sync = true
-    end
-    client.resolved_capabilities.document_formatting = false
-    set_lsp_config(client)
-  end
-}
-
-lspconfig.efm.setup {
-  on_attach = function(client)
-    client.resolved_capabilities.document_formatting = true
-    client.resolved_capabilities.goto_definition = false
-    set_lsp_config(client)
-  end,
-  root_dir = function()
-    if not eslint_config_exists() then
-      return nil
-    end
-    return vim.fn.getcwd()
-  end,
-  settings = {
-    languages = {
-      javascript = {eslint},
-      javascriptreact = {eslint},
-      ["javascript.jsx"] = {eslint},
-      typescript = {eslint},
-      ["typescript.tsx"] = {eslint},
-      typescriptreact = {eslint}
-    }
-  },
-  filetypes = {
-    "javascript",
-    "javascriptreact",
-    "javascript.jsx",
-    "typescript",
-    "typescript.tsx",
-    "typescriptreact"
-  },
-}
 
 
 --
