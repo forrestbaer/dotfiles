@@ -70,6 +70,7 @@ end
 -- lsp
 --
 
+<<<<<<< Updated upstream
 local nvim_lsp = require('lspconfig')
 
 local on_attach = function(client, bufnr)
@@ -82,16 +83,29 @@ end
 
 require('lspconfig').sumneko_lua.setup{
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } } -- brew install lua-language-server
+=======
+lspconfig.tsserver.setup {
+  on_attach = function(client)
+    if client.config.flags then
+      client.config.flags.allow_incremental_sync = true
+    end
+    client.resolved_capabilities.document_formatting = false
+    set_lsp_config(client)
+  end
+>>>>>>> Stashed changes
 }
 local lspconfig = require('lspconfig')
 local servers = { 'hls', 'rust_analyzer', 'cssls', 'tsserver', 'gopls'}
 
+<<<<<<< Updated upstream
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
   }
 end
 
+=======
+>>>>>>> Stashed changes
 
 --
 -- other plugin initializations

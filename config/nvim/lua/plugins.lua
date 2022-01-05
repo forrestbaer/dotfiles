@@ -18,11 +18,18 @@ return require('packer').startup(function(use)
   use 'neovim/nvim-lspconfig'
   use 'williamboman/nvim-lsp-installer'
   use 'folke/trouble.nvim'
+<<<<<<< Updated upstream
   use 'fatih/vim-go'
 	use 'tpope/vim-surround'
   use 'tpope/vim-commentary'
   use 'rmagatti/auto-session'
   use 'nvim-telescope/telescope-fzf-native.nvim'
+=======
+  use 'tpope/vim-fugitive'
+	use 'tpope/vim-surround'
+  use 'tpope/vim-commentary'
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'}
+>>>>>>> Stashed changes
   use 'airblade/vim-gitgutter'
   use 'akinsho/toggleterm.nvim'
   use 'jamessan/vim-gnupg'
