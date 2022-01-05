@@ -84,7 +84,7 @@ require('lspconfig').sumneko_lua.setup{
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } } -- brew install lua-language-server
 }
 local lspconfig = require('lspconfig')
-local servers = { 'bashls', 'jsonls', 'rome', 'hls', 'rust_analyzer', 'vimls', 'cssls', 'tsserver'}
+local servers = { 'hls', 'rust_analyzer', 'cssls', 'tsserver', 'gopls'}
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
