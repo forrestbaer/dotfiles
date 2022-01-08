@@ -346,6 +346,7 @@ nvim_create_augroups(autocmds)
 vim.cmd([[
 augroup MyColors
 autocmd!
+hi Normal ctermfg=7
 hi link EasyMotionTarget Number
 hi link EasyMotionShade  Comment
 hi link EasyMotionTarget2First IncSearch
