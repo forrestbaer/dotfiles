@@ -8,7 +8,6 @@ vim.cmd([[
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 	use 'tidalcycles/vim-tidal'
-  use 'sophacles/vim-processing'
 	use 'forrestbaer/minimal_dark'
   use 'easymotion/vim-easymotion'
   use 'nvim-lualine/lualine.nvim'
@@ -28,6 +27,7 @@ return require('packer').startup(function(use)
   use 'airblade/vim-gitgutter'
   use 'akinsho/toggleterm.nvim'
   use 'jamessan/vim-gnupg'
+
   use {
     'vimwiki/vimwiki',
     config = function()

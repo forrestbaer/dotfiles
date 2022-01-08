@@ -71,16 +71,13 @@ end
 --
 
 require('lspconfig').sumneko_lua.setup{
-  settings = { Lua = { diagnostics = { globals = { 'vim' } } } } -- brew install lua-language-server
+  settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
 }
 
 local lspconfig = require('lspconfig')
 local servers = { 'hls', 'rust_analyzer', 'cssls', 'tsserver', 'gopls'}
-
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = on_attach,
-  }
+  lspconfig[lsp].setup {}
 end
 
 --
@@ -212,7 +209,6 @@ function GituiToggle()
   gitui:toggle()
 end
 
-
 --
 -- visual setup
 --
@@ -240,7 +236,6 @@ g.gitgutter_sign_removed = '-'
 g.gitgutter_sign_removed_first_line = '^^'
 g.gitgutter_sign_removed_above_and_below = '{'
 g.gitgutter_sign_modified_removed = '-'
-
 
 
 --
@@ -271,6 +266,8 @@ opt.updatetime = 300
 opt.undofile = true
 opt.undodir = '/Users/forrestbaer/tmp'
 opt.helpheight = 15
+opt.completeopt = 'menuone,noselect,noinsert'
+opt.omnifunc = 'syntaxcomplete#Complete'
 
 
 --
@@ -282,6 +279,12 @@ g.terminal_color_3 = '#ac882f'
 g.EasyMotion_smartcase = 1
 g.EasyMotion_do_mapping = 0
 g.tidal_target = "terminal"
+g.go_gopls_enabled = 1
+g.go_auto_type_info = 1
+g.go_info_mode = 'gopls' -- or guru
+g.go_doc_balloon = 1
+g.go_doc_popup_window = 1
+g.go_def_reuse_buffer = 1
 
 
 --
@@ -320,11 +323,13 @@ map('n', '<leader>q', ':q!<cr>')
 map('n', '<leader>s', ':w!<cr>')
 map('n', '<leader>n', '<cmd>enew<cr>')
 map('', '<leader>c', '<cmd>bd<cr>')
-map('', '<leader><Tab>', '<cmd>bNext<cr>')
-map('', '<leader><S-Tab>', '<cmd>bprevious<cr>')
+map('', '<c-o>', '<cmd>bn<cr>', {noremap = true, silent = true})
+map('', '<c-n>', '<cmd>bp<cr>', {noremap = true, silent = true})
 map('n', '<leader>ev', '<cmd>e ~/.config/nvim/init.lua<CR>')
 map('n', '<leader>ep', '<cmd>e ~/.config/nvim/lua/plugins.lua<CR>')
 map('n', '<leader>rv', '<cmd>so ~/.config/nvim/init.lua<CR>')
+
+map('i', '<leader><tab>', '<c-x><c-o>')
 
 map("v", "<", "<gv", { noremap = true, silent = true })
 map("v", ">", ">gv", { noremap = true, silent = true })
@@ -332,6 +337,9 @@ map("v", ">", ">gv", { noremap = true, silent = true })
 local autocmds = {
     comment_strings = {
       { 'FileType', 'tidal', 'setlocal commentstring=--%s' },
+    },
+    go_stuff = {
+      { 'FileType', 'go', 'nmap <leader>i <plug>(go-doc)' },
     }
 }
 nvim_create_augroups(autocmds)
