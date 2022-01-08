@@ -18,7 +18,7 @@ function set_prompt() {
       isroot='%F{cyan}'
   fi
   
-  PS1='%(?.%F{green}√.%F{red}?%?)%f %B%F{7}%3~%f%b %# '
+  PS1='%(?.%F{green}√.%F{red}?%?)%f %B%F{0}[${HOST}] %b%F{7}%3~ %B%F{7}\$ %b%F{7}'
  
   if [ -n "$branch_name" ]; then
   RPROMPT='%F{magenta}$branch_name%f'
