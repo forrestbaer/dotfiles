@@ -174,6 +174,26 @@ require('telescope').setup{
   },
 }
 
+--
+-- nnn
+--
+
+require("nnn").setup({
+	picker = {
+    cmd = 'nnn -dHJ',
+    style = {
+      border = "rounded",
+      width = 0.6,
+      height = 0.6,
+    },
+    auto_open = {
+      empty = true
+    },
+    replace_netrw = "picker",
+		session = "",
+	},
+})
+
 
 --
 -- toggleterm
@@ -307,7 +327,8 @@ map('', '<leader>fd', '<cmd>TroubleToggle<CR>')
 map('', '<leader>ff', '<cmd>Telescope find_files<CR>')
 map('', '<leader>fg', '<cmd>Telescope live_grep<CR>')
 map('', '<leader>fb', '<cmd>Telescope buffers<CR>')
-map('', '<leader>ft', '<cmd>Telescope file_browser<CR>')
+map('t', '<leader>ft', '<cmd>NnnPicker<CR>')
+map('n', '<leader>ft', '<cmd>NnnPicker<CR>')
 map('', '<leader>fm', '<cmd>Telescope man_pages<CR>')
 map('', '<leader>fh', '<cmd>Telescope help_tags<CR>')
 
@@ -363,6 +384,7 @@ hi DiagnosticError ctermfg=5 ctermbg=Black
 hi DiagnosticWarn ctermfg=135
 hi DiagnosticInfo ctermfg=24
 hi DiagnosticUnderlineWarn ctermfg=135
+hi FloatBorder ctermfg=7 ctermbg=Black
 hi DiagnosticHint ctermfg=116
 hi DiagnosticVirtualTextHint ctermfg=238 ctermbg=233
 hi DiagnosticVirtualTextWarn ctermfg=242 ctermbg=233
