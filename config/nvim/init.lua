@@ -7,7 +7,55 @@ local fn, opt, api, cmd, g = vim.fn, vim.opt, vim.api, vim.cmd, vim.g
 --
 -- Plugins
 --
-require('plugins')
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+  augroup end
+]])
+
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+
+if fn.empty(fn.glob(install_path)) > 0 then
+  Packer_Bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+end
+
+require('packer').startup(function(use)
+  use 'wbthomason/packer.nvim'
+	use 'forrestbaer/minimal_dark'
+	use 'tidalcycles/vim-tidal'
+  use 'nvim-lualine/lualine.nvim'
+  use 'kyazdani42/nvim-web-devicons'
+  use 'nvim-lua/plenary.nvim'
+  use 'nvim-telescope/telescope.nvim'
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'}
+  use 'neovim/nvim-lspconfig'
+  use 'williamboman/nvim-lsp-installer'
+  use 'fatih/vim-go'
+  use 'rmagatti/auto-session'
+  use 'tpope/vim-fugitive'
+  use 'tpope/vim-surround'
+  use 'tpope/vim-commentary'
+  use 'airblade/vim-gitgutter'
+  use 'akinsho/toggleterm.nvim'
+  use 'luukvbaal/nnn.nvim'
+
+  use {
+    'vimwiki/vimwiki',
+    config = function()
+      vim.g.vimwiki_list = {{
+        path = '~/store/wiki',
+        syntax = 'markdown',
+        ext = '.md'
+      }}
+    end
+  }
+
+  if Packer_Bootstrap then
+    require('packer').sync()
+  end
+end)
+
 
 --
 -- helper functions
@@ -75,11 +123,11 @@ for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {}
 end
 
+
 --
 -- other plugin initializations
 --
 require('nvim-web-devicons').setup{ default = true }
-require("trouble").setup {}
 
 require'lualine'.setup {
   options = {
@@ -174,6 +222,7 @@ require('telescope').setup{
   },
 }
 
+
 --
 -- nnn
 --
@@ -223,6 +272,7 @@ local gitui = Terminal:new({
 function GituiToggle()
   gitui:toggle()
 end
+
 
 --
 -- visual setup
@@ -291,8 +341,6 @@ opt.omnifunc = 'syntaxcomplete#Complete'
 g.mapleader = ','
 g.gitgutter_terminal_reports_focus = 0
 g.terminal_color_3 = '#ac882f'
-g.EasyMotion_smartcase = 1
-g.EasyMotion_do_mapping = 0
 g.tidal_target = "terminal"
 g.go_gopls_enabled = 1
 g.go_auto_type_info = 1
@@ -315,13 +363,8 @@ map('', '<leader>t', '<cmd>ToggleTerm<CR>')
 map('t', '<leader>t', '<cmd>ToggleTerm<CR>')
 map("n", "<leader>g", "<cmd>lua GituiToggle()<CR>", {noremap = true, silent = true})
 
--- easymotion
-map('', '<leader>s', '<Plug>(easymotion-bd-f)', { noremap = false })
-map('n', '<leader>s', '<Plug>(easymotion-overwin-f)', { noremap = false })
-
 -- diagnostic
 map('', '<leader>d', '<cmd>lua vim.diagnostic.open_float(nil, {focus=false})<CR>')
-map('', '<leader>fd', '<cmd>TroubleToggle<CR>')
 
 -- telescope
 map('', '<leader>ff', '<cmd>Telescope find_files<CR>')
@@ -338,7 +381,7 @@ map('n', 'l', '<C-r>')
 map('n', '<leader>q', ':q!<cr>')
 map('n', '<leader>s', ':w!<cr>')
 map('n', '<leader>n', '<cmd>enew<cr>')
-map('', '<leader>c', '<cmd>bd<cr>')
+map('', '<leader>c', '<cmd>bd!<cr>')
 map('', '<c-o>', '<cmd>bn<cr>', {noremap = true, silent = true})
 map('', '<c-n>', '<cmd>bp<cr>', {noremap = true, silent = true})
 map('n', '<leader>ev', '<cmd>e ~/.config/nvim/init.lua<CR>')
@@ -359,37 +402,3 @@ local autocmds = {
     }
 }
 nvim_create_augroups(autocmds)
-
-
---
--- extra colors
---
-vim.cmd([[
-augroup MyColors
-autocmd!
-hi Normal ctermfg=7
-hi link EasyMotionTarget Number
-hi link EasyMotionShade  Comment
-hi link EasyMotionTarget2First IncSearch
-hi link EasyMotionTarget2Second IncSearch
-hi link EasyMotionMoveHL Search
-hi link EasyMotionIncSearch Search
-hi SignColumn ctermfg=White ctermbg=Black
-hi Comment ctermfg=242 ctermbg=234
-hi Pmenu ctermfg=249 ctermbg=233
-hi GitGutterAdd ctermfg=28 ctermbg=Black
-hi GitGutterChange ctermfg=112 ctermbg=Black
-hi GitGutterDelete ctermfg=8 ctermbg=Black
-hi DiagnosticError ctermfg=5 ctermbg=Black
-hi DiagnosticWarn ctermfg=135
-hi DiagnosticInfo ctermfg=24
-hi DiagnosticUnderlineWarn ctermfg=135
-hi FloatBorder ctermfg=7 ctermbg=Black
-hi DiagnosticHint ctermfg=116
-hi DiagnosticVirtualTextHint ctermfg=238 ctermbg=233
-hi DiagnosticVirtualTextWarn ctermfg=242 ctermbg=233
-hi MarkSignNumHL ctermfg=116
-hi MarkSignHL ctermfg=73
-hi Operator ctermfg=43
-augroup end
-]])
