@@ -32,6 +32,7 @@ require('packer').startup(function(use)
   use 'neovim/nvim-lspconfig'
   use 'williamboman/nvim-lsp-installer'
   use 'fatih/vim-go'
+  use 'sbdchd/neoformat'
   use 'rmagatti/auto-session'
   use 'tpope/vim-fugitive'
   use 'tpope/vim-surround'
@@ -118,7 +119,7 @@ require('lspconfig').sumneko_lua.setup{
 }
 
 local lspconfig = require('lspconfig')
-local servers = { 'hls', 'rust_analyzer', 'cssls', 'tsserver', 'gopls'}
+local servers = { 'html', 'tsserver', 'gopls'}
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {}
 end
@@ -348,7 +349,9 @@ g.go_info_mode = 'gopls' -- or guru
 g.go_doc_balloon = 1
 g.go_doc_popup_window = 1
 g.go_def_reuse_buffer = 1
-
+g.neoformat_basic_format_align = 1
+g.neoformat_basic_format_retab = 1
+g.neoformat_basic_format_trim = 1
 
 --
 -- key mappings
@@ -399,6 +402,9 @@ local autocmds = {
     },
     go_stuff = {
       { 'FileType', 'go', 'nmap <leader>i <plug>(go-doc)' },
-    }
+    },
+    fmt = {
+      { 'BufWritePre', '*', 'undojoin | Neoformat' },
+    },
 }
 nvim_create_augroups(autocmds)
