@@ -40,6 +40,9 @@ require('packer').startup(function(use)
   use 'airblade/vim-gitgutter'
   use 'akinsho/toggleterm.nvim'
   use 'luukvbaal/nnn.nvim'
+  use {'ms-jpq/coq_nvim', branch = 'coq'}
+  use {'ms-jpq/coq.artifacts', branch = 'artifacts'}
+  use {'ms-jpq/coq.thirdparty', branch = '3p'}
 
   use {
     'vimwiki/vimwiki',
@@ -118,12 +121,13 @@ require('lspconfig').sumneko_lua.setup{
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
 }
 
+local coq = require "coq"
 local lspconfig = require('lspconfig')
 local servers = { 'html', 'tsserver', 'gopls'}
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {}
+  lspconfig[lsp].setup {coq.lsp_ensure_capabilities{}}
 end
-
+vim.cmd('COQnow -s')
 
 --
 -- other plugin initializations
@@ -404,7 +408,7 @@ local autocmds = {
       { 'FileType', 'go', 'nmap <leader>i <plug>(go-doc)' },
     },
     fmt = {
-      { 'BufWritePre', '*', 'undojoin | Neoformat' },
+      { 'BufWritePre', 'javascript', 'undojoin | Neoformat' },
     },
 }
 nvim_create_augroups(autocmds)
