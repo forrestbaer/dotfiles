@@ -42,7 +42,6 @@ require('packer').startup(function(use)
   use 'luukvbaal/nnn.nvim'
   use {'ms-jpq/coq_nvim', branch = 'coq'}
   use {'ms-jpq/coq.artifacts', branch = 'artifacts'}
-  use {'ms-jpq/coq.thirdparty', branch = '3p'}
 
   use {
     'vimwiki/vimwiki',
@@ -356,6 +355,15 @@ g.go_def_reuse_buffer = 1
 g.neoformat_basic_format_align = 1
 g.neoformat_basic_format_retab = 1
 g.neoformat_basic_format_trim = 1
+
+g.coq_settings = {
+  clients = {
+    buffers = {
+      enabled = false,
+      same_filetype = true
+    }
+  }
+}
 
 --
 -- key mappings
