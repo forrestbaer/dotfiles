@@ -1,10 +1,17 @@
-# COMPLETION
-zmodload -i zsh/complist
-zstyle ':completion:*' use-perl on
+zmodload zsh/complist
+
+setopt MENU_COMPLETE        # Automatically highlight first element of completion menu
+setopt AUTO_LIST            # Automatically list choices on ambiguous completion.
+setopt COMPLETE_IN_WORD     # Complete from both ends of a word.
+
 zstyle ':completion:*' menu select
-#
+zstyle ':completion:*' complete-options true
+zstyle ':completion:*' file-sort modification
+
 # insert all expansions for expand completer
 zstyle ':completion:*:expand:*' keep-prefix true tag-order all-expansions
+
+zstyle ':completion:*:*:*:*:default' list-colors ${(s.:.)LS_COLORS}
 
 # formatting and messages
 zstyle ':completion:*' verbose yes
@@ -17,9 +24,7 @@ zstyle ':completion:*' list-separator '#'
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 zstyle ':completion:*:prefix:*' add-space true
-#
-zstyle ':completion::*:(less|rm|vim)' ignore-line true
-#
+
 # SSH Completion
 zstyle ':completion:*:scp:*' tag-order files 'hosts:-domain:domain'
 zstyle ':completion:*:scp:*' group-order files all-files users hosts-domain hosts-host hosts-ipaddr
@@ -34,9 +39,6 @@ zstyle ':completion:*:aliases' list-colors "=*=$color[green]"
 #
 ### highlight the original input.
 zstyle ':completion:*:original' list-colors "=*=$color[red];$color[bold]"
-#
-### highlight words like 'esac' or 'end'
-zstyle ':completion:*:reserved-words' list-colors "=*=$color[red]"
 #
 ### colorize hostname completion
 zstyle ':completion:*:*:*:*:hosts' list-colors "=*=$color[cyan];$color[bg-black]"
@@ -57,15 +59,8 @@ zstyle ':completion:*:manuals'       separate-sections true
 zstyle ':completion:*:manuals.(^1*)' insert-sections   true
 #
 # Cache
-zstyle ':completion:*' use-cache off
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path '$XDG_CACHE_HOME/zsh/.zcompcache'
 #
 # Git
 zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
-
-# taskwarrior
-# 
-zstyle ':completion:*:*:task:*' verbose yes
-zstyle ':completion:*:*:task:*:descriptions' format '%U%B%d%b%u'
-
-zstyle ':completion:*:*:task:*' group-name ''
-compdef _task t=task

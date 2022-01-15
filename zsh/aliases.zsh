@@ -1,4 +1,4 @@
-alias weather curl -s 'wttr.in/?format=%l:+%c+%t+%h+%P+%m\n'
+alias weather='curl -s "wttr.in/?format=%l:+%c+%t+%h+%P+%m\n"'
 
 alias ls='ls -GhF'
 alias ll='ls -GhlFa' # long format listing; add / to end of directories
