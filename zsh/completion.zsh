@@ -59,8 +59,7 @@ zstyle ':completion:*:manuals'       separate-sections true
 zstyle ':completion:*:manuals.(^1*)' insert-sections   true
 #
 # Cache
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path '$XDG_CACHE_HOME/zsh/.zcompcache'
+zstyle ':completion:*' use-cache off
 #
 # Git
 zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.bash
