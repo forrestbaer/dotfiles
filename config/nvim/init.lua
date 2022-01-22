@@ -125,8 +125,9 @@ local coq = require 'coq'
 local lspconfig = require 'lspconfig'
 require 'lsp_signature'.setup({
   bind = true,
-  hint_enable = true,
+  hint_enable = false,
   handler_opts = { border = 'single' },
+  floating_window_above_cur_line = true,
   toggle_key = '<C-i>',
   hint_prefix = ' ',
 })
@@ -376,6 +377,12 @@ g.coq_settings = {
 --
 -- key mappings
 --
+
+-- lsp
+map('n', 'K', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
+map('n', '<leader>i', '<Cmd>lua vim.lsp.buf.hover()<CR>')
+map('n', '<leader>I', '<Cmd>lua vim.lsp.buf.signature_help()<CR>')
+map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>')
 
 -- terminal
 map('', '<C-w>', '<C-W>W')
