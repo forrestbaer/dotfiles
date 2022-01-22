@@ -42,6 +42,7 @@ require('packer').startup(function(use)
   use 'luukvbaal/nnn.nvim'
   use {'ms-jpq/coq_nvim', branch = 'coq'}
   use {'ms-jpq/coq.artifacts', branch = 'artifacts'}
+  use 'ray-x/lsp_signature.nvim'
 
   use {
     'vimwiki/vimwiki',
@@ -120,8 +121,15 @@ require('lspconfig').sumneko_lua.setup{
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
 }
 
-local coq = require "coq"
-local lspconfig = require('lspconfig')
+local coq = require 'coq'
+local lspconfig = require 'lspconfig'
+require 'lsp_signature'.setup({
+  bind = true,
+  hint_enable = true,
+  handler_opts = { border = 'single' },
+  toggle_key = '<C-i>',
+  hint_prefix = ' ',
+})
 local servers = { 'html', 'tsserver', 'gopls'}
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {coq.lsp_ensure_capabilities{}}
@@ -420,3 +428,7 @@ local autocmds = {
     },
 }
 nvim_create_augroups(autocmds)
+
+cmd[[
+highlight LspSignatureActiveParameter ctermfg=34
+]]
