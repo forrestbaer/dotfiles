@@ -12,4 +12,8 @@ setopt nohup
 setopt prompt_subst
 setopt vi
 
+HISTSIZE=600
+SAVEHIST=600
+HISTFILE=~/.zsh_history
+
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)

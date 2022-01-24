@@ -18,7 +18,6 @@ alias gd='git diff'
 alias gp='git push'
 alias gf='git fetch'
 alias hist='git hist'
-alias gh="git hist"
 alias ga='git add'
 
 # Vim
@@ -28,7 +27,7 @@ alias vim='nvim'
 
 # tmux
 
-alias tmux='tmux att -d'
+alias tmux='tmux new -As0'
 
 # ad hoc
 

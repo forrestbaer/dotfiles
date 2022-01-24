@@ -1,48 +1,34 @@
 --
--- lua remappings
+-- constants
 --
 local fn, opt, api, cmd, g = vim.fn, vim.opt, vim.api, vim.cmd, vim.g
 
 
 --
--- Plugins
+-- plugins
 --
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-]])
-
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 
 if fn.empty(fn.glob(install_path)) > 0 then
   Packer_Bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 
-require('packer').startup(function(use)
+local status_ok, packer = pcall(require, "packer")
+if not status_ok then
+  return
+end
+
+require('packer').startup({function(use)
   use 'wbthomason/packer.nvim'
-	use 'forrestbaer/minimal_dark'
-	use 'tidalcycles/vim-tidal'
+  use 'forrestbaer/minimal_dark'
   use 'nvim-lualine/lualine.nvim'
   use 'kyazdani42/nvim-web-devicons'
-  use 'nvim-lua/plenary.nvim'
-  use 'nvim-telescope/telescope.nvim'
-  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'}
-  use 'neovim/nvim-lspconfig'
-  use 'williamboman/nvim-lsp-installer'
-  use 'fatih/vim-go'
-  use 'sbdchd/neoformat'
-  use 'rmagatti/auto-session'
-  use 'tpope/vim-fugitive'
   use 'tpope/vim-surround'
   use 'tpope/vim-commentary'
   use 'airblade/vim-gitgutter'
   use 'akinsho/toggleterm.nvim'
-  use 'luukvbaal/nnn.nvim'
-  use {'ms-jpq/coq_nvim', branch = 'coq'}
-  use {'ms-jpq/coq.artifacts', branch = 'artifacts'}
-  use 'ray-x/lsp_signature.nvim'
+	use {'tidalcycles/vim-tidal', ft = 'tidal'}
+  use {'fatih/vim-go', ft = 'go'}
 
   use {
     'vimwiki/vimwiki',
@@ -58,14 +44,21 @@ require('packer').startup(function(use)
   if Packer_Bootstrap then
     require('packer').sync()
   end
-end)
+end,
+config = {
+  display = {
+    open_fn = function()
+      return require('packer.util').float({ border = 'single' })
+    end
+  }
+}})
 
 
 --
 -- helper functions
 --
 local function map(mode, lhs, rhs, opts)
-  local options = {noremap = true}
+  local options = {noremap = true, silent = true}
   if opts then options = vim.tbl_extend('force', options, opts) end
   api.nvim_set_keymap(mode, lhs, rhs, options)
 end
@@ -112,30 +105,6 @@ local function send_to_terminal(t)
   end
 end
 
-
---
--- lsp
---
-
-require('lspconfig').sumneko_lua.setup{
-  settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
-}
-
-local coq = require 'coq'
-local lspconfig = require 'lspconfig'
-require 'lsp_signature'.setup({
-  bind = true,
-  hint_enable = false,
-  handler_opts = { border = 'single' },
-  floating_window_above_cur_line = true,
-  toggle_key = '<C-i>',
-  hint_prefix = ' ',
-})
-local servers = { 'html', 'tsserver', 'gopls'}
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {coq.lsp_ensure_capabilities{}}
-end
-vim.cmd('COQnow -s')
 
 --
 -- other plugin initializations
@@ -203,61 +172,6 @@ require'lualine'.setup {
 
 
 --
--- telescope stuff
---
-local actions = require('telescope.actions')
-
-require('telescope').load_extension('fzf')
-require('telescope').setup{
-  defaults = {
-    prompt_prefix = ' $ ',
-    initial_mode = "insert",
-    selection_strategy = "reset",
-    sorting_strategy = "descending",
-    layout_strategy = "vertical",
-    color_devicons = true,
-    file_ignore_patterns = {
-      "node_modules",
-      "vendor",
-      "__tests__",
-      "__snapshots__",
-    },
-    mappings = {
-      i = {
-        ['<esc>'] = actions.close,
-      },
-    },
-    pickers = {
-      find_files = {
-        hidden = true,
-      },
-    },
-  },
-}
-
-
---
--- nnn
---
-
-require("nnn").setup({
-	picker = {
-    cmd = 'nnn -dHJ',
-    style = {
-      border = "rounded",
-      width = 0.6,
-      height = 0.6,
-    },
-    auto_open = {
-      empty = true
-    },
-    replace_netrw = "picker",
-		session = "",
-	},
-})
-
-
---
 -- toggleterm
 --
 require("toggleterm").setup{
@@ -291,22 +205,6 @@ end
 -- visual setup
 --
 cmd 'colorscheme minimal_dark'
-
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
-
-vim.diagnostic.config({
-  virtual_text = {
-    prefix = '',
-  },
-  signs = true,
-  underline = false,
-  update_in_insert = false,
-  severity_sort = true,
-})
 
 g.gitgutter_sign_added = '+'
 g.gitgutter_sign_modified = '~'
@@ -361,28 +259,11 @@ g.go_info_mode = 'gopls' -- or guru
 g.go_doc_balloon = 1
 g.go_doc_popup_window = 1
 g.go_def_reuse_buffer = 1
-g.neoformat_basic_format_align = 1
-g.neoformat_basic_format_retab = 1
-g.neoformat_basic_format_trim = 1
 
-g.coq_settings = {
-  clients = {
-    buffers = {
-      enabled = false,
-      same_filetype = true
-    }
-  }
-}
 
 --
 -- key mappings
 --
-
--- lsp
-map('n', 'K', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-map('n', '<leader>i', '<Cmd>lua vim.lsp.buf.hover()<CR>')
-map('n', '<leader>I', '<Cmd>lua vim.lsp.buf.signature_help()<CR>')
-map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>')
 
 -- terminal
 map('', '<C-w>', '<C-W>W')
@@ -391,19 +272,11 @@ map('n', '<C-z>', '<C-w>W')
 map('i', '<C-z>', '<C-w>W')
 map('', '<leader>t', '<cmd>ToggleTerm<CR>')
 map('t', '<leader>t', '<cmd>ToggleTerm<CR>')
-map("n", "<leader>g", "<cmd>lua GituiToggle()<CR>", {noremap = true, silent = true})
+map("n", "<leader>g", "<cmd>lua GituiToggle()<CR>")
 
--- diagnostic
-map('', '<leader>d', '<cmd>lua vim.diagnostic.open_float(nil, {focus=false})<CR>')
-
--- telescope
-map('', '<leader>ff', '<cmd>Telescope find_files<CR>')
-map('', '<leader>fg', '<cmd>Telescope live_grep<CR>')
-map('', '<leader>fb', '<cmd>Telescope buffers<CR>')
-map('t', '<leader>ft', '<cmd>NnnPicker<CR>')
-map('n', '<leader>ft', '<cmd>NnnPicker<CR>')
-map('', '<leader>fm', '<cmd>Telescope man_pages<CR>')
-map('', '<leader>fh', '<cmd>Telescope help_tags<CR>')
+map('', '<leader>ff', '<cmd><CR>')
+map('', '<leader>fg', '<cmd><CR>')
+map('', '<leader>fb', '<cmd><CR>')
 
 -- vim
 map('', '<Space>', ':silent noh<Bar>echo<cr>')
@@ -412,30 +285,22 @@ map('n', '<leader>q', ':q!<cr>')
 map('n', '<leader>s', ':w!<cr>')
 map('n', '<leader>n', '<cmd>enew<cr>')
 map('', '<leader>c', '<cmd>bd!<cr>')
-map('', '<c-o>', '<cmd>bn<cr>', {noremap = true, silent = true})
-map('', '<c-n>', '<cmd>bp<cr>', {noremap = true, silent = true})
+map('', '<c-o>', '<cmd>bn<cr>')
+map('', '<c-n>', '<cmd>bp<cr>')
 map('n', '<leader>ev', '<cmd>e ~/.config/nvim/init.lua<CR>')
-map('n', '<leader>ep', '<cmd>e ~/.config/nvim/lua/plugins.lua<CR>')
 map('n', '<leader>rv', '<cmd>so ~/.config/nvim/init.lua<CR>')
 
 map('i', '<leader><tab>', '<c-x><c-o>')
 
-map("v", "<", "<gv", { noremap = true, silent = true })
-map("v", ">", ">gv", { noremap = true, silent = true })
+map("v", "<", "<gv")
+map("v", ">", ">gv")
 
 local autocmds = {
     comment_strings = {
       { 'FileType', 'tidal', 'setlocal commentstring=--%s' },
     },
-    go_stuff = {
-      { 'FileType', 'go', 'nmap <leader>i <plug>(go-doc)' },
-    },
-    fmt = {
-      { 'BufWritePre', 'javascript', 'undojoin | Neoformat' },
+    packer = {
+      { 'BufWritePost', 'init.lua', 'source ~/.config/nvim/init.lua | PackerCompile' },
     },
 }
 nvim_create_augroups(autocmds)
-
-cmd[[
-highlight LspSignatureActiveParameter ctermfg=34
-]]
