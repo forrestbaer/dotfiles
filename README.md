@@ -1,4 +1,4 @@
-# Forrest's dotfiles, lean and mean
+# Forrest's unix environment setup
 
 ### General Configuration:
 
@@ -8,6 +8,7 @@
 ### Installation
 
   - run install.sh
+  - install dependencies
 
 ### Dependencies
 
@@ -15,3 +16,9 @@
   - git / gh
   - neovim
   - gitui
+  - fzf
+  - tmux
+  - lsp servers: sumneko_lua, tsserver, html, gopls
+  - pass
+  - mac: trash
+  - bat

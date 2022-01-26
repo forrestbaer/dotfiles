@@ -1,5 +1,7 @@
 alias weather='curl -s "wttr.in/?format=%l:+%c+%t+%h+%P+%m\n"'
 
+alias ytaudio='youtube-dl --extract-audio --audio-quality 0 --audio-format mp3 -o "~/store/music/%(title)s-%(id)s.%(ext)s"'
+
 alias ls='ls -GhF'
 alias ll='ls -GhlFa' # long format listing; add / to end of directories
 alias la='ls -GalaF' # include dot files in listing; add / to end of directories
@@ -8,6 +10,8 @@ alias grep='grep --color --line-number'
 alias c='clear'
 alias md='mkdir'
 alias ctags='/usr/local/bin/ctags'
+alias rm='trash'
+alias cat='bat'
 
 # Git
 

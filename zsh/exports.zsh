@@ -1,6 +1,7 @@
 export EDITOR="nvim"
 export SHELL=/bin/zsh
 export GNUPGHOME=~/store/gpg
+export GPG_TTY="$TTY"
 export PYENV_ROOT="$HOME/.pyenv/shims"
 export PATH="$PYENV_ROOT:$PATH"
 export PIPENV_PYTHON="$PYENV_ROOT/python"

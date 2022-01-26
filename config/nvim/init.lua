@@ -20,13 +20,21 @@ end
 
 require('packer').startup({function(use)
   use 'wbthomason/packer.nvim'
+  use 'neovim/nvim-lspconfig'
   use 'forrestbaer/minimal_dark'
   use 'nvim-lualine/lualine.nvim'
+  use 'nvim-lua/plenary.nvim'
+  use 'nvim-telescope/telescope.nvim'
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'}
+  use 'nvim-telescope/telescope-file-browser.nvim'
   use 'kyazdani42/nvim-web-devicons'
   use 'tpope/vim-surround'
   use 'tpope/vim-commentary'
   use 'airblade/vim-gitgutter'
   use 'akinsho/toggleterm.nvim'
+  use {'ms-jpq/coq_nvim', branch = 'coq'}
+  use {'ms-jpq/coq.artifacts', branch = 'artifacts'}
+  use 'ray-x/lsp_signature.nvim'
 	use {'tidalcycles/vim-tidal', ft = 'tidal'}
   use {'fatih/vim-go', ft = 'go'}
 
@@ -88,22 +96,74 @@ local function dump(o)
    end
 end
 
--- converts contents of a register and converts to array of line terminated items
-local function split_multiline_reg(reg)
-  local st = {}
-  local ss = vim.fn.getreg(reg)
-  for s in ss:gmatch("[^\r\n]+") do
-      table.insert(st, s)
-  end
-  return st
+
+--
+-- lsp
+--
+local lspconfig = require('lspconfig')
+lspconfig.sumneko_lua.setup{
+  settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
+}
+
+require 'lsp_signature'.setup({
+  bind = true,
+  hint_enable = false,
+  handler_opts = { border = 'single' },
+  floating_window_above_cur_line = true,
+  toggle_key = '<C-i>',
+  hint_prefix = ' ',
+})
+local coq = require "coq"
+
+local servers = { 'html', 'tsserver', 'gopls'}
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup {coq.lsp_ensure_capabilities{}}
 end
 
--- sends contents of table to terminal
-local function send_to_terminal(t)
-  for k,v in ipairs(t) do
-    -- vim.cmd(':TermExec --cmd="'..tostring(v)..'"')
-  end
-end
+vim.cmd('COQnow -s')
+
+g.coq_settings = {
+  clients = {
+    buffers = {
+      enabled = false,
+      same_filetype = true
+    }
+  }
+}
+
+--
+-- telescope stuff
+--
+local actions = require('telescope.actions')
+
+require('telescope').load_extension('fzf')
+require('telescope').setup{
+  defaults = {
+    prompt_prefix = ' $ ',
+    initial_mode = "insert",
+    selection_strategy = "reset",
+    sorting_strategy = "descending",
+    layout_strategy = "vertical",
+    color_devicons = true,
+    file_ignore_patterns = {
+      "node_modules",
+      "vendor",
+      "__tests__",
+      "__snapshots__",
+    },
+    mappings = {
+      i = {
+        ['<esc>'] = actions.close,
+      },
+    },
+    pickers = {
+      find_files = {
+        hidden = true,
+      },
+    },
+  },
+}
+require("telescope").load_extension "file_browser"
 
 
 --
@@ -265,6 +325,12 @@ g.go_def_reuse_buffer = 1
 -- key mappings
 --
 
+-- lsp
+map('n', 'K', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
+map('n', '<leader>i', '<Cmd>lua vim.lsp.buf.hover()<CR>')
+map('n', '<leader>I', '<Cmd>lua vim.lsp.buf.signature_help()<CR>')
+map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>')
+
 -- terminal
 map('', '<C-w>', '<C-W>W')
 map('t', '<C-z>', '<C-\\><C-n>')
@@ -274,9 +340,13 @@ map('', '<leader>t', '<cmd>ToggleTerm<CR>')
 map('t', '<leader>t', '<cmd>ToggleTerm<CR>')
 map("n", "<leader>g", "<cmd>lua GituiToggle()<CR>")
 
-map('', '<leader>ff', '<cmd><CR>')
-map('', '<leader>fg', '<cmd><CR>')
-map('', '<leader>fb', '<cmd><CR>')
+-- telescope
+map('', '<leader>ff', '<cmd>Telescope find_files<CR>')
+map('', '<leader>fg', '<cmd>Telescope live_grep<CR>')
+map('', '<leader>fb', '<cmd>Telescope buffers<CR>')
+map('n', '<leader>ft', '<cmd>Telescope file_browser<CR>')
+map('', '<leader>fm', '<cmd>Telescope man_pages<CR>')
+map('', '<leader>fh', '<cmd>Telescope help_tags<CR>')
 
 -- vim
 map('', '<Space>', ':silent noh<Bar>echo<cr>')
@@ -288,6 +358,7 @@ map('', '<leader>c', '<cmd>bd!<cr>')
 map('', '<c-o>', '<cmd>bn<cr>')
 map('', '<c-n>', '<cmd>bp<cr>')
 map('n', '<leader>ev', '<cmd>e ~/.config/nvim/init.lua<CR>')
+map('n', '<leader>em', '<cmd>e ~/.config/mutt/muttrc<CR>')
 map('n', '<leader>rv', '<cmd>so ~/.config/nvim/init.lua<CR>')
 
 map('i', '<leader><tab>', '<c-x><c-o>')
@@ -304,3 +375,7 @@ local autocmds = {
     },
 }
 nvim_create_augroups(autocmds)
+
+cmd[[
+highlight LspSignatureActiveParameter ctermfg=34
+]]
