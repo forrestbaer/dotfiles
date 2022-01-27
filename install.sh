@@ -13,7 +13,7 @@ dir=${PWD}
 backupdir="$dir/dotfile_backup"
 links_made=0
 
-files="zshrc gitconfig zsh tmux.conf config/nvim/init.lua"
+files="zshrc gitconfig zsh tmux.conf config/nvim/init.lua config/gitui/theme.ron"
 
 echo "${cc}*** ${nc}Scanning your home folder for links."
 

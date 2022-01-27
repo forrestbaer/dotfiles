@@ -10,7 +10,7 @@ local fn, opt, api, cmd, g = vim.fn, vim.opt, vim.api, vim.cmd, vim.g
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 
 if fn.empty(fn.glob(install_path)) > 0 then
-  Packer_Bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
 end
 
 local status_ok, packer = pcall(require, "packer")
@@ -130,6 +130,7 @@ g.coq_settings = {
     }
   }
 }
+
 
 --
 -- telescope stuff
@@ -273,6 +274,12 @@ g.gitgutter_sign_removed_first_line = '^^'
 g.gitgutter_sign_removed_above_and_below = '{'
 g.gitgutter_sign_modified_removed = '-'
 
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
 
 --
 -- options
@@ -298,12 +305,13 @@ opt.scrolloff = 4
 opt.backup = false
 opt.splitbelow = true
 opt.grepprg = 'rg'
-opt.updatetime = 300
+opt.updatetime = 150
 opt.undofile = true
 opt.undodir = '/Users/forrestbaer/tmp'
 opt.helpheight = 15
 opt.completeopt = 'menuone,noselect,noinsert'
 opt.omnifunc = 'syntaxcomplete#Complete'
+opt.clipboard = 'unnamedplus'
 
 
 --
@@ -377,5 +385,5 @@ local autocmds = {
 nvim_create_augroups(autocmds)
 
 cmd[[
-highlight LspSignatureActiveParameter ctermfg=34
+highlight LspSignatureActiveParameter ctermfg=5
 ]]

@@ -19,6 +19,7 @@
   - fzf
   - tmux
   - lsp servers: sumneko_lua, tsserver, html, gopls
+  - tmux-mem-cpu-load
   - pass
   - mac: trash
   - bat

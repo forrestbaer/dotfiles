@@ -3,3 +3,4 @@ msmtprc
 config/vdirsyncer/config
 config/neomutt/forrestbaer.com
 .DS_store
+zsh/zsh-autosuggestions/
