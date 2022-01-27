@@ -1,0 +1,81 @@
+## Account settings
+set from = forrest@forrestbaer.com
+set realname = "Forrest Baer"
+set mbox_type = Maildir
+set folder = "~/.mail/fb"
+mailboxes `echo ~/.mail/fb/*`
+set sendmail = "msmtp -a forrestbaer.com"
+set alias_file = "~/.config/mutt/aliases"
+
+# misc settings
+set reply_to
+set reverse_alias
+set shell = "/bin/zsh"
+unset help
+set date_format = "%b/%d"
+
+# cache settings
+set header_cache = "~/.cache/mutt/forrestbaer.com/header_cache"
+set message_cachedir = "~/.cache/mutt/forrestbaer.com/message_cache"
+
+# mailbox settings
+set spoolfile = +inbox
+set postponed = +Drafts
+set record = +Sent
+set trash = +Trash
+set use_threads = "yes"
+set use_from = "yes"
+set envelope_from = "yes"
+set sort = last-date-received
+set nomark_old
+set abort_unmodified = yes
+set auto_edit
+set timeout = 10
+set fast_reply
+
+# navigation settings
+# options: alias, browser, editor, index, compose, pager, postpone, query
+bind index,pager g noop
+macro pager <Down> "<next-line>"
+macro pager <Up> "<previous-line>"
+macro pager <Right> "<next-entry>"
+macro pager <Left> "<previous-entry>"
+macro index,pager gi "<change-folder>=inbox<enter>" "go to inbox"
+macro index,pager gs "<change-folder>=Sent<enter>" "go to sent"
+macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
+macro index,pager gt "<change-folder>=Trash<enter>" "go to trash"
+macro index A ":set confirmappend=no delete=yes auto_tag=yes\n<save-message>=archive\n<sync-mailbox>:set confirmappend=yes delete=ask-yes\n"
+macro index S ":set confirmappend=no delete=yes auto_tag=yes\n<save-message>=spam\n<sync-mailbox>:set confirmappend=yes delete=ask-yes\n"
+macro pager G "<bottom>"
+macro pager gg "<top>"
+
+auto_view text/html
+set mailcap_path = ~/.config/mutt/mailcap
+
+# header weeding
+set header
+ignore *
+unignore from date subject to cc
+unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
+unignore posted-to:
+hdr_order From Date: From: To: Cc: Subject:
+
+# display settings
+set tilde
+set pager_stop
+set compose_show_user_headers
+set edit_headers
+unset markers
+
+# colors
+color header color72 default "^(Subject)"
+color body color94 default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
+color header brightwhite default "^(To|CC|BCC)"
+color body color74 default "(https?|ftp|file)://[\-\.,/%~_:?&=\#a-zA-Z0-9;+]+" # URL
+color indicator black color72
+color index color94 default "~T"
+
+# formatting
+set index_format = "[%Z]  %D  %-20.20F  %s"
+set status_format=" Msgs=%M(%m) [N=%n,O=%o,*=%t,p=%p] %> %r (%P) %h:%f [%l] (%s/%S) (%v) "
+

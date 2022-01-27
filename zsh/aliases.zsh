@@ -1,5 +1,6 @@
 alias weather='curl -s "wttr.in/?format=%l:+%c+%t+%h+%P+%m\n"'
 
+alias mail='neomutt'
 alias ytaudio='youtube-dl --extract-audio --audio-quality 0 --audio-format mp3 -o "~/store/music/%(title)s-%(id)s.%(ext)s"'
 
 alias ls='ls -GhF'
