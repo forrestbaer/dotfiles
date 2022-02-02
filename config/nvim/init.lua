@@ -358,7 +358,7 @@ map('', '<leader>fh', '<cmd>Telescope help_tags<CR>')
 
 -- vim
 map('', '<Space>', ':silent noh<Bar>echo<cr>')
-map('n', 'l', '<C-r>')
+map('n', 'U', '<C-r>')
 map('n', '<leader>q', ':q!<cr>')
 map('n', '<leader>s', ':w!<cr>')
 map('n', '<leader>n', '<cmd>enew<cr>')

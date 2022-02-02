@@ -36,6 +36,8 @@ set fast_reply
 # navigation settings
 # options: alias, browser, editor, index, compose, pager, postpone, query
 bind index,pager g noop
+bind index,pager d noop
+bind index,pager <Del> noop
 macro pager <Down> "<next-line>"
 macro pager <Up> "<previous-line>"
 macro pager <Right> "<next-entry>"
@@ -45,6 +47,7 @@ macro index,pager gs "<change-folder>=Sent<enter>" "go to sent"
 macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
 macro index,pager gt "<change-folder>=Trash<enter>" "go to trash"
 macro index A ":set confirmappend=no delete=yes auto_tag=yes\n<save-message>=archive\n<sync-mailbox>:set confirmappend=yes delete=ask-yes\n"
+macro index D ":set confirmappend=no delete=yes auto_tag=yes\n<save-message>=trash\n<sync-mailbox>:set confirmappend=yes delete=ask-yes\n"
 macro index S ":set confirmappend=no delete=yes auto_tag=yes\n<save-message>=spam\n<sync-mailbox>:set confirmappend=yes delete=ask-yes\n"
 macro pager G "<bottom>"
 macro pager gg "<top>"
