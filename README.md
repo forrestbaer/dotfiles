@@ -23,7 +23,6 @@
   - lsp servers: sumneko_lua, tsserver, html, gopls
   - tmux-mem-cpu-load
   - mutt
-  - pass
   - mac: trash
   - btop
   - bat

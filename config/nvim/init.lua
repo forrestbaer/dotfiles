@@ -18,6 +18,7 @@ require('packer').startup({function(use)
   use 'forrestbaer/minimal_dark'
   use 'nvim-lualine/lualine.nvim'
   use 'nvim-lua/plenary.nvim'
+  use 'rmagatti/goto-preview'
   use 'nvim-telescope/telescope.nvim'
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'}
   use 'nvim-telescope/telescope-file-browser.nvim'
@@ -133,6 +134,8 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 		signs = true,
 	}
 )
+
+require('goto-preview').setup{}
 
 --
 -- telescope stuff
@@ -339,7 +342,8 @@ g.go_def_reuse_buffer = 1
 map('n', 'K', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<leader>i', '<Cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', '<leader>I', '<Cmd>lua vim.lsp.buf.signature_help()<CR>')
-map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>')
+map('n', 'gD', '<Cmd>lua vim.lsp.buf.definition()<CR>')
+map('n', 'gd', '<cmd>lua require("goto-preview").goto_preview_definition()<CR>')
 map('n', '<leader>d', "<cmd>lua vim.diagnostic.open_float()<CR>")
 
 -- git
