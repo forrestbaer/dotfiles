@@ -3,19 +3,13 @@
 --
 local fn, opt, api, cmd, g = vim.fn, vim.opt, vim.api, vim.cmd, vim.g
 
-
 --
 -- plugins
 --
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-
 if fn.empty(fn.glob(install_path)) > 0 then
   fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-end
-
-local status_ok, packer = pcall(require, "packer")
-if not status_ok then
-  return
+  Packer_Bootstrap = true
 end
 
 require('packer').startup({function(use)
@@ -29,12 +23,12 @@ require('packer').startup({function(use)
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'kyazdani42/nvim-web-devicons'
   use 'tpope/vim-surround'
+  use 'tpope/vim-fugitive'
   use 'tpope/vim-commentary'
   use 'airblade/vim-gitgutter'
   use 'akinsho/toggleterm.nvim'
   use {'ms-jpq/coq_nvim', branch = 'coq'}
   use {'ms-jpq/coq.artifacts', branch = 'artifacts'}
-  use 'ray-x/lsp_signature.nvim'
 	use {'tidalcycles/vim-tidal', ft = 'tidal'}
   use {'fatih/vim-go', ft = 'go'}
 
@@ -105,14 +99,15 @@ lspconfig.sumneko_lua.setup{
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
 }
 
-require 'lsp_signature'.setup({
-  bind = true,
-  hint_enable = false,
-  handler_opts = { border = 'single' },
-  floating_window_above_cur_line = true,
-  toggle_key = '<C-i>',
-  hint_prefix = ' ',
-})
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    underline = true,
+    virtual_text = true,
+    signs = true,
+    update_in_insert = false,
+  }
+)
+
 local coq = require "coq"
 
 local servers = { 'html', 'tsserver', 'gopls'}
@@ -131,6 +126,13 @@ g.coq_settings = {
   }
 }
 
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+	vim.lsp.diagnostic.on_publish_diagnostics, {
+		virtual_text = false,
+		underline = true,
+		signs = true,
+	}
+)
 
 --
 -- telescope stuff
@@ -203,7 +205,7 @@ require'lualine'.setup {
         sections = { 'error', 'warn', 'info' }}
     },
     lualine_c = {
-      {'filename', separator = { right = ''}}
+      {'filename', separator = { right = ''}},
     },
     lualine_x = {
       {'encoding', separator = { left = ''}},
@@ -338,6 +340,13 @@ map('n', 'K', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<leader>i', '<Cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', '<leader>I', '<Cmd>lua vim.lsp.buf.signature_help()<CR>')
 map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>')
+map('n', '<leader>d', "<cmd>lua vim.diagnostic.open_float()<CR>")
+
+-- git
+map('n', '<leader>gb', "<cmd>G blame<CR>")
+map('n', '<leader>ga', "<cmd>G add .<CR>")
+map('n', '<leader>gc', "<cmd>G commit<CR>")
+map('n', '<leader>gp', "<cmd>G push<CR>")
 
 -- terminal
 map('', '<C-w>', '<C-W>W')
@@ -383,7 +392,3 @@ local autocmds = {
     },
 }
 nvim_create_augroups(autocmds)
-
-cmd[[
-highlight LspSignatureActiveParameter ctermfg=5
-]]
