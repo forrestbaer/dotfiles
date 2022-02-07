@@ -10,7 +10,6 @@
 
   - run install.sh
   - install dependencies
-  - set up msmtp, isync(mbsync)
 
 ### Dependencies
 
@@ -22,7 +21,6 @@
   - tmux
   - lsp servers: sumneko_lua, tsserver, html, gopls
   - tmux-mem-cpu-load
-  - mutt
   - mac: trash
   - btop
   - bat
