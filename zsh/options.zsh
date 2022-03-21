@@ -1,14 +1,21 @@
-setopt always_to_end
-setopt append_history
 setopt auto_cd
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushd_silent
+setopt always_to_end
 setopt complete_in_word
-setopt extendedglob
+setopt menu_complete
+setopt auto_list
+setopt list_packed
+setopt rec_exact
 setopt no_case_glob
+setopt extendedglob
+setopt append_history
 setopt hist_ignore_dups
 setopt hist_find_no_dups
 setopt inc_append_history
-setopt nobeep
-setopt nohup
+setopt no_hup
+setopt no_beep
 setopt prompt_subst
 setopt vi
 

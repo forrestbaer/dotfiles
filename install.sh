@@ -13,9 +13,7 @@ dir=${PWD}
 backupdir="$dir/dotfile_backup"
 links_made=0
 
-dirs_to_create="config/msmtp config/msmtprc config/mutt mail mail/fb config/gitui"
-
-files="zshrc gitconfig zsh tmux.conf config/nvim/init.lua config/gitui/theme.ron mbsyncrc msmtprc config/mutt/muttrc config/mutt/mailcap"
+files="zshrc gitconfig zsh tmux.conf config/nvim/init.lua config/gitui/theme.ron"
 
 echo "${cc}*** ${nc}Scanning your home folder for links."
 
