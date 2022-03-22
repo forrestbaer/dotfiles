@@ -33,9 +33,6 @@ alias tmux='tmux new -As0'
 # ad hoc
 
 alias cdds='cd ~/code/design-system'
-<<<<<<< Updated upstream
-=======
-alias cds='cd ~/store'
 
 vdiff () {
     if [ "${#}" -ne 2 ] ; then
@@ -54,4 +51,3 @@ vdiff () {
         vim -d "${left}" "${right}"
     fi
 }
->>>>>>> Stashed changes
