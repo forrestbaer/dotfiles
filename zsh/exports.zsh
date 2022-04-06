@@ -7,7 +7,7 @@ export PATH="$PYENV_ROOT:$PATH"
 export PIPENV_PYTHON="$PYENV_ROOT/python"
 
 if [[ $TERM != 'dumb' ]]; then
-    export TERM=xterm-256color
+    export TERM=screen-256color
 fi
 
 if command -v pyenv 1>/dev/null 2>&1; then

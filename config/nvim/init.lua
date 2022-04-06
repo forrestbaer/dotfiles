@@ -16,13 +16,13 @@ require('packer').startup({function(use)
   use 'wbthomason/packer.nvim'
   use 'neovim/nvim-lspconfig'
   use 'forrestbaer/minimal_dark'
-  use 'nvim-lualine/lualine.nvim'
   use 'nvim-lua/plenary.nvim'
   use 'rmagatti/goto-preview'
   use 'nvim-telescope/telescope.nvim'
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'}
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'kyazdani42/nvim-web-devicons'
+  use 'nvim-lualine/lualine.nvim'
   use 'tpope/vim-surround'
   use 'tpope/vim-fugitive'
   use 'tpope/vim-commentary'
@@ -177,7 +177,7 @@ require("telescope").load_extension "file_browser"
 --
 require('nvim-web-devicons').setup{ default = true }
 
-require'lualine'.setup {
+require'lualine'.setup{
   options = {
     icons_enabled = true,
     fmt = string.lower,
