@@ -5,6 +5,7 @@ export GPG_TTY="$TTY"
 export PYENV_ROOT="$HOME/.pyenv/shims"
 export PATH="$PYENV_ROOT:$PATH"
 export PIPENV_PYTHON="$PYENV_ROOT/python"
+export PASSWORD_STORE_DIR=~/store/pass
 
 if [[ $TERM != 'dumb' ]]; then
     export TERM=screen-256color

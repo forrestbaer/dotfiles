@@ -16,6 +16,7 @@
   - zsh
   - git / gh
   - neovim
+  - git-delta
   - gitui
   - fzf
   - tmux
