@@ -13,15 +13,17 @@
 
 ### Dependencies
 
+  - alacritty
   - zsh
   - git / gh
   - neovim
   - git-delta
   - gitui
-  - fzf
+  - fzf / ripgrep
   - tmux
   - lsp servers: sumneko_lua, tsserver, html, gopls
   - tmux-mem-cpu-load
-  - mac: trash
+  - trash
   - btop
   - bat
+  - pipe-rename
