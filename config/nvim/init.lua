@@ -373,6 +373,7 @@ opt.clipboard = 'unnamedplus'
 -- vim global opts
 --
 g.mapleader = ','
+g.maplocalleader = ','
 g.gitgutter_terminal_reports_focus = 0
 g.terminal_color_3 = '#ac882f'
 g.tidal_target = "terminal"
@@ -429,7 +430,6 @@ map('', '<leader>c', '<cmd>bd!<cr>')
 map('', '<c-o>', '<cmd>bn<cr>')
 map('', '<c-n>', '<cmd>bp<cr>')
 map('n', '<leader>ev', '<cmd>e ~/.config/nvim/init.lua<CR>')
-map('n', '<leader>em', '<cmd>e ~/.config/mutt/muttrc<CR>')
 map('n', '<leader>rv', '<cmd>so ~/.config/nvim/init.lua<CR>')
 
 map('i', '<leader><tab>', '<c-x><c-o>')
