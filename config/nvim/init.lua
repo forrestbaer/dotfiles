@@ -140,7 +140,46 @@ require('goto-preview').setup{}
 --
 -- telescope stuff
 --
+--
 local actions = require('telescope.actions')
+local action_state = require('telescope.actions.state')
+local telescope_custom_actions = {}
+
+local multiopen = function(prompt_bufnr, open_cmd)
+  local picker = action_state.get_current_picker(prompt_bufnr)
+  local num_selections = #picker:get_multi_selection()
+  if not num_selections or num_selections <= 1 then
+    actions.add_selection(prompt_bufnr)
+  end
+  actions.send_selected_to_qflist(prompt_bufnr)
+
+  local results = vim.fn.getqflist()
+
+  for _, result in ipairs(results) do
+    local current_file = vim.fn.bufname()
+    local next_file = vim.fn.bufname(result.bufnr)
+
+    if current_file == "" then
+      vim.api.nvim_command("edit" .. " " .. next_file)
+    else
+      vim.api.nvim_command(open_cmd .. " " .. next_file)
+    end
+  end
+
+  vim.api.nvim_command("cd .")
+end
+function telescope_custom_actions.multi_selection_open_vsplit(prompt_bufnr)
+    multiopen(prompt_bufnr, "vsplit")
+end
+function telescope_custom_actions.multi_selection_open_split(prompt_bufnr)
+    multiopen(prompt_bufnr, "split")
+end
+function telescope_custom_actions.multi_selection_open_tab(prompt_bufnr)
+    multiopen(prompt_bufnr, "tabe")
+end
+function telescope_custom_actions.multi_selection_open(prompt_bufnr)
+    multiopen(prompt_bufnr, "edit")
+end
 
 require('telescope').load_extension('fzf')
 require('telescope').setup{
@@ -160,6 +199,17 @@ require('telescope').setup{
     mappings = {
       i = {
         ['<esc>'] = actions.close,
+        ["<C-J>"] = actions.move_selection_next,
+        ["<C-K>"] = actions.move_selection_previous,
+        ["<TAB>"] = actions.toggle_selection,
+        ["<C-TAB>"] = actions.toggle_selection + actions.move_selection_next,
+        ["<S-TAB>"] = actions.toggle_selection + actions.move_selection_previous,
+        ["<CR>"] = telescope_custom_actions.multi_selection_open,
+        ["<C-V>"] = telescope_custom_actions.multi_selection_open_vsplit,
+        ["<C-S>"] = telescope_custom_actions.multi_selection_open_split,
+        ["<C-T>"] = telescope_custom_actions.multi_selection_open_tab,
+        ["<C-DOWN>"] = require('telescope.actions').cycle_history_next,
+        ["<C-UP>"] = require('telescope.actions').cycle_history_prev,
       },
     },
     pickers = {
@@ -241,7 +291,7 @@ require'lualine'.setup{
 -- toggleterm
 --
 require("toggleterm").setup{
-  size = 15,
+  size = 25,
   hide_numbers = true,
   start_in_insert = true,
   insert_mappings = true,
