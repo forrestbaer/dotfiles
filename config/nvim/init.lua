@@ -27,7 +27,6 @@ require('packer').startup({function(use)
   use 'tpope/vim-fugitive'
   use 'tpope/vim-commentary'
   use 'airblade/vim-gitgutter'
-  use 'airblade/vim-rooter'
   use 'akinsho/toggleterm.nvim'
   use {'ms-jpq/coq_nvim', branch = 'coq'}
   use {'ms-jpq/coq.artifacts', branch = 'artifacts'}
@@ -371,7 +370,6 @@ opt.clipboard = 'unnamedplus'
 --
 -- vim global opts
 --
-g.rooter_patterns = {'.git', 'Makefile', 'src', 'package.json'}
 g.mapleader = ','
 g.maplocalleader = ','
 g.gitgutter_terminal_reports_focus = 0
@@ -429,7 +427,7 @@ map('n', '<leader>n', '<cmd>enew<cr>')
 map('', '<leader>c', '<cmd>bd!<cr>')
 map('', '<c-o>', '<cmd>bn<cr>')
 map('', '<c-n>', '<cmd>bp<cr>')
-map('n', '<leader>ev', '<cmd>e ~/.config/nvim/init.lua<CR>')
+map('n', '<leader>ev', '<cmd>cd ~/.config/nvim | e init.lua<CR>')
 map('n', '<leader>rv', '<cmd>so ~/.config/nvim/init.lua<CR>')
 map('n', '<leader>n', '<cmd>-tabmove<CR>')
 map('n', '<leader>o', '<cmd>+tabmove<CR>')
