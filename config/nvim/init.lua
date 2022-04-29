@@ -27,6 +27,7 @@ require('packer').startup({function(use)
   use 'tpope/vim-fugitive'
   use 'tpope/vim-commentary'
   use 'airblade/vim-gitgutter'
+  use 'airblade/vim-rooter'
   use 'akinsho/toggleterm.nvim'
   use {'ms-jpq/coq_nvim', branch = 'coq'}
   use {'ms-jpq/coq.artifacts', branch = 'artifacts'}
@@ -196,7 +197,7 @@ require('telescope').setup{
     mappings = {
       i = {
         ['<esc>'] = actions.close,
-        ["<TAB>"] = actions.toggle_selection,
+        ["<tab>"] = actions.toggle_selection,
         ["<C-V>"] = telescope_custom_actions.multi_selection_open_vsplit,
         ["<C-S>"] = telescope_custom_actions.multi_selection_open_split,
         ["<C-T>"] = telescope_custom_actions.multi_selection_open_tab,
@@ -216,6 +217,7 @@ require("telescope").load_extension "file_browser"
 -- other plugin initializations
 --
 require('nvim-web-devicons').setup{ default = true }
+
 
 require'lualine'.setup{
   options = {
@@ -237,8 +239,8 @@ require'lualine'.setup{
       separator = {right = ''},
       color = {fg = '#000000', bg = '#009933'}}
     },
-    lualine_b = {
-      {'branch',
+    lualine_b = {{
+      '%{expand("%:~:.")}',
         separator = {right = ''},
         color = {fg = '#999999'}},
       {'diff', colored = false},
@@ -248,14 +250,14 @@ require'lualine'.setup{
         sections = { 'error', 'warn', 'info' }}
     },
     lualine_c = {
-      {'filename', separator = { right = ''}},
+      {'', separator = { right = ''}},
     },
     lualine_x = {
       {'encoding', separator = { left = ''}},
       {'filetype', colored = false, color = { bg = '#222222'}}
     },
     lualine_y = {
-      {'progress', color = { fg = '#FFFFFF'}}
+      {'progress', 'location', color = { fg = '#FFFFFF'}}
     },
     lualine_z = {{
       'location',
@@ -266,15 +268,21 @@ require'lualine'.setup{
   tabline = {
     lualine_a = {{
       'buffers',
+      mode = 0,
       separator = { right = '' },
       buffers_color = {
         active = { fg = '#000000', bg = '#DDDDDD'},
-        inactive = { fg = '#000000', bg = '#444444'}
-      }
+        inactive = { fg = '#DDDDDD', bg = '#000000'}
+      },
     }},
-    lualine_b = {}
+    lualine_z = {{
+      'branch',
+      separator = {left = '' },
+      color = {fg = '#000000', bg = '#009933' }
+    }}
   },
 }
+
 
 
 --
@@ -359,9 +367,11 @@ opt.omnifunc = 'syntaxcomplete#Complete'
 opt.clipboard = 'unnamedplus'
 
 
+
 --
 -- vim global opts
 --
+g.rooter_patterns = {'.git', 'Makefile', 'src', 'package.json'}
 g.mapleader = ','
 g.maplocalleader = ','
 g.gitgutter_terminal_reports_focus = 0
@@ -421,6 +431,8 @@ map('', '<c-o>', '<cmd>bn<cr>')
 map('', '<c-n>', '<cmd>bp<cr>')
 map('n', '<leader>ev', '<cmd>e ~/.config/nvim/init.lua<CR>')
 map('n', '<leader>rv', '<cmd>so ~/.config/nvim/init.lua<CR>')
+map('n', '<leader>n', '<cmd>-tabmove<CR>')
+map('n', '<leader>o', '<cmd>+tabmove<CR>')
 
 map('i', '<leader><tab>', '<c-x><c-o>')
 
