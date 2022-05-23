@@ -63,7 +63,7 @@ draw_bold_text_with_bright_colors: true
 
 colors:
   primary:
-    background: '#111111'
+    background: '#000000'
     foreground: '#A8A8A8'
 
   #vi_mode_cursor:
@@ -117,9 +117,9 @@ colors:
   #
   # Allowed values are CellForeground/CellBackground, which reference the
   # affected cell, or hexadecimal colors like #ff00ff.
-  #selection:
-  #  text: CellBackground
-  #  background: CellForeground
+  # selection:
+  #   text: '#000000'
+  #   background: '#0000AA'
 
   # Normal colors
   normal:

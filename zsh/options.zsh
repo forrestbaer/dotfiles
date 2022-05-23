@@ -2,9 +2,6 @@ setopt auto_cd
 setopt auto_pushd
 setopt pushd_ignore_dups
 setopt pushd_silent
-setopt always_to_end
-setopt complete_in_word
-setopt menu_complete
 setopt auto_list
 setopt list_packed
 setopt rec_exact
@@ -23,4 +20,4 @@ HISTSIZE=600
 SAVEHIST=600
 HISTFILE=~/.zsh_history
 
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_STRATEGY=(completion history)
