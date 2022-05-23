@@ -6,7 +6,6 @@ local fn, opt, api, cmd, g = vim.fn, vim.opt, vim.api, vim.cmd, vim.g
 --
 -- plugins
 --
-
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 
 opt.termguicolors = true
@@ -29,13 +28,13 @@ if not status_ok then
   return
 end
 
--- packer.init {
---   display = {
---     open_fn = function()
---       return require("packer.util").float { border = "rounded" }
---     end,
---   },
--- }
+packer.init {
+  display = {
+    open_fn = function()
+      return require("packer.util").float { border = "rounded" }
+    end,
+  },
+}
 
 require('packer').startup({function(use)
   use 'wbthomason/packer.nvim'
@@ -76,6 +75,7 @@ require('packer').startup({function(use)
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
   }
+  use "nvim-treesitter/playground"
   use "JoosepAlviste/nvim-ts-context-commentstring"
 
   use "L3MON4D3/LuaSnip"
@@ -172,7 +172,7 @@ local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local telescope_custom_actions = {}
 
-local multiopen = function(prompt_bufnr, open_cmd)
+local function multiopen(prompt_bufnr, open_cmd)
   local picker = action_state.get_current_picker(prompt_bufnr)
   local num_selections = #picker:get_multi_selection()
   if not num_selections or num_selections <= 1 then
@@ -256,7 +256,7 @@ local check_backspace = function()
   return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
 end
 
---   פּ ﯟ   some other good icons
+--   פּ ﯟ  
 local kind_icons = {
   Text = "",
   Method = "m",
@@ -284,12 +284,11 @@ local kind_icons = {
   Operator = "",
   TypeParameter = "",
 }
--- find more here: https://www.nerdfonts.com/cheat-sheet
 
 cmp.setup {
   snippet = {
     expand = function(args)
-      luasnip.lsp_expand(args.body) -- For `luasnip` users.
+      luasnip.lsp_expand(args.body)
     end,
   },
   mapping = {
@@ -302,8 +301,6 @@ cmp.setup {
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     },
-    -- Accept currently selected item. If none selected, `select` first item.
-    -- Set `select` to `false` to only confirm explicitly selected items.
     ["<CR>"] = cmp.mapping.confirm { select = true },
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
@@ -337,9 +334,7 @@ cmp.setup {
   formatting = {
     fields = { "kind", "abbr", "menu" },
     format = function(entry, vim_item)
-      -- Kind icons
       vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-      -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
       vim_item.menu = ({
         nvim_lsp = "[LSP]",
         luasnip = "[Snippet]",
@@ -368,12 +363,46 @@ cmp.setup {
   },
 }
 
+--
+-- treesitter
+--
+
+require('nvim-treesitter').setup {}
+require('nvim-treesitter.configs').setup {
+  ensure_installed = { "regex", "fennel", "c", "javascript", "lua", "typescript", "go", "html", "python" },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "gnn",
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
+    },
+  },
+  autopairs = {
+    enable = true
+  },
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  },
+  indent = {
+    enable = true,
+  },
+}
+
+require("nvim-treesitter.highlight").set_custom_captures {
+  ["punctuation.bracket"] = "Title",
+  ["constructor"] = "Title",
+  ["string"] = "Normal",
+  ["keyword"] = "String",
+}
+
 
 --
 -- other plugin initializations
 --
 require('nvim-web-devicons').setup{ default = true }
-
 
 require('lualine').setup{
   options = {
@@ -438,7 +467,6 @@ require('lualine').setup{
     }}
   },
 }
-
 
 
 --
@@ -526,7 +554,6 @@ opt.omnifunc = 'syntaxcomplete#Complete'
 opt.clipboard = 'unnamedplus'
 
 
-
 --
 -- vim global opts
 --
@@ -544,7 +571,7 @@ g.tidal_target = "terminal"
 -- lsp
 map('n', 'K', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 map('n', '<leader>i', '<Cmd>lua vim.lsp.buf.hover()<CR>')
-map('n', '<leader>I', '<Cmd>lua vim.lsp.buf.signature_help()<CR>')
+map('n', '<leader>I', '<Cmd>TSHighlightCapturesUnderCursor<CR>')
 map('n', 'gD', '<Cmd>lua vim.lsp.buf.definition()<CR>')
 map('n', 'gd', '<cmd>lua require("goto-preview").goto_preview_definition()<CR>')
 map('n', '<leader>d', "<cmd>lua vim.diagnostic.open_float()<CR>")
