@@ -7,7 +7,7 @@
 
 [delta]
     line-numbers = true
-    navigate = true # use n and N to move between sections
+    navigate = true
     side-by-side = true
 
 [merge]

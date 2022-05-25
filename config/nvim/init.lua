@@ -80,6 +80,9 @@ require('packer').startup({function(use)
 
   use "L3MON4D3/LuaSnip"
   use "rafamadriz/friendly-snippets"
+  use "dhruvasagar/vim-table-mode"
+
+  use "junegunn/goyo.vim"
 
   use {
     'norcalli/nvim-colorizer.lua',
