@@ -80,7 +80,6 @@ require('packer').startup({function(use)
 
   use "L3MON4D3/LuaSnip"
   use "rafamadriz/friendly-snippets"
-  use "dhruvasagar/vim-table-mode"
 
   use "junegunn/goyo.vim"
 
@@ -97,7 +96,7 @@ end})
 
 
 --
--- helper functions
+-- helper functions & commands
 --
 local function map(mode, lhs, rhs, opts)
   local options = {noremap = true, silent = true}
@@ -129,6 +128,12 @@ local function dump(o)
       return tostring(o)
    end
 end
+
+api.nvim_create_user_command(
+  'Columnize',
+  '<line1>,<line2>!column -t',
+  {range = '%'}
+)
 
 
 --
@@ -261,31 +266,31 @@ end
 
 --   פּ ﯟ  
 local kind_icons = {
-  Text = "",
-  Method = "m",
-  Function = "",
-  Constructor = "",
-  Field = "",
-  Variable = "",
-  Class = "",
-  Interface = "",
-  Module = "",
-  Property = "",
-  Unit = "",
-  Value = "",
-  Enum = "",
-  Keyword = "",
-  Snippet = "",
-  Color = "",
-  File = "",
-  Reference = "",
-  Folder = "",
-  EnumMember = "",
-  Constant = "",
-  Struct = "",
-  Event = "",
-  Operator = "",
-  TypeParameter = "",
+  Text           =  "",
+  Method         =  "m",
+  Function       =  "",
+  Constructor    =  "",
+  Field          =  "",
+  Variable       =  "",
+  Class          =  "",
+  Interface      =  "",
+  Module         =  "",
+  Property       =  "",
+  Unit           =  "",
+  Value          =  "",
+  Enum           =  "",
+  Keyword        =  "",
+  Snippet        =  "",
+  Color          =  "",
+  File           =  "",
+  Reference      =  "",
+  Folder         =  "",
+  EnumMember     =  "",
+  Constant       =  "",
+  Struct         =  "",
+  Event          =  "",
+  Operator       =  "",
+  TypeParameter  =  "",
 }
 
 cmp.setup {
@@ -508,13 +513,13 @@ end
 --
 cmd 'colorscheme minimal_dark'
 
-g.gitgutter_sign_added = '+'
-g.gitgutter_sign_modified = '~'
-g.gitgutter_sign_removed = '-'
-g.gitgutter_sign_removed_first_line = '^'
-g.gitgutter_sign_removed_above_and_below = '{'
-g.gitgutter_sign_modified_removed = '~-'
-g.gitgutter_map_keys = 0
+g.gitgutter_sign_added                    =  '+'
+g.gitgutter_sign_modified                 =  '~'
+g.gitgutter_sign_removed                  =  '-'
+g.gitgutter_sign_removed_first_line       =  '^'
+g.gitgutter_sign_removed_above_and_below  =  '{'
+g.gitgutter_sign_modified_removed         =  '~-'
+g.gitgutter_map_keys                      =  0
 
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 for type, icon in pairs(signs) do
@@ -526,45 +531,45 @@ end
 --
 -- options
 --
-opt.fileencoding = 'utf-8'
-opt.backspace = 'indent,eol,start'
-opt.tabstop = 2
-opt.shiftwidth = 2
-opt.expandtab = true
-opt.showmatch = true
-opt.signcolumn = "yes"
-opt.number = true
-opt.numberwidth = 5
-opt.hidden = true
-opt.mouse = 'a'
-opt.pumheight = 20
-opt.ignorecase = true
-opt.smartcase = true
-opt.remap = true
-opt.timeout = false
-opt.guicursor = 'i:ver20-blinkon100,n:blinkon100'
-opt.linebreak = true
-opt.scrolloff = 4
-opt.backup = false
-opt.splitbelow = true
-opt.grepprg = 'rg'
-opt.updatetime = 150
-opt.undofile = true
-opt.undodir = '/Users/forrestbaer/tmp'
-opt.helpheight = 15
-opt.completeopt = 'menuone,noselect,noinsert'
-opt.omnifunc = 'syntaxcomplete#Complete'
-opt.clipboard = 'unnamedplus'
+opt.fileencoding  =  'utf-8'
+opt.backspace     =  'indent,eol,start'
+opt.tabstop       =  2
+opt.shiftwidth    =  2
+opt.expandtab     =  true
+opt.showmatch     =  true
+opt.signcolumn    =  "yes"
+opt.number        =  true
+opt.numberwidth   =  5
+opt.hidden        =  true
+opt.mouse         =  'a'
+opt.pumheight     =  20
+opt.ignorecase    =  true
+opt.smartcase     =  true
+opt.remap         =  true
+opt.timeout       =  false
+opt.guicursor     =  'i:ver20-blinkon100,n:blinkon100'
+opt.linebreak     =  true
+opt.scrolloff     =  4
+opt.backup        =  false
+opt.splitbelow    =  true
+opt.grepprg       =  'rg'
+opt.updatetime    =  150
+opt.undofile      =  true
+opt.undodir       =  '/Users/forrestbaer/tmp'
+opt.helpheight    =  15
+opt.completeopt   =  'menuone,noselect,noinsert'
+opt.omnifunc      =  'syntaxcomplete#Complete'
+opt.clipboard     =  'unnamedplus'
 
 
 --
 -- vim global opts
 --
-g.mapleader = ','
-g.maplocalleader = ','
-g.gitgutter_terminal_reports_focus = 0
-g.terminal_color_3 = '#ac882f'
-g.tidal_target = "terminal"
+g.mapleader                         =  ','
+g.maplocalleader                    =  ','
+g.gitgutter_terminal_reports_focus  =  0
+g.terminal_color_3                  =  '#ac882f'
+g.tidal_target                      =  "terminal"
 
 
 --
