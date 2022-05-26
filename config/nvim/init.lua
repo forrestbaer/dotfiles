@@ -531,6 +531,7 @@ end
 --
 -- options
 --
+opt.autochdir     =  true
 opt.fileencoding  =  'utf-8'
 opt.backspace     =  'indent,eol,start'
 opt.tabstop       =  2
