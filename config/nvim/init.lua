@@ -85,8 +85,8 @@ require('packer').startup({function(use)
 
   use {
     'norcalli/nvim-colorizer.lua',
-    ft = { 'css', 'javascript', 'vim', 'html', 'typescript' },
-    config = [[require('colorizer').setup {'css', 'javascript', 'vim', 'html', 'typescript'}]],
+    ft = { 'scss', 'css', 'javascript', 'vim', 'html', 'typescript' },
+    config = [[require('colorizer').setup {'scss', 'css', 'javascript', 'vim', 'html', 'typescript'}]],
   }
 
   if PACKER_BOOTSTRAP then
@@ -531,7 +531,6 @@ end
 --
 -- options
 --
-opt.autochdir     =  true
 opt.fileencoding  =  'utf-8'
 opt.backspace     =  'indent,eol,start'
 opt.tabstop       =  2
