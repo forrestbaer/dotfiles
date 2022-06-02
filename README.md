@@ -26,4 +26,5 @@
   - trash
   - btop
   - bat
+  - ugit
   - pipe-rename
