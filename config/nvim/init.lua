@@ -12,18 +12,18 @@ opt.termguicolors = true
 
 if fn.empty(fn.glob(install_path)) > 0 then
   PACKER_BOOTSTRAP = fn.system {
-    "git",
-    "clone",
-    "--depth",
-    "1",
-    "https://github.com/wbthomason/packer.nvim",
+    'git',
+    'clone',
+    '--depth',
+    '1',
+    'https://github.com/wbthomason/packer.nvim',
     install_path,
   }
-  print "Installing packer close and reopen Neovim..."
+  print 'Installing packer close and reopen Neovim...'
   vim.cmd [[packadd packer.nvim]]
 end
 
-local status_ok, packer = pcall(require, "packer")
+local status_ok, packer = pcall(require, 'packer')
 if not status_ok then
   return
 end
@@ -31,7 +31,7 @@ end
 packer.init {
   display = {
     open_fn = function()
-      return require("packer.util").float { border = "rounded" }
+      return require('packer.util').float { border = 'rounded' }
     end,
   },
 }
@@ -43,7 +43,7 @@ require('packer').startup({function(use)
 
   use 'neovim/nvim-lspconfig'
   use 'williamboman/nvim-lsp-installer'
-  use "windwp/nvim-autopairs"
+  use 'windwp/nvim-autopairs'
   use 'nvim-lua/plenary.nvim'
   use {
     'rmagatti/goto-preview',
@@ -64,24 +64,24 @@ require('packer').startup({function(use)
   use 'airblade/vim-gitgutter'
   use 'akinsho/toggleterm.nvim'
 
-  use "hrsh7th/nvim-cmp"
-  use "hrsh7th/cmp-buffer"
-  use "hrsh7th/cmp-path"
-  use "hrsh7th/cmp-cmdline"
-  use "saadparwaiz1/cmp_luasnip"
-  use "hrsh7th/cmp-nvim-lsp"
+  use 'hrsh7th/nvim-cmp'
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-cmdline'
+  use 'saadparwaiz1/cmp_luasnip'
+  use 'hrsh7th/cmp-nvim-lsp'
 
   use {
-    "nvim-treesitter/nvim-treesitter",
-    run = ":TSUpdate",
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate',
   }
-  use "nvim-treesitter/playground"
-  use "JoosepAlviste/nvim-ts-context-commentstring"
+  use 'nvim-treesitter/playground'
+  use 'JoosepAlviste/nvim-ts-context-commentstring'
 
-  use "L3MON4D3/LuaSnip"
-  use "rafamadriz/friendly-snippets"
+  use 'L3MON4D3/LuaSnip'
+  use 'rafamadriz/friendly-snippets'
 
-  use "junegunn/goyo.vim"
+  use 'junegunn/goyo.vim'
 
   use {
     'norcalli/nvim-colorizer.lua',
@@ -116,19 +116,6 @@ local function nvim_create_augroups(definitions)
     end
 end
 
-local function dump(o)
-   if type(o) == 'table' then
-      local s = '{ '
-      for k,v in pairs(o) do
-         if type(k) ~= 'number' then k = '"'..k..'"' end
-         s = s .. '['..k..'] = ' .. dump(v) .. ','
-      end
-      return s .. '} '
-   else
-      return tostring(o)
-   end
-end
-
 api.nvim_create_user_command(
   'Columnize',
   '<line1>,<line2>!column -t',
@@ -139,15 +126,15 @@ api.nvim_create_user_command(
 --
 -- lsp
 --
-local lspconfig = require("lspconfig")
+local lspconfig = require('lspconfig')
 
-require("nvim-lsp-installer").setup({
+require('nvim-lsp-installer').setup({
     automatic_installation = true,
     ui = {
         icons = {
-            server_installed = "✓",
-            server_pending = "➜",
-            server_uninstalled = "✗"
+            server_installed = '✓',
+            server_pending = '➜',
+            server_uninstalled = '✗'
         }
     }
 })
@@ -161,7 +148,7 @@ for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {}
 end
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     underline = true,
     virtual_text = true,
@@ -175,10 +162,11 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 -- telescope stuff
 --
 
-local telescope = require("telescope")
-local actions = require("telescope.actions")
-local action_state = require("telescope.actions.state")
+local telescope = require('telescope')
+local actions = require('telescope.actions')
+local action_state = require('telescope.actions.state')
 local telescope_custom_actions = {}
+local fb_actions = require('telescope').extensions.file_browser.actions
 
 local function multiopen(prompt_bufnr, open_cmd)
   local picker = action_state.get_current_picker(prompt_bufnr)
@@ -194,46 +182,47 @@ local function multiopen(prompt_bufnr, open_cmd)
     local current_file = vim.fn.bufname()
     local next_file = vim.fn.bufname(result.bufnr)
 
-    if current_file == "" then
-      vim.api.nvim_command("edit" .. " " .. next_file)
+    if current_file == '' then
+      vim.api.nvim_command('edit' .. ' ' .. next_file)
     else
-      vim.api.nvim_command(open_cmd .. " " .. next_file)
+      vim.api.nvim_command(open_cmd .. ' ' .. next_file)
     end
   end
 
-  vim.api.nvim_command("cd .")
+  vim.api.nvim_command('cd .')
 end
 function telescope_custom_actions.multi_selection_open_vsplit(prompt_bufnr)
-    multiopen(prompt_bufnr, "vsplit")
+    multiopen(prompt_bufnr, 'vsplit')
 end
 function telescope_custom_actions.multi_selection_open_split(prompt_bufnr)
-    multiopen(prompt_bufnr, "split")
+    multiopen(prompt_bufnr, 'split')
 end
 function telescope_custom_actions.multi_selection_open_tab(prompt_bufnr)
-    multiopen(prompt_bufnr, "tabe")
+    multiopen(prompt_bufnr, 'tabe')
 end
 
 telescope.setup{
   defaults = {
     prompt_prefix = ' $ ',
-    initial_mode = "insert",
-    selection_strategy = "reset",
-    sorting_strategy = "descending",
-    layout_strategy = "vertical",
+    initial_mode = 'insert',
+    selection_strategy = 'reset',
+    sorting_strategy = 'descending',
+    layout_strategy = 'vertical',
     color_devicons = true,
     file_ignore_patterns = {
-      "node_modules",
-      "vendor",
-      "__tests__",
-      "__snapshots__",
+      'node_modules',
+      'vendor',
+      '__tests__',
+      '__snapshots__',
     },
     mappings = {
       i = {
         ['<esc>'] = actions.close,
-        ["<tab>"] = actions.toggle_selection,
-        ["<C-V>"] = telescope_custom_actions.multi_selection_open_vsplit,
-        ["<C-S>"] = telescope_custom_actions.multi_selection_open_split,
-        ["<C-T>"] = telescope_custom_actions.multi_selection_open_tab,
+        ['<tab>'] = actions.toggle_selection,
+        ['<C-v>'] = telescope_custom_actions.multi_selection_open_vsplit,
+        ['<C-s>'] = telescope_custom_actions.multi_selection_open_split,
+        ['<C-t>'] = telescope_custom_actions.multi_selection_open_tab,
+        ['<C-r>'] = fb_actions.rename,
       },
     },
     pickers = {
@@ -241,56 +230,70 @@ telescope.setup{
         hidden = true,
       },
     },
+    extensions = {
+      file_browser = {
+        mappings = {
+          i = {
+            ['<esc>'] = actions.close,
+            ['<tab>'] = actions.toggle_selection,
+            ['<C-v>'] = telescope_custom_actions.multi_selection_open_vsplit,
+            ['<C-s>'] = telescope_custom_actions.multi_selection_open_split,
+            ['<C-t>'] = telescope_custom_actions.multi_selection_open_tab,
+            ['<C-r>'] = fb_actions.rename,
+          },
+        },
+      },
+    },
   },
 }
 
 telescope.load_extension('fzf')
-telescope.load_extension "file_browser"
+telescope.load_extension('file_browser')
 
-local cmp_status_ok, cmp = pcall(require, "cmp")
+local cmp_status_ok, cmp = pcall(require, 'cmp')
 if not cmp_status_ok then
   return
 end
 
-local snip_status_ok, luasnip = pcall(require, "luasnip")
+local snip_status_ok, luasnip = pcall(require, 'luasnip')
 if not snip_status_ok then
   return
 end
 
-require("luasnip/loaders/from_vscode").lazy_load()
+require('luasnip/loaders/from_vscode').lazy_load()
 
 local check_backspace = function()
-  local col = vim.fn.col "." - 1
-  return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
+  local col = vim.fn.col '.' - 1
+  return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s'
 end
 
 --   פּ ﯟ  
 local kind_icons = {
-  Text           =  "",
-  Method         =  "m",
-  Function       =  "",
-  Constructor    =  "",
-  Field          =  "",
-  Variable       =  "",
-  Class          =  "",
-  Interface      =  "",
-  Module         =  "",
-  Property       =  "",
-  Unit           =  "",
-  Value          =  "",
-  Enum           =  "",
-  Keyword        =  "",
-  Snippet        =  "",
-  Color          =  "",
-  File           =  "",
-  Reference      =  "",
-  Folder         =  "",
-  EnumMember     =  "",
-  Constant       =  "",
-  Struct         =  "",
-  Event          =  "",
-  Operator       =  "",
-  TypeParameter  =  "",
+  Text           =  '',
+  Method         =  'm',
+  Function       =  '',
+  Constructor    =  '',
+  Field          =  '',
+  Variable       =  '',
+  Class          =  '',
+  Interface      =  '',
+  Module         =  '',
+  Property       =  '',
+  Unit           =  '',
+  Value          =  '',
+  Enum           =  '',
+  Keyword        =  '',
+  Snippet        =  '',
+  Color          =  '',
+  File           =  '',
+  Reference      =  '',
+  Folder         =  '',
+  EnumMember     =  '',
+  Constant       =  '',
+  Struct         =  '',
+  Event          =  '',
+  Operator       =  '',
+  TypeParameter  =  '',
 }
 
 cmp.setup {
@@ -300,17 +303,17 @@ cmp.setup {
     end,
   },
   mapping = {
-    ["<Up>"] = cmp.mapping.select_prev_item(),
-		["<Down>"] = cmp.mapping.select_next_item(),
-    ["<C-i>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
-    ["<C-e>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
-    ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-    ["<C-q>"] = cmp.mapping {
+    ['<Up>'] = cmp.mapping.select_prev_item(),
+		['<Down>'] = cmp.mapping.select_next_item(),
+    ['<C-i>'] = cmp.mapping(cmp.mapping.scroll_docs(-1), { 'i', 'c' }),
+    ['<C-e>'] = cmp.mapping(cmp.mapping.scroll_docs(1), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-q>'] = cmp.mapping {
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     },
-    ["<CR>"] = cmp.mapping.confirm { select = true },
-    ["<Tab>"] = cmp.mapping(function(fallback)
+    ['<CR>'] = cmp.mapping.confirm { select = true },
+    ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expandable() then
@@ -323,10 +326,10 @@ cmp.setup {
         fallback()
       end
     end, {
-      "i",
-      "s",
+      'i',
+      's',
     }),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       elseif luasnip.jumpable(-1) then
@@ -335,35 +338,35 @@ cmp.setup {
         fallback()
       end
     end, {
-      "i",
-      "s",
+      'i',
+      's',
     }),
   },
   formatting = {
-    fields = { "kind", "abbr", "menu" },
+    fields = { 'kind', 'abbr', 'menu' },
     format = function(entry, vim_item)
-      vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
+      vim_item.kind = string.format('%s', kind_icons[vim_item.kind])
       vim_item.menu = ({
-        nvim_lsp = "[LSP]",
-        luasnip = "[Snippet]",
-        buffer = "[Buffer]",
-        path = "[Path]",
+        nvim_lsp = '[LSP]',
+        luasnip = '[Snippet]',
+        buffer = '[Buffer]',
+        path = '[Path]',
       })[entry.source.name]
       return vim_item
     end,
   },
   sources = {
-    { name = "nvim_lsp" },
-    { name = "luasnip" },
-    { name = "buffer" },
-    { name = "path" },
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+    { name = 'buffer' },
+    { name = 'path' },
   },
   confirm_opts = {
     behavior = cmp.ConfirmBehavior.Replace,
     select = false,
   },
   window = {
-    bordered = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+    bordered = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
   },
   experimental = {
     ghost_text = false,
@@ -377,14 +380,14 @@ cmp.setup {
 
 require('nvim-treesitter').setup {}
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { "regex", "fennel", "c", "javascript", "lua", "typescript", "go", "html", "python" },
+  ensure_installed = { 'regex', 'fennel', 'c', 'javascript', 'lua', 'typescript', 'go', 'html', 'python' },
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
+      init_selection = 'gnn',
+      node_incremental = 'grn',
+      scope_incremental = 'grc',
+      node_decremental = 'grm',
     },
   },
   autopairs = {
@@ -399,11 +402,11 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
-require("nvim-treesitter.highlight").set_custom_captures {
-  ["punctuation.bracket"] = "Title",
-  ["constructor"] = "Title",
-  ["string"] = "Normal",
-  ["keyword"] = "String",
+require('nvim-treesitter.highlight').set_custom_captures {
+  ['punctuation.bracket'] = 'Title',
+  ['constructor'] = 'Title',
+  ['string'] = 'Normal',
+  ['keyword'] = 'String',
 }
 
 
@@ -480,7 +483,7 @@ require('lualine').setup{
 --
 -- toggleterm
 --
-require("toggleterm").setup{
+require('toggleterm').setup{
   size = 25,
   hide_numbers = true,
   start_in_insert = true,
@@ -492,15 +495,15 @@ require("toggleterm").setup{
 }
 local Terminal  = require('toggleterm.terminal').Terminal
 local gitui = Terminal:new({
-  cmd = "gitui",
-  dir = ".",
+  cmd = 'gitui',
+  dir = '.',
   hidden = true,
-  direction = "float",
+  direction = 'float',
   close_on_exit = true,
-  float_opts = { border = "single" },
+  float_opts = { border = 'single' },
   on_open = function(term)
-    vim.cmd("startinsert!")
-    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
+    vim.cmd('startinsert!')
+    vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', '<cmd>close<CR>', {noremap = true, silent = true})
   end,
 })
 function GituiToggle()
@@ -521,9 +524,9 @@ g.gitgutter_sign_removed_above_and_below  =  '{'
 g.gitgutter_sign_modified_removed         =  '~-'
 g.gitgutter_map_keys                      =  0
 
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+local signs = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
 for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
+  local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
@@ -537,7 +540,7 @@ opt.tabstop       =  2
 opt.shiftwidth    =  2
 opt.expandtab     =  true
 opt.showmatch     =  true
-opt.signcolumn    =  "yes"
+opt.signcolumn    =  'yes'
 opt.number        =  true
 opt.numberwidth   =  5
 opt.hidden        =  true
@@ -569,7 +572,7 @@ g.mapleader                         =  ','
 g.maplocalleader                    =  ','
 g.gitgutter_terminal_reports_focus  =  0
 g.terminal_color_3                  =  '#ac882f'
-g.tidal_target                      =  "terminal"
+g.tidal_target                      =  'terminal'
 
 
 --
@@ -582,13 +585,13 @@ map('n', '<leader>i', '<Cmd>lua vim.lsp.buf.hover()<CR>')
 map('n', '<leader>I', '<Cmd>TSHighlightCapturesUnderCursor<CR>')
 map('n', 'gD', '<Cmd>lua vim.lsp.buf.definition()<CR>')
 map('n', 'gd', '<cmd>lua require("goto-preview").goto_preview_definition()<CR>')
-map('n', '<leader>d', "<cmd>lua vim.diagnostic.open_float()<CR>")
+map('n', '<leader>d', '<cmd>lua vim.diagnostic.open_float()<CR>')
 
 -- git
-map('n', '<leader>gb', "<cmd>G blame<CR>")
-map('n', '<leader>ga', "<cmd>G add .<CR>")
-map('n', '<leader>gc', "<cmd>G commit<CR>")
-map('n', '<leader>gp', "<cmd>G push<CR>")
+map('n', '<leader>gb', '<cmd>G blame<CR>')
+map('n', '<leader>ga', '<cmd>G add .<CR>')
+map('n', '<leader>gc', '<cmd>G commit<CR>')
+map('n', '<leader>gp', '<cmd>G push<CR>')
 
 -- terminal
 map('', '<C-w>', '<C-W>W')
@@ -597,7 +600,7 @@ map('n', '<C-z>', '<C-w>W')
 map('i', '<C-z>', '<C-w>W')
 map('', '<leader>t', '<cmd>ToggleTerm<CR>')
 map('t', '<leader>t', '<cmd>ToggleTerm<CR>')
-map("n", "<leader>G", "<cmd>lua GituiToggle()<CR>")
+map('n', '<leader>G', '<cmd>lua GituiToggle()<CR>')
 
 -- telescope
 map('', '<leader>ff', '<cmd>Telescope find_files<CR>')
@@ -623,8 +626,8 @@ map('n', '<leader>o', '<cmd>+tabmove<CR>')
 
 map('i', '<leader><tab>', '<c-x><c-o>')
 
-map("v", "<", "<gv")
-map("v", ">", ">gv")
+map('v', '<', '<gv')
+map('v', '>', '>gv')
 
 local autocmds = {
     comment_strings = {
