@@ -82,6 +82,7 @@ require('packer').startup({function(use)
   use 'rafamadriz/friendly-snippets'
 
   use 'junegunn/goyo.vim'
+  use 'vimwiki/vimwiki'
 
   use {
     'norcalli/nvim-colorizer.lua',
@@ -510,6 +511,16 @@ function GituiToggle()
   gitui:toggle()
 end
 
+
+--
+-- vimwiki
+--
+--
+vim.g.vimwiki_list = {{
+  path = '~/store/wiki',
+  syntax = 'markdown',
+  ext = '.md'
+}}
 
 --
 -- visual setup
