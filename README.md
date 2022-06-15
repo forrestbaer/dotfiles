@@ -4,7 +4,7 @@
 
   - Font: Iosevka Nerdfont (contains glyphs).. in ./fonts
   - Make key repeat as fast as possible
-  - Terminal is faster and lower memory than iterm, xterm is best
+  - Alacritty is da best
 
 ### Installation
 
