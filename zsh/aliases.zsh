@@ -7,7 +7,6 @@ alias la='ls -GalaF'
 alias mv='mv -i'
 alias c='clear'
 alias md='mkdir'
-alias rm='trash'
 alias cat='bat'
 alias dh='dirs -v'
 

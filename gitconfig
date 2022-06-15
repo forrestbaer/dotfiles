@@ -52,4 +52,4 @@
     dump = cat-file -p
 
 [credential "https://github.com"]
-	helper = !/usr/local/bin/gh auth git-credential
+	helper = !gh auth git-credential
