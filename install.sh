@@ -1,65 +1,16 @@
 #!/bin/sh
 
-cg="\033[0;32m"
-chg="\033[1;32m"
-cc="\033[0;36m"
-chc="\033[1;36m"
-cb="\033[1;30m"
-cr="\033[0;33m"
-chr="\033[1;33m"
-nc="\033[0m"
-
-dir=${PWD}
-backupdir="$dir/dotfile_backup"
 links_made=0
 
+folders="config/nvim config/gitui"
 files="alacritty.yml zshrc gitconfig zsh tmux.conf config/nvim/init.lua config/gitui/theme.ron"
 
-echo "${cc}*** ${nc}Scanning your home folder for links."
-
-for file in $files; do
-  dir=`dirname $file`
-  fn=`basename $file`
-  conf_dir=`basename $dir`
-
-  if [ ! -L ~/.$file ] &&
-    [ -e ~/.$file ]
-    then
-      echo "${cb}[${cr}!${cb}] ${nc}Found existing non-linked files."
-
-      if [ ! -d $backupdir ]
-      then
-        echo "${cb}[${cr}!${cb}] ${nc}Creating backup directory."
-        mkdir $backupdir
-      fi
-
-      echo "*** Moving ~/.$file to $backupdir/$file."
-      mv ~/.$file $backupdir/$file
-  fi
-
-  if [ `dirname $dir` = "config" ]
-  then
-    if [ ! -d ~/.config ]
-    then
-      echo "${cb}[${chg}+${cb}] ${nc}~/.config/ missing, creating."
-      mkdir ~/.config
-    fi
-
-    if [ ! -d ~/.config/$conf_dir ]
-    then
-      echo "${cb}[${cg}^${cb}] ${nc}Directory ~/.config/$conf_dir missing, creating."
-      mkdir ~/.config/$conf_dir
-    fi
-  fi
-
-  rm ~/.$file
-  links_made=$((links_made + 1))
-  echo "${cb}[${chg}+${cb}] ${nc}Creating symlink : ~/.$file => ${PWD}/$file"
-  ln -sfn ${PWD}/$file ~/.$file
+for folder in $folders; do
+  mkdir -p ~/.$folder
 done
 
-if [ $links_made = 0 ]
-then
-  echo "${cb}[${chc}*${cb}] ${nc}No new links required!"
-fi
-
+for file in $files; do
+  rm ~/.$file
+  echo "[+] Creating symlink : ~/.$file => ${PWD}/$file"
+  ln -sfn ${PWD}/$file ~/.$file
+done
