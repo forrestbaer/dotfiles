@@ -3,6 +3,7 @@
 --
 local fn, opt, api, cmd, g = vim.fn, vim.opt, vim.api, vim.cmd, vim.g
 
+
 --
 -- plugins
 --
@@ -73,7 +74,31 @@ require('packer').startup({function(use)
     end
   }
 
-  use 'abecodes/tabout.nvim'
+  use {
+    'abecodes/tabout.nvim',
+    config = function()
+      require('tabout').setup {
+        tabkey = '<Tab>',
+        backwards_tabkey = '<S-Tab>',
+        act_as_tab = true,
+        act_as_shift_tab = false,
+        default_tab = '<C-t>',
+        default_shift_tab = '<C-d>',
+        enable_backwards = true,
+        completion = false,
+        tabouts = {
+          {open = "'", close = "'"},
+          {open = '"', close = '"'},
+          {open = '`', close = '`'},
+          {open = '(', close = ')'},
+          {open = '[', close = ']'},
+          {open = '{', close = '}'}
+        },
+        ignore_beginning = true,
+        exclude = {}
+      }
+    end
+  }
 
   use 'nvim-telescope/telescope.nvim'
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'}
@@ -94,7 +119,6 @@ require('packer').startup({function(use)
   use 'hrsh7th/cmp-path'
   use 'hrsh7th/cmp-cmdline'
   use 'saadparwaiz1/cmp_luasnip'
-  use 'hrsh7th/cmp-nvim-lsp'
 
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -288,11 +312,6 @@ end
 
 require('luasnip/loaders/from_vscode').lazy_load()
 
-local check_backspace = function()
-  local col = vim.fn.col '.' - 1
-  return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s'
-end
-
 --   פּ ﯟ  
 local kind_icons = {
   Text           =  '',
@@ -345,18 +364,18 @@ cmp.setup {
     format = function(entry, vim_item)
       vim_item.kind = string.format('%s', kind_icons[vim_item.kind])
       vim_item.menu = ({
-        nvim_lsp = '[LSP]',
+        -- nvim_lsp = '[LSP]',
         luasnip = '[Snippet]',
-        -- buffer = '[Buffer]',
+        buffer = '[Buffer]',
         path = '[Path]',
       })[entry.source.name]
       return vim_item
     end,
   },
   sources = {
-    { name = 'nvim_lsp', keyword_length = 3 },
+    -- { name = 'nvim_lsp', keyword_length = 3 },
     { name = 'luasnip', keyword_length = 3  },
-    -- { name = 'buffer' },
+    { name = 'buffer' },
     { name = 'path' },
   },
   confirm_opts = {
@@ -536,26 +555,10 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-require('tabout').setup {
-  tabkey = '<Tab>', -- key to trigger tabout, set to an empty string to disable
-  backwards_tabkey = '<S-Tab>', -- key to trigger backwards tabout, set to an empty string to disable
-  act_as_tab = true, -- shift content if tab out is not possible
-  act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
-  default_tab = '<C-t>', -- shift default action (only at the beginning of a line, otherwise <TAB> is used)
-  default_shift_tab = '<C-d>',
-  enable_backwards = true,
-  completion = false,
-  tabouts = {
-    {open = "'", close = "'"},
-    {open = '"', close = '"'},
-    {open = '`', close = '`'},
-    {open = '(', close = ')'},
-    {open = '[', close = ']'},
-    {open = '{', close = '}'}
-  },
-  ignore_beginning = true,
-  exclude = {}
-}
+--
+-- tabout
+--
+
 
 
 --
