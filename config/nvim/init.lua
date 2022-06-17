@@ -43,14 +43,37 @@ require('packer').startup({function(use)
 
   use 'neovim/nvim-lspconfig'
   use 'williamboman/nvim-lsp-installer'
-  use 'windwp/nvim-autopairs'
   use 'nvim-lua/plenary.nvim'
+
   use {
     'rmagatti/goto-preview',
     config = function()
       require('goto-preview').setup {}
     end
   }
+
+  use {
+    'rmagatti/auto-session',
+    config = function()
+      require('auto-session').setup {
+        log_level = 'info',
+        auto_session_suppress_dirs = {'~/', '~/code'}
+      }
+    end
+  }
+
+  use {
+    'rmagatti/session-lens',
+    requires = {'rmagatti/auto-session', 'nvim-telescope/telescope.nvim'},
+    config = function()
+      require('session-lens').setup({
+        path_display = {'shorten'},
+        prompt_title = 'SESSIONS'
+      })
+    end
+  }
+
+  use 'abecodes/tabout.nvim'
 
   use 'nvim-telescope/telescope.nvim'
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'}
@@ -59,8 +82,10 @@ require('packer').startup({function(use)
   use 'kyazdani42/nvim-web-devicons'
   use 'nvim-lualine/lualine.nvim'
   use 'tpope/vim-surround'
+  use 'tpope/vim-repeat'
   use 'tpope/vim-fugitive'
   use 'tpope/vim-commentary'
+  use 'svermeulen/vim-easyclip'
   use 'airblade/vim-gitgutter'
   use 'akinsho/toggleterm.nvim'
 
@@ -314,34 +339,6 @@ cmp.setup {
       c = cmp.mapping.close(),
     },
     ['<CR>'] = cmp.mapping.confirm { select = true },
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expandable() then
-        luasnip.expand()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      elseif check_backspace() then
-        fallback()
-      else
-        fallback()
-      end
-    end, {
-      'i',
-      's',
-    }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, {
-      'i',
-      's',
-    }),
   },
   formatting = {
     fields = { 'kind', 'abbr', 'menu' },
@@ -350,21 +347,21 @@ cmp.setup {
       vim_item.menu = ({
         nvim_lsp = '[LSP]',
         luasnip = '[Snippet]',
-        buffer = '[Buffer]',
+        -- buffer = '[Buffer]',
         path = '[Path]',
       })[entry.source.name]
       return vim_item
     end,
   },
   sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-    { name = 'buffer' },
+    { name = 'nvim_lsp', keyword_length = 3 },
+    { name = 'luasnip', keyword_length = 3  },
+    -- { name = 'buffer' },
     { name = 'path' },
   },
   confirm_opts = {
     behavior = cmp.ConfirmBehavior.Replace,
-    select = false,
+    select = true,
   },
   window = {
     bordered = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
@@ -375,8 +372,9 @@ cmp.setup {
   },
 }
 
+
 --
--- treesitter
+---- treesitter
 --
 
 require('nvim-treesitter').setup {}
@@ -390,9 +388,6 @@ require('nvim-treesitter.configs').setup {
       scope_incremental = 'grc',
       node_decremental = 'grm',
     },
-  },
-  autopairs = {
-    enable = true
   },
   highlight = {
     enable = true,
@@ -541,6 +536,27 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
+require('tabout').setup {
+  tabkey = '<Tab>', -- key to trigger tabout, set to an empty string to disable
+  backwards_tabkey = '<S-Tab>', -- key to trigger backwards tabout, set to an empty string to disable
+  act_as_tab = true, -- shift content if tab out is not possible
+  act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
+  default_tab = '<C-t>', -- shift default action (only at the beginning of a line, otherwise <TAB> is used)
+  default_shift_tab = '<C-d>',
+  enable_backwards = true,
+  completion = false,
+  tabouts = {
+    {open = "'", close = "'"},
+    {open = '"', close = '"'},
+    {open = '`', close = '`'},
+    {open = '(', close = ')'},
+    {open = '[', close = ']'},
+    {open = '{', close = '}'}
+  },
+  ignore_beginning = true,
+  exclude = {}
+}
+
 
 --
 -- options
@@ -569,11 +585,11 @@ opt.splitbelow    =  true
 opt.grepprg       =  'rg'
 opt.updatetime    =  150
 opt.undofile      =  true
-opt.undodir       =  '~/tmp'
+opt.undodir       =  '/tmp'
 opt.helpheight    =  15
 opt.completeopt   =  'menuone,noselect,noinsert'
 opt.omnifunc      =  'syntaxcomplete#Complete'
-opt.clipboard     =  'unnamedplus'
+opt.clipboard     =  'unnamed'
 
 
 --
@@ -620,6 +636,7 @@ map('', '<leader>fb', '<cmd>Telescope buffers<CR>')
 map('n', '<leader>ft', '<cmd>Telescope file_browser<CR>')
 map('', '<leader>fm', '<cmd>Telescope man_pages<CR>')
 map('', '<leader>fh', '<cmd>Telescope help_tags<CR>')
+map('', '<leader>fs', '<cmd>Telescope session-lens search_session<CR>')
 
 -- vim
 map('', '<Space>', ':silent noh<Bar>echo<cr>')
@@ -646,6 +663,9 @@ local autocmds = {
     },
     packer = {
       { 'BufWritePost', '~/.config/nvim/init.lua', 'source ~/.config/nvim/init.lua | PackerCompile' },
+    },
+    highlight_yank = {
+      { 'TextYankPost', '*', 'lua require"vim.highlight".on_yank{"Search", 2000}' },
     },
 }
 nvim_create_augroups(autocmds)

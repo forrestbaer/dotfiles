@@ -32,21 +32,5 @@ alias tmux='tmux new -As0'
 # ad hoc
 
 alias cdds='cd ~/code/design-system'
-
-vdiff () {
-    if [ "${#}" -ne 2 ] ; then
-        echo "vdiff requires two arguments"
-        echo "  comparing dirs:  vdiff dir_a dir_b"
-        echo "  comparing files: vdiff file_a file_b"
-        return 1
-    fi
-
-    local left="${1}"
-    local right="${2}"
-
-    if [ -d "${left}" ] && [ -d "${right}" ]; then
-        vim +"DirDiff ${left} ${right}"
-    else
-        vim -d "${left}" "${right}"
-    fi
-}
+alias cdms='cd ~/code/marketplace-shared/jenkins/pipelines/design-system'
+alias cddf='cd ~/code/dotfiles'
