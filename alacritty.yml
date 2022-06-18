@@ -36,7 +36,7 @@ font:
 
   bold:
     family: Iosevka Nerd Font
-    style: Regular
+    style: Extralight
 
   italic:
     family: Iosevka Nerd Font
@@ -47,15 +47,15 @@ font:
     style: Regular Italic
 
   # Point size
-  size: 18.0
+  size: 16.0
 
   offset:
     x: 0
-    y: 2
+    y: 1
 
   glyph_offset:
     x: 0
-    y: 2
+    y: 1
 
   builtin_box_drawing: true
 
