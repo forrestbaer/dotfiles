@@ -36,11 +36,11 @@ font:
 
   bold:
     family: Iosevka Nerd Font
-    style: Extralight
+    style: Regular
 
   italic:
     family: Iosevka Nerd Font
-    style: Italic
+    style: Extralight Italic
 
   bold_italic:
     family: Iosevka Nerd Font
