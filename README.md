@@ -4,7 +4,6 @@
 
   - Font: Iosevka Nerdfont (contains glyphs).. in ./fonts
   - Make key repeat as fast as possible
-  - Alacritty is da best
 
 ### Installation
 
@@ -21,10 +20,5 @@
   - gitui
   - fzf / ripgrep
   - tmux
-  - lsp servers: sumneko_lua, tsserver, html, gopls
   - tmux-mem-cpu-load
-  - trash
-  - btop
   - bat
-  - ugit
-  - pipe-rename
