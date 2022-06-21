@@ -50,8 +50,7 @@ require('packer').startup({function(use)
     'rmagatti/goto-preview',
     config = function()
       require('goto-preview').setup {}
-    end
-  }
+    end }
 
   use {
     'rmagatti/auto-session',
@@ -60,8 +59,7 @@ require('packer').startup({function(use)
         log_level = 'info',
         auto_session_suppress_dirs = {'~/', '~/code'}
       }
-    end
-  }
+    end }
 
   use {
     'rmagatti/session-lens',
@@ -71,8 +69,7 @@ require('packer').startup({function(use)
         path_display = {'shorten'},
         prompt_title = 'SESSIONS'
       })
-    end
-  }
+    end }
 
   use {
     'abecodes/tabout.nvim',
@@ -97,8 +94,7 @@ require('packer').startup({function(use)
         ignore_beginning = true,
         exclude = {}
       }
-    end
-  }
+    end }
 
   use 'nvim-telescope/telescope.nvim'
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'}
@@ -132,6 +128,14 @@ require('packer').startup({function(use)
 
   use 'junegunn/goyo.vim'
   use 'vimwiki/vimwiki'
+  use {
+    'elihunter173/dirbuf.nvim',
+    config = function()
+      require('dirbuf').setup {
+        sort_order='directories_first',
+      }
+    end }
+
 
   use {
     'norcalli/nvim-colorizer.lua',
