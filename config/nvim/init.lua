@@ -659,6 +659,9 @@ map('i', '<leader><tab>', '<c-x><c-o>')
 map('v', '<', '<gv')
 map('v', '>', '>gv')
 
+-- vimwiki
+map('', '<leader>/', '<cmd>VimwikiToggleListItem<CR>')
+
 local autocmds = {
     comment_strings = {
       { 'FileType', 'tidal', 'setlocal commentstring=--%s' },
