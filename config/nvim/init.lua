@@ -527,7 +527,7 @@ map('t', '<C-z>', '<C-\\><C-n>')
 map('n', '<C-z>', '<C-w>W')
 map('i', '<C-z>', '<C-w>W')
 map('', '<leader>t', ':ToggleTerm<cr>')
-map('t', '<leader>t', ':ToggleTerm<cr>')
+map('t', '<leader>t', '<cmd>ToggleTerm<cr>')
 map('n', '<leader>G', GituiToggle)
 
 -- telescope

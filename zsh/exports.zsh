@@ -6,6 +6,7 @@ export PYENV_ROOT="$HOME/.pyenv/shims"
 export PATH="$PYENV_ROOT:$PATH"
 export PIPENV_PYTHON="$PYENV_ROOT/python"
 export PASSWORD_STORE_DIR=~/store/pass
+export NODE_PATH=/Users/monk/.nvm/versions/node/v18.4.0/lib/node_modules
 
 if [[ $TERM != 'dumb' ]]; then
     export TERM=screen-256color
