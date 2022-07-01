@@ -12,6 +12,14 @@
 
 [merge]
     conflictstyle = diff3
+    tool = nvim
+
+[mergetool]
+    keepBackup = false
+
+[mergetool "nvim"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd 3'
+    prompt = false
 
 [diff]
     colorMoved = default
@@ -52,4 +60,4 @@
     dump = cat-file -p
 
 [credential "https://github.com"]
-	helper = !gh auth git-credential
+	  helper = !gh auth git-credential
