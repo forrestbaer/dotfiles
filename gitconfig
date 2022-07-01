@@ -16,10 +16,10 @@
 
 [mergetool]
     keepBackup = false
+    prompt = false
 
 [mergetool "nvim"]
-    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd 3'
-    prompt = false
+    cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
 
 [diff]
     colorMoved = default

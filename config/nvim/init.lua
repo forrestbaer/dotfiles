@@ -4,8 +4,9 @@
 local fn, opt, api, cmd, g = vim.fn, vim.opt, vim.api, vim.cmd, vim.g
 
 
+
 --
--- plugins
+-- packer/plugins
 --
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 
@@ -71,31 +72,6 @@ require('packer').startup({function(use)
       })
     end }
 
-  use {
-    'abecodes/tabout.nvim',
-    config = function()
-      require('tabout').setup {
-        tabkey = '<Tab>',
-        backwards_tabkey = '<S-Tab>',
-        act_as_tab = true,
-        act_as_shift_tab = false,
-        default_tab = '<C-t>',
-        default_shift_tab = '<C-d>',
-        enable_backwards = true,
-        completion = false,
-        tabouts = {
-          {open = "'", close = "'"},
-          {open = '"', close = '"'},
-          {open = '`', close = '`'},
-          {open = '(', close = ')'},
-          {open = '[', close = ']'},
-          {open = '{', close = '}'}
-        },
-        ignore_beginning = true,
-        exclude = {}
-      }
-    end }
-
   use 'nvim-telescope/telescope.nvim'
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'}
   use 'nvim-telescope/telescope-file-browser.nvim'
@@ -106,15 +82,9 @@ require('packer').startup({function(use)
   use 'tpope/vim-repeat'
   use 'tpope/vim-fugitive'
   use 'tpope/vim-commentary'
-  use 'svermeulen/vim-easyclip'
+  -- use 'svermeulen/vim-easyclip'
   use 'airblade/vim-gitgutter'
   use 'akinsho/toggleterm.nvim'
-
-  use 'hrsh7th/nvim-cmp'
-  use 'hrsh7th/cmp-buffer'
-  use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-cmdline'
-  use 'saadparwaiz1/cmp_luasnip'
 
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -123,19 +93,14 @@ require('packer').startup({function(use)
   use 'nvim-treesitter/playground'
   use 'JoosepAlviste/nvim-ts-context-commentstring'
 
-  use 'L3MON4D3/LuaSnip'
-  use 'rafamadriz/friendly-snippets'
-
-  use 'junegunn/goyo.vim'
   use 'vimwiki/vimwiki'
   use {
     'elihunter173/dirbuf.nvim',
     config = function()
       require('dirbuf').setup {
-        sort_order='directories_first',
+        sort_order = 'directories_first',
       }
     end }
-
 
   use {
     'norcalli/nvim-colorizer.lua',
@@ -143,10 +108,31 @@ require('packer').startup({function(use)
     config = [[require('colorizer').setup {'scss', 'css', 'javascript', 'vim', 'html', 'typescript'}]],
   }
 
+  use {'lewis6991/hover.nvim', config = function()
+    require('hover').setup{
+      init = function()
+        -- Require providers
+        require('hover.providers.lsp')
+        -- require('hover.providers.gh')
+        -- require('hover.providers.man')
+        -- require('hover.providers.dictionary')
+      end,
+      preview_opts = {
+        border = nil
+      },
+      title = true
+    }
+
+    -- Setup keymaps
+    vim.keymap.set('n',  'K', require('hover').hover       , { desc = 'hover.nvim'         })
+    vim.keymap.set('n', 'gK', require('hover').hover_select, { desc = 'hover.nvim (select)' })
+  end}
+
   if PACKER_BOOTSTRAP then
     require('packer').sync()
   end
 end})
+
 
 
 --
@@ -155,7 +141,7 @@ end})
 local function map(mode, lhs, rhs, opts)
   local options = {noremap = true, silent = true}
   if opts then options = vim.tbl_extend('force', options, opts) end
-  api.nvim_set_keymap(mode, lhs, rhs, options)
+  vim.keymap.set(mode, lhs, rhs, options)
 end
 
 local function nvim_create_augroups(definitions)
@@ -175,6 +161,7 @@ api.nvim_create_user_command(
   '<line1>,<line2>!column -t',
   {range = '%'}
 )
+
 
 
 --
@@ -211,6 +198,8 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
     severity_sort = true,
   }
 )
+
+
 
 --
 -- telescope stuff
@@ -257,7 +246,7 @@ end
 
 telescope.setup{
   defaults = {
-    prompt_prefix = ' $ ',
+    prompt_prefix = ' -> ',
     initial_mode = 'insert',
     selection_strategy = 'reset',
     sorting_strategy = 'descending',
@@ -272,11 +261,6 @@ telescope.setup{
     mappings = {
       i = {
         ['<esc>'] = actions.close,
-        ['<tab>'] = actions.toggle_selection,
-        ['<C-v>'] = telescope_custom_actions.multi_selection_open_vsplit,
-        ['<C-s>'] = telescope_custom_actions.multi_selection_open_split,
-        ['<C-t>'] = telescope_custom_actions.multi_selection_open_tab,
-        ['<C-r>'] = fb_actions.rename,
       },
     },
     pickers = {
@@ -304,96 +288,6 @@ telescope.setup{
 telescope.load_extension('fzf')
 telescope.load_extension('file_browser')
 
-local cmp_status_ok, cmp = pcall(require, 'cmp')
-if not cmp_status_ok then
-  return
-end
-
-local snip_status_ok, luasnip = pcall(require, 'luasnip')
-if not snip_status_ok then
-  return
-end
-
-require('luasnip/loaders/from_vscode').lazy_load()
-
---   פּ ﯟ  
-local kind_icons = {
-  Text           =  '',
-  Method         =  'm',
-  Function       =  '',
-  Constructor    =  '',
-  Field          =  '',
-  Variable       =  '',
-  Class          =  '',
-  Interface      =  '',
-  Module         =  '',
-  Property       =  '',
-  Unit           =  '',
-  Value          =  '',
-  Enum           =  '',
-  Keyword        =  '',
-  Snippet        =  '',
-  Color          =  '',
-  File           =  '',
-  Reference      =  '',
-  Folder         =  '',
-  EnumMember     =  '',
-  Constant       =  '',
-  Struct         =  '',
-  Event          =  '',
-  Operator       =  '',
-  TypeParameter  =  '',
-}
-
-cmp.setup {
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  mapping = {
-    ['<Up>'] = cmp.mapping.select_prev_item(),
-		['<Down>'] = cmp.mapping.select_next_item(),
-    ['<C-i>'] = cmp.mapping(cmp.mapping.scroll_docs(-1), { 'i', 'c' }),
-    ['<C-e>'] = cmp.mapping(cmp.mapping.scroll_docs(1), { 'i', 'c' }),
-    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-    ['<C-q>'] = cmp.mapping {
-      i = cmp.mapping.abort(),
-      c = cmp.mapping.close(),
-    },
-    ['<CR>'] = cmp.mapping.confirm { select = true },
-  },
-  formatting = {
-    fields = { 'kind', 'abbr', 'menu' },
-    format = function(entry, vim_item)
-      vim_item.kind = string.format('%s', kind_icons[vim_item.kind])
-      vim_item.menu = ({
-        -- nvim_lsp = '[LSP]',
-        luasnip = '[Snippet]',
-        buffer = '[Buffer]',
-        path = '[Path]',
-      })[entry.source.name]
-      return vim_item
-    end,
-  },
-  sources = {
-    -- { name = 'nvim_lsp', keyword_length = 3 },
-    { name = 'luasnip', keyword_length = 3  },
-    { name = 'buffer' },
-    { name = 'path' },
-  },
-  confirm_opts = {
-    behavior = cmp.ConfirmBehavior.Replace,
-    select = true,
-  },
-  window = {
-    bordered = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
-  },
-  experimental = {
-    ghost_text = false,
-    native_menu = false,
-  },
-}
 
 
 --
@@ -427,6 +321,7 @@ require('nvim-treesitter.highlight').set_custom_captures {
   ['string'] = 'Normal',
   ['keyword'] = 'String',
 }
+
 
 
 --
@@ -499,6 +394,7 @@ require('lualine').setup{
 }
 
 
+
 --
 -- toggleterm
 --
@@ -522,7 +418,7 @@ local gitui = Terminal:new({
   float_opts = { border = 'single' },
   on_open = function(term)
     vim.cmd('startinsert!')
-    vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', '<cmd>close<CR>', {noremap = true, silent = true})
+    vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', ':close<cr>', {noremap = true, silent = true})
   end,
 })
 function GituiToggle()
@@ -533,12 +429,13 @@ end
 --
 -- vimwiki
 --
---
 vim.g.vimwiki_list = {{
   path = '~/store/wiki',
   syntax = 'markdown',
   ext = '.md'
 }}
+
+
 
 --
 -- visual setup
@@ -558,6 +455,7 @@ for type, icon in pairs(signs) do
   local hl = 'DiagnosticSign' .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
+
 
 
 --
@@ -594,6 +492,7 @@ opt.omnifunc      =  'syntaxcomplete#Complete'
 opt.clipboard     =  'unnamed'
 
 
+
 --
 -- vim global opts
 --
@@ -601,7 +500,7 @@ g.mapleader                         =  ','
 g.maplocalleader                    =  ','
 g.gitgutter_terminal_reports_focus  =  0
 g.terminal_color_3                  =  '#ac882f'
-g.tidal_target                      =  'terminal'
+
 
 
 --
@@ -609,68 +508,69 @@ g.tidal_target                      =  'terminal'
 --
 
 -- lsp
-map('n', 'K', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-map('n', '<leader>i', '<Cmd>lua vim.lsp.buf.hover()<CR>')
-map('n', '<leader>I', '<Cmd>TSHighlightCapturesUnderCursor<CR>')
-map('n', 'gD', '<Cmd>lua vim.lsp.buf.definition()<CR>')
-map('n', 'gd', '<cmd>lua require("goto-preview").goto_preview_definition()<CR>')
-map('n', '<leader>d', '<cmd>lua vim.diagnostic.open_float()<CR>')
+map('n', 'K', require('hover').hover)
+map('n', '<leader>i', require('hover').hover)
+map('n', '<leader>I', ':TSHighlightCapturesUnderCursor<cr>')
+map('n', 'gD', vim.lsp.buf.definition)
+map('n', 'gd', require("goto-preview").goto_preview_definition)
+map('n', '<leader>d', vim.diagnostic.open_float)
 
 -- git
-map('n', '<leader>gb', '<cmd>G blame<CR>')
-map('n', '<leader>ga', '<cmd>G add .<CR>')
-map('n', '<leader>gc', '<cmd>G commit<CR>')
-map('n', '<leader>gp', '<cmd>G push<CR>')
+map('n', '<leader>gb', ':G blame<cr>')
+map('n', '<leader>ga', ':G add .<cr>')
+map('n', '<leader>gc', ':G commit<cr>')
+map('n', '<leader>gp', ':G push<cr>')
 
 -- terminal
 map('', '<C-w>', '<C-W>W')
 map('t', '<C-z>', '<C-\\><C-n>')
 map('n', '<C-z>', '<C-w>W')
 map('i', '<C-z>', '<C-w>W')
-map('', '<leader>t', '<cmd>ToggleTerm<CR>')
-map('t', '<leader>t', '<cmd>ToggleTerm<CR>')
-map('n', '<leader>G', '<cmd>lua GituiToggle()<CR>')
+map('', '<leader>t', ':ToggleTerm<cr>')
+map('t', '<leader>t', ':ToggleTerm<cr>')
+map('n', '<leader>G', GituiToggle)
 
 -- telescope
-map('', '<leader>ff', '<cmd>Telescope find_files<CR>')
-map('', '<leader>fg', '<cmd>Telescope live_grep<CR>')
-map('', '<leader>fb', '<cmd>Telescope buffers<CR>')
-map('n', '<leader>ft', '<cmd>Telescope file_browser<CR>')
-map('', '<leader>fm', '<cmd>Telescope man_pages<CR>')
-map('', '<leader>fh', '<cmd>Telescope help_tags<CR>')
-map('', '<leader>fs', '<cmd>Telescope session-lens search_session<CR>')
+map('', '<leader>ff', ':Telescope find_files<cr>')
+map('', '<leader>fg', ':Telescope live_grep<cr>')
+map('', '<leader>fb', ':Telescope buffers<cr>')
+map('n', '<leader>ft', ':Telescope file_browser<cr>')
+map('', '<leader>fm', ':Telescope man_pages<cr>')
+map('', '<leader>fh', ':Telescope help_tags<cr>')
+map('', '<leader>fs', ':Telescope session-lens search_session<cr>')
 
 -- vim
 map('', '<Space>', ':silent noh<Bar>echo<cr>')
 map('n', 'U', '<C-r>')
 map('n', '<leader>q', ':q!<cr>')
 map('n', '<leader>s', ':w!<cr>')
-map('n', '<leader>n', '<cmd>enew<cr>')
-map('', '<leader>c', '<cmd>bd!<cr>')
-map('', '<c-o>', '<cmd>bn<cr>')
-map('', '<c-n>', '<cmd>bp<cr>')
-map('n', '<leader>ev', '<cmd>cd ~/.config/nvim | e init.lua<CR>')
-map('n', '<leader>rv', '<cmd>so ~/.config/nvim/init.lua<CR>')
-map('n', '<leader>n', '<cmd>-tabmove<CR>')
-map('n', '<leader>o', '<cmd>+tabmove<CR>')
-
-map('i', '<leader><tab>', '<c-x><c-o>')
+map('n', '<leader>n', ':ene<cr>')
+map('', '<leader>c', ':bd!<cr>')
+map('', '<c-o>', ':bn<cr>')
+map('', '<c-n>', ':bp<cr>')
+map('n', '<leader>ev', ':cd ~/.config/nvim | e init.lua<cr>')
+map('n', '<leader>rv', ':so ~/.config/nvim/init.lua<cr>')
 
 map('v', '<', '<gv')
 map('v', '>', '>gv')
 
 -- vimwiki
-map('', '<leader>/', '<cmd>VimwikiToggleListItem<CR>')
+map('', '<leader>/', ':VimwikiToggleListItem<cr>')
 
+
+
+--
+-- autocmds
+--
 local autocmds = {
     comment_strings = {
-      { 'FileType', 'tidal', 'setlocal commentstring=--%s' },
+      -- { 'FileType', 'tidal', 'setlocal commentstring = --%s' },
     },
     packer = {
       { 'BufWritePost', '~/.config/nvim/init.lua', 'source ~/.config/nvim/init.lua | PackerCompile' },
     },
     highlight_yank = {
-      { 'TextYankPost', '*', 'lua require"vim.highlight".on_yank{"Search", 2000}' },
+      { 'TextYankPost', '*', 'lua require("vim.highlight").on_yank{"Search", 2000}' },
     },
 }
 nvim_create_augroups(autocmds)
