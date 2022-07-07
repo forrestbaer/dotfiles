@@ -8,10 +8,9 @@ window:
   #  y: 0
 
   padding:
-    x: 20 
-    y: 20
+    x: 10 
+    y: 10
 
-  # Spread additional padding evenly around the terminal content.
   dynamic_padding: true
 
   # Values for `decorations`:
@@ -25,10 +24,8 @@ window:
   #opacity: 1.0
 
 scrolling:
-  history: 30000
-  multiplier: 3
+  history: 0
 
-# Font configuration
 font:
   normal:
     family: Iosevka Nerd Font
@@ -36,7 +33,7 @@ font:
 
   bold:
     family: Iosevka Nerd Font
-    style: Extralight
+    style: Regular
 
   italic:
     family: Iosevka Nerd Font
@@ -186,7 +183,7 @@ bell:
   #   - EaseOutExpo
   #   - EaseOutCirc
   #   - Linear
-  #animation: EaseOutExpo
+  animation: EaseOutExpo
 
   # Duration of the visual bell flash in milliseconds. A `duration` of `0` will
   # disable the visual bell animation.
@@ -229,11 +226,11 @@ shell:
 # Send ESC (\x1b) before characters when alt is pressed.
 #alt_send_esc: true
 
-#mouse:
+mouse:
   #double_click: { threshold: 300 }
   #triple_click: { threshold: 300 }
 
-  #hide_when_typing: false
+  hide_when_typing: true
 
 #hints:
   # Keys used for the hint labels.
@@ -509,7 +506,7 @@ shell:
 #
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
-#key_bindings:
+# key_bindings:
   #- { key: Paste,                                       action: Paste          }
   #- { key: Copy,                                        action: Copy           }
   #- { key: L,         mods: Control,                    action: ClearLogNotice }

@@ -4,7 +4,6 @@
 local fn, opt, api, cmd, g = vim.fn, vim.opt, vim.api, vim.cmd, vim.g
 
 
-
 --
 -- packer/plugins
 --
@@ -82,9 +81,9 @@ require('packer').startup({function(use)
   use 'tpope/vim-repeat'
   use 'tpope/vim-fugitive'
   use 'tpope/vim-commentary'
-  -- use 'svermeulen/vim-easyclip'
   use 'airblade/vim-gitgutter'
   use 'akinsho/toggleterm.nvim'
+  use 'svermeulen/vim-easyclip'
 
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -111,7 +110,6 @@ require('packer').startup({function(use)
   use {'lewis6991/hover.nvim', config = function()
     require('hover').setup{
       init = function()
-        -- Require providers
         require('hover.providers.lsp')
         -- require('hover.providers.gh')
         -- require('hover.providers.man')
@@ -122,8 +120,6 @@ require('packer').startup({function(use)
       },
       title = true
     }
-
-    -- Setup keymaps
     vim.keymap.set('n',  'K', require('hover').hover       , { desc = 'hover.nvim'         })
     vim.keymap.set('n', 'gK', require('hover').hover_select, { desc = 'hover.nvim (select)' })
   end}
@@ -461,6 +457,7 @@ end
 --
 -- options
 --
+opt.guifont       =  'Iosevka Nerd Font:h18'
 opt.fileencoding  =  'utf-8'
 opt.backspace     =  'indent,eol,start'
 opt.tabstop       =  2
