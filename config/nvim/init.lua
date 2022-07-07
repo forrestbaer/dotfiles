@@ -81,6 +81,7 @@ require('packer').startup({function(use)
   use 'tpope/vim-repeat'
   use 'tpope/vim-fugitive'
   use 'tpope/vim-commentary'
+  use 'tpope/vim-eunuch'
   use 'airblade/vim-gitgutter'
   use 'akinsho/toggleterm.nvim'
   use 'svermeulen/vim-easyclip'
@@ -469,6 +470,7 @@ opt.number        =  true
 opt.numberwidth   =  5
 opt.hidden        =  true
 opt.mouse         =  'a'
+opt.autoread      =  true
 opt.pumheight     =  20
 opt.ignorecase    =  true
 opt.smartcase     =  true
