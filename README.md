@@ -9,6 +9,7 @@
 
   - run install.sh
   - install dependencies
+  - tmuxinator start work/home
 
 ### Dependencies
 
@@ -19,6 +20,7 @@
   - git-delta
   - gitui
   - fzf / ripgrep
+  - tmuxinator
   - tmux
   - tmux-mem-cpu-load
   - bat

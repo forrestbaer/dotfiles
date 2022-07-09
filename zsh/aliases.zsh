@@ -10,6 +10,9 @@ alias md='mkdir'
 alias cat='bat'
 alias dh='dirs -v'
 
+alias home='tmuxinator start home'
+alias work='tmuxinator start work'
+
 # Git
 
 alias gs='git status'
