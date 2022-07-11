@@ -86,6 +86,8 @@ require('packer').startup({function(use)
   use 'akinsho/toggleterm.nvim'
   use 'svermeulen/vim-easyclip'
 
+  use 'fatih/vim-go'
+
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
