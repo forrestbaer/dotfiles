@@ -52,25 +52,6 @@ require('packer').startup({function(use)
       require('goto-preview').setup {}
     end }
 
-  use {
-    'rmagatti/auto-session',
-    config = function()
-      require('auto-session').setup {
-        log_level = 'info',
-        auto_session_suppress_dirs = {'~/', '~/code'}
-      }
-    end }
-
-  use {
-    'rmagatti/session-lens',
-    requires = {'rmagatti/auto-session', 'nvim-telescope/telescope.nvim'},
-    config = function()
-      require('session-lens').setup({
-        path_display = {'shorten'},
-        prompt_title = 'SESSIONS'
-      })
-    end }
-
   use 'nvim-telescope/telescope.nvim'
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'}
   use 'nvim-telescope/telescope-file-browser.nvim'
@@ -538,7 +519,6 @@ map('', '<leader>fb', ':Telescope buffers<cr>')
 map('n', '<leader>ft', ':Telescope file_browser<cr>')
 map('', '<leader>fm', ':Telescope man_pages<cr>')
 map('', '<leader>fh', ':Telescope help_tags<cr>')
-map('', '<leader>fs', ':Telescope session-lens search_session<cr>')
 
 -- vim
 map('', '<Space>', ':silent noh<Bar>echo<cr>')

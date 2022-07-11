@@ -3,7 +3,7 @@
 links_made=0
 
 folders="config/nvim config/gitui config/tmuxinator config/ncmpcpp"
-files="alacritty.yml zshrc gitconfig mpdconf zsh tmux.conf config/nvim/init.lua config/gitui/theme.ron config/tmuxinator/home.yml config/ncmpcpp/config"
+files="alacritty.yml zshrc gitconfig mpdconf zsh tmux.conf config/nvim/init.lua config/gitui/theme.ron config/tmuxinator/home.yml config/ncmpcpp/config config/tmuxinator/work.yml"
 
 for folder in $folders; do
   mkdir -p ~/.$folder
