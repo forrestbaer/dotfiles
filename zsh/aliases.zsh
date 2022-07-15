@@ -9,6 +9,7 @@ alias c='clear'
 alias md='mkdir'
 alias cat='bat'
 alias dh='dirs -v'
+alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
 
 alias home='tmuxinator start home'
 alias work='tmuxinator start work'
@@ -20,7 +21,7 @@ alias gc='git commit'
 alias gd='git diff'
 alias gp='git push'
 alias gf='git fetch'
-alias hist='git hist'
+alias hist="git log --oneline --decorate --color | fzf --ansi --preview 'git show $(echo {} | cut -d" " -f1)'"
 alias ga='git add'
 
 # Vim
