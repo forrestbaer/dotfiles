@@ -57,6 +57,14 @@ require('packer').startup({function(use)
   use 'nvim-telescope/telescope-file-browser.nvim'
 
   use 'kyazdani42/nvim-web-devicons'
+  use {
+  'kyazdani42/nvim-tree.lua',
+  requires = {
+    'kyazdani42/nvim-web-devicons',
+    },
+    tag = 'nightly'
+  }
+
   use 'nvim-lualine/lualine.nvim'
   use 'tpope/vim-surround'
   use 'tpope/vim-repeat'
@@ -148,7 +156,6 @@ api.nvim_create_user_command(
 -- lsp
 --
 local lspconfig = require('lspconfig')
-
 require('nvim-lsp-installer').setup({
     automatic_installation = true,
     ui = {
@@ -179,6 +186,11 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   }
 )
 
+
+--
+-- nvim tree
+--
+require("nvim-tree").setup()
 
 
 --
@@ -534,6 +546,9 @@ map('n', '<leader>rv', ':so ~/.config/nvim/init.lua<cr>')
 
 map('v', '<', '<gv')
 map('v', '>', '>gv')
+
+-- vim tree
+map('', '<leader><tab>', ':NvimTreeFocus<cr>')
 
 -- vimwiki
 map('', '<leader>/', ':VimwikiToggleListItem<cr>')
