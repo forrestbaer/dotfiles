@@ -417,6 +417,10 @@ vim.g.vimwiki_list = {{
 -- bufferline
 --
 require('bufferline').setup {
+  highlights = {
+    separator = { guifg = '#AAAAAA' },
+    separator_selected = { guifg = '#FFFFFF' },
+  },
   options = {
     numbers = "none",
     max_name_length = 18,
@@ -424,23 +428,23 @@ require('bufferline').setup {
     tab_size = 18,
     diagnostics = "nvim_lsp",
     diagnostics_update_in_insert = false,
-    diagnostics_indicator = function(count, level, diagnostics_dict, context)
+    diagnostics_indicator = function(count)
       return "("..count..")"
     end,
-    custom_filter = function(buf_number, buf_numbers)
+    custom_filter = function(buf_number)
       if vim.bo[buf_number].filetype ~= "scnvim" then
         return true
       end
     end,
     color_icons = true,
+    separator_style = {'..', '..'},
     show_buffer_icons = true,
-    show_buffer_close_icons = true,
+    show_buffer_close_icons = false,
     show_buffer_default_icon = true,
-    show_close_icon = true,
+    show_close_icon = false,
     show_tab_indicators = true,
-    separator_style = "thin",
     always_show_bufferline = true,
-  }
+  },
 }
 
 
