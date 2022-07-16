@@ -64,7 +64,8 @@ require('packer').startup({function(use)
     },
     tag = 'nightly'
   }
-
+  use 'davidgranstrom/scnvim'
+  use 'akinsho/bufferline.nvim'
   use 'nvim-lualine/lualine.nvim'
   use 'tpope/vim-surround'
   use 'tpope/vim-repeat'
@@ -367,22 +368,6 @@ require('lualine').setup{
       color = {fg = '#000000', bg = '#009933' }}
     }
   },
-  tabline = {
-    lualine_a = {{
-      'buffers',
-      mode = 0,
-      separator = { right = '' },
-      buffers_color = {
-        active = { fg = '#000000', bg = '#DDDDDD'},
-        inactive = { fg = '#DDDDDD', bg = '#000000'}
-      },
-    }},
-    lualine_z = {{
-      'branch',
-      separator = {left = '' },
-      color = {fg = '#000000', bg = '#009933' }
-    }}
-  },
 }
 
 
@@ -426,6 +411,73 @@ vim.g.vimwiki_list = {{
   syntax = 'markdown',
   ext = '.md'
 }}
+
+
+--
+-- bufferline
+--
+require('bufferline').setup {
+  options = {
+    numbers = "none",
+    max_name_length = 18,
+    max_prefix_length = 15,
+    tab_size = 18,
+    diagnostics = "nvim_lsp",
+    diagnostics_update_in_insert = false,
+    diagnostics_indicator = function(count, level, diagnostics_dict, context)
+      return "("..count..")"
+    end,
+    custom_filter = function(buf_number, buf_numbers)
+      if vim.bo[buf_number].filetype ~= "scnvim" then
+        return true
+      end
+    end,
+    color_icons = true,
+    show_buffer_icons = true,
+    show_buffer_close_icons = true,
+    show_buffer_default_icon = true,
+    show_close_icon = true,
+    show_tab_indicators = true,
+    separator_style = "thin",
+    always_show_bufferline = true,
+  }
+}
+
+
+--
+-- scnvim
+--
+local scnvim = require 'scnvim'
+local m = scnvim.map
+local map_expr = scnvim.map_expr
+scnvim.setup {
+  keymaps = {
+    ['<leader>re'] = m('editor.send_line', {'i', 'n'}),
+    ['<leader>ra'] = {
+      m('editor.send_block', {'i', 'n'}),
+      m('editor.send_selection', 'x'),
+    },
+    ['<CR>'] = m('postwin.toggle'),
+    ['<M-CR>'] = m('postwin.toggle', 'i'),
+    ['<M-L>'] = m('postwin.clear', {'n', 'i'}),
+    ['<leader>ri'] = m('signature.show', {'n', 'i'}),
+    ['<leader>rs'] = m('sclang.hard_stop', {'n', 'x', 'i'}),
+    ['<leader>rt'] = m('sclang.start'),
+    ['<leader>rk'] = m('sclang.recompile'),
+    ['<leader>rb'] = map_expr('s.boot'),
+    ['<leader>rm'] = map_expr('s.meter'),
+  },
+  editor = {
+    highlight = {
+      color = 'IncSearch',
+    },
+  },
+  postwin = {
+    float = {
+      enabled = true,
+    },
+  },
+}
 
 
 
@@ -539,8 +591,8 @@ map('n', '<leader>q', ':q!<cr>')
 map('n', '<leader>s', ':w!<cr>')
 map('n', '<leader>n', ':ene<cr>')
 map('', '<leader>c', ':bd!<cr>')
-map('', '<c-o>', ':bn<cr>')
-map('', '<c-n>', ':bp<cr>')
+map('', '<c-o>', ':BufferLineCycleNext<cr>')
+map('', '<c-n>', ':BufferLineCyclePrev<cr>')
 map('n', '<leader>ev', ':cd ~/.config/nvim | e init.lua<cr>')
 map('n', '<leader>rv', ':so ~/.config/nvim/init.lua<cr>')
 
