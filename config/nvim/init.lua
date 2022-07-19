@@ -65,6 +65,7 @@ require('packer').startup({function(use)
     tag = 'nightly'
   }
   use 'davidgranstrom/scnvim'
+  use 'davidgranstrom/scnvim-tmux'
   use 'akinsho/bufferline.nvim'
   use 'nvim-lualine/lualine.nvim'
   use 'tpope/vim-surround'
@@ -93,6 +94,20 @@ require('packer').startup({function(use)
         sort_order = 'directories_first',
       }
     end }
+
+  use {
+    'madskjeldgaard/faust-nvim',
+        config = function()
+            require 'faust-nvim'
+            require 'faust-nvim'.load_snippets()
+        end,
+        requires = {
+            'vijaymarupudi/nvim-fzf',
+            'L3MON4D3/LuaSnip',
+            'gmoe/vim-faust'
+        },
+        -- run = require'faust-nvim'.post_install,
+  }
 
   use {
     'norcalli/nvim-colorizer.lua',
@@ -476,12 +491,17 @@ scnvim.setup {
       color = 'IncSearch',
     },
   },
-  postwin = {
-    float = {
-      enabled = true,
-    },
-  },
+  extensions = {
+    tmux = {
+    }
+  }
+  -- postwin = {
+  --   float = {
+  --     enabled = true,
+  --   },
+  -- },
 }
+scnvim.load_extension 'tmux'
 
 
 
@@ -616,7 +636,10 @@ map('', '<leader>/', ':VimwikiToggleListItem<cr>')
 --
 local autocmds = {
     comment_strings = {
-      -- { 'FileType', 'tidal', 'setlocal commentstring = --%s' },
+      { 'FileType', 'scnvim', 'setlocal wrap' },
+    },
+    supercollider_indent = {
+      { 'FileType', 'supercollider', 'setlocal tabstop=4 softtabstop=4 shiftwidth=4' },
     },
     packer = {
       { 'BufWritePost', '~/.config/nvim/init.lua', 'source ~/.config/nvim/init.lua | PackerCompile' },

@@ -40,3 +40,5 @@ zstyle ':completion:*:manuals.(^1*)' insert-sections   true
 zstyle ':completion:*' use-cache off
 
 autoload -U +X bashcompinit && bashcompinit
+
+source /usr/local/opt/fzf/shell/completion.zsh
