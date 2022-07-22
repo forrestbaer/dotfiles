@@ -24,6 +24,6 @@ windows:
   - main:
       layout: bb8a,235x50,0,0{92x50,0,0[92x14,0,0,36,92x35,0,15,38],142x50,93,0,37}
       panes:
-        - null
+        - ncmpcpp
         - vi -c VimwikiIndex
         - null

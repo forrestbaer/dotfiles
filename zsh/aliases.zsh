@@ -11,8 +11,8 @@ alias cat='bat'
 alias dh='dirs -v'
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
 
-alias home='tmuxinator start home'
-alias work='tmuxinator start work'
+alias p='f() { qlmanage -p $1 2> /dev/null};f'
+alias browse='w3m google.com'
 
 # Git
 
@@ -32,9 +32,11 @@ alias vim='nvim'
 # tmux
 
 alias tmux='tmux new -As0'
+alias home='tmuxinator start home'
+alias work='tmuxinator start work'
 
-# ad hoc
+# easy directory jumps
 
 alias cdds='cd ~/code/design-system'
-alias cdms='cd ~/code/marketplace-shared/jenkins/pipelines/design-system'
 alias cddf='cd ~/code/dotfiles'
+alias cds='cd ~/store`
