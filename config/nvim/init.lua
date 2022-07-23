@@ -89,20 +89,6 @@ require('packer').startup({function(use)
     end }
 
   use {
-    'madskjeldgaard/faust-nvim',
-        config = function()
-            require 'faust-nvim'
-            require 'faust-nvim'.load_snippets()
-        end,
-        requires = {
-            'vijaymarupudi/nvim-fzf',
-            'L3MON4D3/LuaSnip',
-            'gmoe/vim-faust'
-        },
-        -- run = require'faust-nvim'.post_install,
-  }
-
-  use {
     'norcalli/nvim-colorizer.lua',
     ft = { 'scss', 'css', 'javascript', 'vim', 'html', 'typescript' },
     config = [[require('colorizer').setup {'scss', 'css', 'javascript', 'vim', 'html', 'typescript'}]],
