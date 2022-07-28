@@ -39,4 +39,4 @@ alias work='tmuxinator start work'
 
 alias cdds='cd ~/code/design-system'
 alias cddf='cd ~/code/dotfiles'
-alias cds='cd ~/store`
+alias cds='cd ~/store'
