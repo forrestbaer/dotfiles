@@ -1,14 +1,20 @@
 zmodload -i zsh/complist
 
-setopt menu_complete
 unsetopt flowcontrol
 setopt auto_menu
 setopt complete_in_word
 setopt always_to_end
 
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' expand prefix suffix
+zstyle ':completion:*' file-sort modification
+zstyle ':completion:*' list-suffixes true
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=**'
+zstyle ':completion:*' max-errors 3 numeric
+zstyle ':completion:*' special-dirs true
+
 zstyle ':completion:*' menu select
 zstyle ':completion:*' complete-options true
-zstyle ':completion:*' file-sort modification
 zstyle ':completion:*' list-colors ${(s.:.)ZLS_COLORS}
 
 zstyle ':completion:*:expand:*' keep-prefix true tag-order all-expansions
@@ -39,6 +45,4 @@ zstyle ':completion:*:manuals'       separate-sections true
 zstyle ':completion:*:manuals.(^1*)' insert-sections   true
 zstyle ':completion:*' use-cache off
 
-autoload -U +X bashcompinit && bashcompinit
-
-source /usr/local/opt/fzf/shell/completion.zsh
+autoload -Uz compinit; compinit
