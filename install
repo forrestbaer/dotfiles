@@ -1,6 +1,6 @@
 #!/bin/sh
 
-git submodule update --recursive --remote
+git submodule update --recursive --init
 
 links_made=0
 
