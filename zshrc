@@ -1,4 +1,3 @@
-autoload -U compinit && compinit
 autoload colors && colors
 
 if [[ -d ~/.zsh/zsh-autosuggestions ]]; then
@@ -13,3 +12,7 @@ source ~/.zsh/exports.zsh
 source ~/.zsh/prompt.zsh
 source ~/.zsh/options.zsh
 source ~/.zsh/completion.zsh
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi

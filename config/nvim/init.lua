@@ -42,8 +42,10 @@ require('packer').startup({function(use)
 
   use 'forrestbaer/minimal_dark'
 
-  use 'neovim/nvim-lspconfig'
-  use 'williamboman/nvim-lsp-installer'
+  use {
+    'williamboman/nvim-lsp-installer',
+    'neovim/nvim-lspconfig'
+    }
   use 'nvim-lua/plenary.nvim'
 
   use {
@@ -53,7 +55,7 @@ require('packer').startup({function(use)
     end }
 
   use 'nvim-telescope/telescope.nvim'
-  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'}
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
   use 'nvim-telescope/telescope-file-browser.nvim'
 
   use 'kyazdani42/nvim-web-devicons'
@@ -70,46 +72,17 @@ require('packer').startup({function(use)
   use 'akinsho/toggleterm.nvim'
   use 'svermeulen/vim-easyclip'
 
-  use 'fatih/vim-go'
-
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate',
-  }
-  use 'nvim-treesitter/playground'
-  use 'JoosepAlviste/nvim-ts-context-commentstring'
-
   use 'vimwiki/vimwiki'
   use {
     'elihunter173/dirbuf.nvim',
     config = function()
       require('dirbuf').setup {
         sort_order = 'directories_first',
+        -- file_handlers = {
+        --   wav = "!afplay",
+        -- },
       }
     end }
-
-  use {
-    'norcalli/nvim-colorizer.lua',
-    ft = { 'scss', 'css', 'javascript', 'vim', 'html', 'typescript' },
-    config = [[require('colorizer').setup {'scss', 'css', 'javascript', 'vim', 'html', 'typescript'}]],
-  }
-
-  use {'lewis6991/hover.nvim', config = function()
-    require('hover').setup{
-      init = function()
-        require('hover.providers.lsp')
-        -- require('hover.providers.gh')
-        -- require('hover.providers.man')
-        -- require('hover.providers.dictionary')
-      end,
-      preview_opts = {
-        border = nil
-      },
-      title = true
-    }
-    vim.keymap.set('n',  'K', require('hover').hover       , { desc = 'hover.nvim'         })
-    vim.keymap.set('n', 'gK', require('hover').hover_select, { desc = 'hover.nvim (select)' })
-  end}
 
   if PACKER_BOOTSTRAP then
     require('packer').sync()
@@ -166,7 +139,7 @@ lspconfig.sumneko_lua.setup{
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
 }
 
-local servers = { 'html', 'tsserver', 'gopls'}
+local servers = { 'html', 'tsserver', 'clangd', 'bashls' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {}
 end
@@ -188,42 +161,8 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
 
 local telescope = require('telescope')
 local actions = require('telescope.actions')
-local action_state = require('telescope.actions.state')
 local telescope_custom_actions = {}
 local fb_actions = require('telescope').extensions.file_browser.actions
-
-local function multiopen(prompt_bufnr, open_cmd)
-  local picker = action_state.get_current_picker(prompt_bufnr)
-  local num_selections = #picker:get_multi_selection()
-  if not num_selections or num_selections <= 1 then
-    actions.add_selection(prompt_bufnr)
-  end
-  actions.send_selected_to_qflist(prompt_bufnr)
-
-  local results = vim.fn.getqflist()
-
-  for _, result in ipairs(results) do
-    local current_file = vim.fn.bufname()
-    local next_file = vim.fn.bufname(result.bufnr)
-
-    if current_file == '' then
-      vim.api.nvim_command('edit' .. ' ' .. next_file)
-    else
-      vim.api.nvim_command(open_cmd .. ' ' .. next_file)
-    end
-  end
-
-  vim.api.nvim_command('cd .')
-end
-function telescope_custom_actions.multi_selection_open_vsplit(prompt_bufnr)
-    multiopen(prompt_bufnr, 'vsplit')
-end
-function telescope_custom_actions.multi_selection_open_split(prompt_bufnr)
-    multiopen(prompt_bufnr, 'split')
-end
-function telescope_custom_actions.multi_selection_open_tab(prompt_bufnr)
-    multiopen(prompt_bufnr, 'tabe')
-end
 
 telescope.setup{
   defaults = {
@@ -268,40 +207,6 @@ telescope.setup{
 
 telescope.load_extension('fzf')
 telescope.load_extension('file_browser')
-
-
-
---
----- treesitter
---
-
-require('nvim-treesitter').setup {}
-require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'regex', 'fennel', 'c', 'javascript', 'lua', 'typescript', 'go', 'html', 'python' },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = 'gnn',
-      node_incremental = 'grn',
-      scope_incremental = 'grc',
-      node_decremental = 'grm',
-    },
-  },
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-  },
-  indent = {
-    enable = true,
-  },
-}
-
-require('nvim-treesitter.highlight').set_custom_captures {
-  ['punctuation.bracket'] = 'Title',
-  ['constructor'] = 'Title',
-  ['string'] = 'Normal',
-  ['keyword'] = 'String',
-}
 
 
 
@@ -406,8 +311,8 @@ vim.g.vimwiki_list = {{
 --
 require('bufferline').setup {
   highlights = {
-    separator = { guifg = '#AAAAAA' },
-    separator_selected = { guifg = '#FFFFFF' },
+    separator = { fg = '#AAAAAA', bg = '#222222' },
+    separator_selected = { fg = '#FFFFFF' },
   },
   options = {
     numbers = "none",
@@ -551,11 +456,8 @@ g.terminal_color_3                  =  '#ac882f'
 --
 
 -- lsp
-map('n', 'K', require('hover').hover)
-map('n', '<leader>i', require('hover').hover)
-map('n', '<leader>I', ':TSHighlightCapturesUnderCursor<cr>')
-map('n', 'gD', vim.lsp.buf.definition)
-map('n', 'gd', require("goto-preview").goto_preview_definition)
+map('n', '<leader>i', require("goto-preview").goto_preview_definition)
+map('n', 'gd', vim.lsp.buf.definition)
 map('n', '<leader>d', vim.diagnostic.open_float)
 
 -- git
@@ -596,9 +498,6 @@ map('n', '<leader>rv', ':so ~/.config/nvim/init.lua<cr>')
 map('v', '<', '<gv')
 map('v', '>', '>gv')
 
--- vim tree
-map('', '<leader><tab>', ':NvimTreeFocus<cr>')
-
 -- vimwiki
 map('', '<leader>/', ':VimwikiToggleListItem<cr>')
 
@@ -616,7 +515,7 @@ local autocmds = {
     },
     packer = {
       { 'BufWritePost', '~/.config/nvim/init.lua', 'source ~/.config/nvim/init.lua | PackerCompile' },
-    },
+   },
     highlight_yank = {
       { 'TextYankPost', '*', 'lua require("vim.highlight").on_yank{"Search", 2000}' },
     },
