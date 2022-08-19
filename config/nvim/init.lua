@@ -54,6 +54,12 @@ require('packer').startup({function(use)
       require('goto-preview').setup {}
     end }
 
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate',
+  }
+  use 'JoosepAlviste/nvim-ts-context-commentstring'
+
   use 'nvim-telescope/telescope.nvim'
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
   use 'nvim-telescope/telescope-file-browser.nvim'
@@ -83,6 +89,12 @@ require('packer').startup({function(use)
         -- },
       }
     end }
+
+  use {
+      'norcalli/nvim-colorizer.lua',
+      ft = { 'scss', 'css', 'javascript', 'vim', 'html', 'typescript' },
+      config = [[require('colorizer').setup {'c', 'lua', 'scss', 'css', 'javascript', 'vim', 'html', 'typescript'}]],
+    }
 
   if PACKER_BOOTSTRAP then
     require('packer').sync()
@@ -154,6 +166,37 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   }
 )
 
+--
+---- treesitter
+--
+
+require('nvim-treesitter').setup {}
+require('nvim-treesitter.configs').setup {
+  ensure_installed = { 'regex', 'fennel', 'c', 'javascript', 'lua', 'typescript', 'html' },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = 'gnn',
+      node_incremental = 'grn',
+      scope_incremental = 'grc',
+      node_decremental = 'grm',
+    },
+  },
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  },
+  indent = {
+    enable = true,
+  },
+}
+
+require('nvim-treesitter.highlight').set_custom_captures {
+  ['punctuation.bracket'] = 'Title',
+  ['constructor'] = 'Title',
+  ['string'] = 'Normal',
+  ['keyword'] = 'String',
+}
 
 --
 -- telescope stuff
