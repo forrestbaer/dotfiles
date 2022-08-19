@@ -445,42 +445,53 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-
+function g.custom_fold_text()
+  local line = vim.fn.getline(vim.v.foldstart)
+  local line_count = vim.v.foldend - vim.v.foldstart + 1
+  return " ⚡ " .. line .. ": " .. line_count .. " lines"
+end
 
 --
 -- options
 --
-opt.guifont       =  'Iosevka Nerd Font:h18'
-opt.fileencoding  =  'utf-8'
-opt.backspace     =  'indent,eol,start'
-opt.tabstop       =  2
-opt.shiftwidth    =  2
-opt.expandtab     =  true
-opt.showmatch     =  true
-opt.signcolumn    =  'yes'
-opt.number        =  true
-opt.numberwidth   =  5
-opt.hidden        =  true
-opt.mouse         =  'a'
-opt.autoread      =  true
-opt.pumheight     =  20
-opt.ignorecase    =  true
-opt.smartcase     =  true
-opt.remap         =  true
-opt.timeout       =  false
-opt.guicursor     =  'i:ver20-blinkon100,n:blinkon100'
-opt.linebreak     =  true
-opt.scrolloff     =  4
-opt.backup        =  false
-opt.splitbelow    =  true
-opt.grepprg       =  'rg'
-opt.updatetime    =  150
-opt.undofile      =  true
-opt.undodir       =  '/tmp'
-opt.helpheight    =  15
-opt.completeopt   =  'menuone,noselect,noinsert'
-opt.omnifunc      =  'syntaxcomplete#Complete'
-opt.clipboard     =  'unnamed'
+opt.foldmethod     =  'expr'
+opt.foldexpr       =  'nvim_treesitter#foldexpr()'
+opt.foldnestmax    =  2
+opt.foldminlines   =  5
+opt.foldcolumn     =  "auto"
+vim.wo.foldtext    =  [[substitute(getline(v:foldstart),'\\t',repeat(' ',&tabstop),'g').'...'.trim(getline(v:foldend)) . ' [' . (v:foldend - v:foldstart + 1) . ' lines]']]
+vim.wo.fillchars   =  "fold: "
+opt.guifont        =  'Iosevka Nerd Font:h18'
+opt.fileencoding   =  'utf-8'
+opt.backspace      =  'indent,eol,start'
+opt.tabstop        =  2
+opt.shiftwidth     =  2
+opt.expandtab      =  true
+opt.showmatch      =  true
+opt.signcolumn     =  'yes'
+opt.number         =  true
+opt.numberwidth    =  5
+opt.hidden         =  true
+opt.mouse          =  'a'
+opt.autoread       =  true
+opt.pumheight      =  20
+opt.ignorecase     =  true
+opt.smartcase      =  true
+opt.remap          =  true
+opt.timeout        =  false
+opt.guicursor      =  'i:ver20-blinkon100,n:blinkon100'
+opt.linebreak      =  true
+opt.scrolloff      =  4
+opt.backup         =  false
+opt.splitbelow     =  true
+opt.grepprg        =  'rg'
+opt.updatetime     =  150
+opt.undofile       =  true
+opt.undodir        =  '/tmp'
+opt.helpheight     =  15
+opt.completeopt    =  'menuone,noselect,noinsert'
+opt.omnifunc       =  'syntaxcomplete#Complete'
+opt.clipboard      =  'unnamed'
 
 
 
