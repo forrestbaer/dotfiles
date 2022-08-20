@@ -106,11 +106,19 @@ end})
 --
 -- helper functions & commands
 --
-local function map(mode, lhs, rhs, opts)
+local map = function(mode, lhs, rhs, opts)
   local options = {noremap = true, silent = true}
   if opts then options = vim.tbl_extend('force', options, opts) end
   vim.keymap.set(mode, lhs, rhs, options)
 end
+
+
+api.nvim_create_user_command(
+  'Columnize',
+  '<line1>,<line2>!column -t',
+  {range = '%'}
+)
+
 
 local function nvim_create_augroups(definitions)
     for group_name, definition in pairs(definitions) do
@@ -123,14 +131,6 @@ local function nvim_create_augroups(definitions)
         api.nvim_command('augroup END')
     end
 end
-
-api.nvim_create_user_command(
-  'Columnize',
-  '<line1>,<line2>!column -t',
-  {range = '%'}
-)
-
-
 
 --
 -- lsp
@@ -445,22 +445,18 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-function g.custom_fold_text()
-  local line = vim.fn.getline(vim.v.foldstart)
-  local line_count = vim.v.foldend - vim.v.foldstart + 1
-  return " ⚡ " .. line .. ": " .. line_count .. " lines"
-end
 
 --
 -- options
 --
 opt.foldmethod     =  'expr'
 opt.foldexpr       =  'nvim_treesitter#foldexpr()'
-opt.foldnestmax    =  2
-opt.foldminlines   =  5
-opt.foldcolumn     =  "auto"
+opt.foldnestmax    =  1
+opt.foldminlines   =  2
+opt.foldlevelstart =  99
+opt.foldcolumn     =  "auto:1"
+vim.wo.fillchars   =  "foldopen:,foldsep:│,foldclose:,fold: "
 vim.wo.foldtext    =  [[substitute(getline(v:foldstart),'\\t',repeat(' ',&tabstop),'g').'...'.trim(getline(v:foldend)) . ' [' . (v:foldend - v:foldstart + 1) . ' lines]']]
-vim.wo.fillchars   =  "fold: "
 opt.guifont        =  'Iosevka Nerd Font:h18'
 opt.fileencoding   =  'utf-8'
 opt.backspace      =  'indent,eol,start'
