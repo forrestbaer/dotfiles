@@ -183,7 +183,8 @@ require('nvim-treesitter.configs').setup {
     },
   },
   highlight = {
-    enable = true,
+    -- turning off until it gets fixed below
+    enable = false,
     additional_vim_regex_highlighting = false,
   },
   indent = {
@@ -191,12 +192,15 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
-require('nvim-treesitter.highlight').set_custom_captures {
-  ['punctuation.bracket'] = 'Title',
-  ['constructor'] = 'Title',
-  ['string'] = 'Normal',
-  ['keyword'] = 'String',
-}
+-- 
+-- turning this off until it's resolved in the plugin
+--
+-- require('nvim-treesitter.highlight').set_custom_captures {
+--   ['punctuation.bracket'] = 'Title',
+--   ['constructor'] = 'Title',
+--   ['string'] = 'Normal',
+--   ['keyword'] = 'String',
+-- }
 
 --
 -- telescope stuff
