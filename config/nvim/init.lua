@@ -151,7 +151,7 @@ lspconfig.sumneko_lua.setup{
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
 }
 
-local servers = { 'html', 'tsserver', 'clangd', 'bashls', 'eslint' }
+local servers = { 'html', 'tsserver', 'clangd', 'bashls', 'eslint', 'stylelint_lsp'  }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {}
 end
