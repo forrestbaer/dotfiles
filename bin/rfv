@@ -1,4 +1,4 @@
-!/usr/bin/env bash
+#!/usr/bin/env bash
 
 # Two-phase filtering with Ripgrep and fzf
 #
@@ -20,4 +20,4 @@ FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY")" \
   --preview 'bat --color=always {1} --highlight-line {2}' \
   --preview-window 'up,60%,border-bottom,+{2}+3/3,~3'
 )
-[ -n "${selected[0]}" ] && vim "${selected[0]}" "+${selected[1]}"
+[ -n "${selected[0]}" ] && nvim "${selected[0]}" "+${selected[1]}"

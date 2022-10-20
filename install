@@ -15,3 +15,6 @@ for file in $files; do
   rm ~/.$file
   ln -sfn ${PWD}/$file ~/.$file
 done
+
+mkdir -p ~/bin
+cp ${PWD}/bin/* ~/bin
