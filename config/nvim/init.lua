@@ -3,13 +3,10 @@
 --
 local fn, opt, api, cmd, g = vim.fn, vim.opt, vim.api, vim.cmd, vim.g
 
-
 --
 -- packer/plugins
 --
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-
-opt.termguicolors = true
 
 if fn.empty(fn.glob(install_path)) > 0 then
   PACKER_BOOTSTRAP = fn.system {
@@ -39,69 +36,93 @@ packer.init {
 
 require('packer').startup({function(use)
   use 'wbthomason/packer.nvim'
-
-  use 'forrestbaer/minimal_dark'
-
-  use {
-    'williamboman/nvim-lsp-installer',
-    'neovim/nvim-lspconfig'
-    }
   use 'nvim-lua/plenary.nvim'
-
-  use {
-    'rmagatti/goto-preview',
-    config = function()
-      require('goto-preview').setup {}
-    end }
-
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate',
-  }
-  use 'JoosepAlviste/nvim-ts-context-commentstring'
-
-  use 'nvim-telescope/telescope.nvim'
-  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
-  use 'nvim-telescope/telescope-file-browser.nvim'
-
-  use 'kyazdani42/nvim-web-devicons'
-  use 'davidgranstrom/scnvim'
-  use 'davidgranstrom/scnvim-tmux'
-  use 'akinsho/bufferline.nvim'
-  use 'nvim-lualine/lualine.nvim'
   use 'tpope/vim-surround'
   use 'tpope/vim-repeat'
-  use 'tpope/vim-fugitive'
   use 'tpope/vim-commentary'
-  use 'tpope/vim-eunuch'
-  use 'airblade/vim-gitgutter'
-  use 'akinsho/toggleterm.nvim'
   use 'svermeulen/vim-easyclip'
+  use 'kyazdani42/nvim-web-devicons'
+  use 'akinsho/bufferline.nvim'
+  use 'nvim-lualine/lualine.nvim'
+  use 'akinsho/toggleterm.nvim'
+  use 'norcalli/nvim-colorizer.lua'
+  use 'forrestbaer/minimal_dark'
 
-  use 'vimwiki/vimwiki'
-  use {
-    'elihunter173/dirbuf.nvim',
-    config = function()
-      require('dirbuf').setup {
-        sort_order = 'directories_first',
-        -- file_handlers = {
-        --   wav = "!afplay",
-        -- },
-      }
-    end }
+  use "nvim-treesitter/nvim-treesitter"
 
   use {
-      'norcalli/nvim-colorizer.lua',
-      ft = { 'scss', 'css', 'javascript', 'vim', 'html', 'typescript' },
-      config = [[require('colorizer').setup {'c', 'lua', 'scss', 'css', 'javascript', 'vim', 'html', 'typescript'}]],
-    }
+    "neovim/nvim-lspconfig",
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+	}
+
+  use {
+    'nvim-telescope/telescope.nvim',
+    { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+    'nvim-telescope/telescope-file-browser.nvim'
+  }
 
   if PACKER_BOOTSTRAP then
     require('packer').sync()
   end
 end})
 
+--
+-- initialize colorscheme
+--
+local ok, _ = pcall(vim.cmd, 'colorscheme minimal_dark')
+if not ok then
+  return
+end
 
+--
+-- options
+--
+opt.termguicolors  =  true
+opt.foldmethod     =  'expr'
+opt.foldexpr       =  'nvim_treesitter#foldexpr()'
+opt.foldnestmax    =  1
+opt.foldminlines   =  2
+opt.foldlevelstart =  99
+opt.foldcolumn     =  "auto:1"
+vim.wo.fillchars   =  "foldopen:,foldsep:│,foldclose:,fold: "
+vim.wo.foldtext    =  [[substitute(getline(v:foldstart),'\\t',repeat(' ',&tabstop),'g').'...'.trim(getline(v:foldend)) . ' [' . (v:foldend - v:foldstart + 1) . ' lines]']]
+opt.guifont        =  'Iosevka Nerd Font:h18'
+opt.fileencoding   =  'utf-8'
+opt.backspace      =  'indent,eol,start'
+opt.tabstop        =  2
+opt.shiftwidth     =  2
+opt.expandtab      =  true
+opt.showmatch      =  true
+opt.signcolumn     =  'yes'
+opt.number         =  true
+opt.numberwidth    =  5
+opt.hidden         =  true
+opt.mouse          =  'a'
+opt.autoread       =  true
+opt.pumheight      =  20
+opt.ignorecase     =  true
+opt.smartcase      =  true
+opt.remap          =  true
+opt.timeout        =  false
+opt.guicursor      =  'i:ver20-blinkon100,n:blinkon100'
+opt.linebreak      =  true
+opt.scrolloff      =  4
+opt.backup         =  false
+opt.splitbelow     =  true
+opt.grepprg        =  'rg'
+opt.updatetime     =  150
+opt.undofile       =  true
+opt.undodir        =  '/tmp'
+opt.helpheight     =  15
+opt.completeopt    =  'menuone,noselect,noinsert'
+opt.omnifunc       =  'syntaxcomplete#Complete'
+opt.clipboard      =  'unnamed'
+
+g.mapleader                         =  ','
+g.maplocalleader                    =  ','
+g.gitgutter_terminal_reports_focus  =  0
+g.terminal_color_3                  =  '#ac882f'
 
 --
 -- helper functions & commands
@@ -112,46 +133,27 @@ local map = function(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, options)
 end
 
-
 api.nvim_create_user_command(
   'Columnize',
   '<line1>,<line2>!column -t',
   {range = '%'}
 )
 
-
-local function nvim_create_augroups(definitions)
-    for group_name, definition in pairs(definitions) do
-        api.nvim_command('augroup '..group_name)
-        api.nvim_command('autocmd!')
-        for _, def in ipairs(definition) do
-            local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
-            api.nvim_command(command)
-        end
-        api.nvim_command('augroup END')
-    end
-end
-
 --
 -- lsp
 --
-local lspconfig = require('lspconfig')
-require('nvim-lsp-installer').setup({
-    automatic_installation = true,
-    ui = {
-        icons = {
-            server_installed = '✓',
-            server_pending = '➜',
-            server_uninstalled = '✗'
-        }
-    }
+require("mason").setup()
+require('mason-lspconfig').setup({
+  ensure_installed = { 'sumneko_lua', 'tsserver', 'html', 'bashls', 'eslint' }
 })
+
+local lspconfig = require('lspconfig')
 
 lspconfig.sumneko_lua.setup{
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
 }
 
-local servers = { 'html', 'tsserver', 'clangd', 'bashls', 'eslint', 'stylelint_lsp'  }
+local servers = { 'html', 'tsserver', 'clangd', 'bashls', 'eslint' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {}
 end
@@ -170,8 +172,16 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
 ---- treesitter
 --
 
+local ok, _ = pcall(require, 'nvim-treesitter')
+if not ok then
+  cmd "lua TSUpdate"
+end
+
 require('nvim-treesitter').setup {}
 require('nvim-treesitter.configs').setup {
+  autotag = {
+    enable = true
+  },
   ensure_installed = { 'regex', 'fennel', 'c', 'javascript', 'lua', 'typescript', 'html' },
   incremental_selection = {
     enable = true,
@@ -183,33 +193,26 @@ require('nvim-treesitter.configs').setup {
     },
   },
   highlight = {
-    -- turning off until it gets fixed below
-    enable = false,
-    additional_vim_regex_highlighting = false,
+    enable = true,
+    additional_vim_regex_highlighting = true,
   },
   indent = {
     enable = true,
   },
 }
 
--- 
--- turning this off until it's resolved in the plugin
---
--- require('nvim-treesitter.highlight').set_custom_captures {
---   ['punctuation.bracket'] = 'Title',
---   ['constructor'] = 'Title',
---   ['string'] = 'Normal',
---   ['keyword'] = 'String',
--- }
+api.nvim_set_hl(0, "punctuation.bracket", {link = "@Title"})
+api.nvim_set_hl(0, "constructor", {link = "@Title"})
+api.nvim_set_hl(0, "string", {link = "@Normal"})
+api.nvim_set_hl(0, "keyword", {link = "@String"})
 
 --
 -- telescope stuff
 --
-
 local telescope = require('telescope')
 local actions = require('telescope.actions')
-local telescope_custom_actions = {}
-local fb_actions = require('telescope').extensions.file_browser.actions
+telescope.load_extension('fzf')
+telescope.load_extension('file_browser')
 
 telescope.setup{
   defaults = {
@@ -240,11 +243,6 @@ telescope.setup{
         mappings = {
           i = {
             ['<esc>'] = actions.close,
-            ['<tab>'] = actions.toggle_selection,
-            ['<C-v>'] = telescope_custom_actions.multi_selection_open_vsplit,
-            ['<C-s>'] = telescope_custom_actions.multi_selection_open_split,
-            ['<C-t>'] = telescope_custom_actions.multi_selection_open_tab,
-            ['<C-r>'] = fb_actions.rename,
           },
         },
       },
@@ -252,16 +250,14 @@ telescope.setup{
   },
 }
 
-telescope.load_extension('fzf')
-telescope.load_extension('file_browser')
-
-
-
 --
--- other plugin initializations
+-- devicons
 --
 require('nvim-web-devicons').setup{ default = true }
 
+--
+-- lualine
+--
 require('lualine').setup{
   options = {
     icons_enabled = true,
@@ -310,8 +306,6 @@ require('lualine').setup{
   },
 }
 
-
-
 --
 -- toggleterm
 --
@@ -325,33 +319,6 @@ require('toggleterm').setup{
   close_on_exit = true,
   shell = '/bin/zsh',
 }
-local Terminal  = require('toggleterm.terminal').Terminal
-local gitui = Terminal:new({
-  cmd = 'gitui',
-  dir = '.',
-  hidden = true,
-  direction = 'float',
-  close_on_exit = true,
-  float_opts = { border = 'single' },
-  on_open = function(term)
-    vim.cmd('startinsert!')
-    vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', ':close<cr>', {noremap = true, silent = true})
-  end,
-})
-function GituiToggle()
-  gitui:toggle()
-end
-
-
---
--- vimwiki
---
-vim.g.vimwiki_list = {{
-  path = '~/store/wiki',
-  syntax = 'markdown',
-  ext = '.md'
-}}
-
 
 --
 -- bufferline
@@ -387,138 +354,22 @@ require('bufferline').setup {
   },
 }
 
-
 --
--- scnvim
+-- colorizer
 --
-local scnvim = require 'scnvim'
-local m = scnvim.map
-local map_expr = scnvim.map_expr
-scnvim.setup {
-  keymaps = {
-    ['<leader>re'] = m('editor.send_line', {'i', 'n'}),
-    ['<leader>ra'] = {
-      m('editor.send_block', {'i', 'n'}),
-      m('editor.send_selection', 'x'),
-    },
-    ['<CR>'] = m('postwin.toggle'),
-    ['<M-CR>'] = m('postwin.toggle', 'i'),
-    ['<M-L>'] = m('postwin.clear', {'n', 'i'}),
-    ['<leader>ri'] = m('signature.show', {'n', 'i'}),
-    ['<leader>rs'] = m('sclang.hard_stop', {'n', 'x', 'i'}),
-    ['<leader>rt'] = m('sclang.start'),
-    ['<leader>rk'] = m('sclang.recompile'),
-    ['<leader>rb'] = map_expr('s.boot'),
-    ['<leader>rm'] = map_expr('s.meter'),
-  },
-  editor = {
-    highlight = {
-      color = 'IncSearch',
-    },
-  },
-  extensions = {
-    tmux = {
-    }
-  }
-  -- postwin = {
-  --   float = {
-  --     enabled = true,
-  --   },
-  -- },
+require 'colorizer'.setup {
+  '*';
+  css = { rgb_fn = true; };
+  html = { names = false; }
 }
-scnvim.load_extension 'tmux'
-
-
-
---
--- visual setup
---
-cmd 'colorscheme minimal_dark'
-
-g.gitgutter_sign_added                    =  '+'
-g.gitgutter_sign_modified                 =  '~'
-g.gitgutter_sign_removed                  =  '-'
-g.gitgutter_sign_removed_first_line       =  '^'
-g.gitgutter_sign_removed_above_and_below  =  '{'
-g.gitgutter_sign_modified_removed         =  '~-'
-g.gitgutter_map_keys                      =  0
-
-local signs = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
-for type, icon in pairs(signs) do
-  local hl = 'DiagnosticSign' .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
-
-
---
--- options
---
-opt.foldmethod     =  'expr'
-opt.foldexpr       =  'nvim_treesitter#foldexpr()'
-opt.foldnestmax    =  1
-opt.foldminlines   =  2
-opt.foldlevelstart =  99
-opt.foldcolumn     =  "auto:1"
-vim.wo.fillchars   =  "foldopen:,foldsep:│,foldclose:,fold: "
-vim.wo.foldtext    =  [[substitute(getline(v:foldstart),'\\t',repeat(' ',&tabstop),'g').'...'.trim(getline(v:foldend)) . ' [' . (v:foldend - v:foldstart + 1) . ' lines]']]
-opt.guifont        =  'Iosevka Nerd Font:h18'
-opt.fileencoding   =  'utf-8'
-opt.backspace      =  'indent,eol,start'
-opt.tabstop        =  2
-opt.shiftwidth     =  2
-opt.expandtab      =  true
-opt.showmatch      =  true
-opt.signcolumn     =  'yes'
-opt.number         =  true
-opt.numberwidth    =  5
-opt.hidden         =  true
-opt.mouse          =  'a'
-opt.autoread       =  true
-opt.pumheight      =  20
-opt.ignorecase     =  true
-opt.smartcase      =  true
-opt.remap          =  true
-opt.timeout        =  false
-opt.guicursor      =  'i:ver20-blinkon100,n:blinkon100'
-opt.linebreak      =  true
-opt.scrolloff      =  4
-opt.backup         =  false
-opt.splitbelow     =  true
-opt.grepprg        =  'rg'
-opt.updatetime     =  150
-opt.undofile       =  true
-opt.undodir        =  '/tmp'
-opt.helpheight     =  15
-opt.completeopt    =  'menuone,noselect,noinsert'
-opt.omnifunc       =  'syntaxcomplete#Complete'
-opt.clipboard      =  'unnamed'
-
-
-
---
--- vim global opts
---
-g.mapleader                         =  ','
-g.maplocalleader                    =  ','
-g.gitgutter_terminal_reports_focus  =  0
-g.terminal_color_3                  =  '#ac882f'
-
-
 
 --
 -- key mappings
 --
 
 -- lsp
-map('n', '<leader>i', require("goto-preview").goto_preview_definition)
 map('n', 'gd', vim.lsp.buf.definition)
 map('n', '<leader>d', vim.diagnostic.open_float)
-
--- git
-map('n', '<leader>gb', ':G blame<cr>')
-map('n', '<leader>ga', ':G add .<cr>')
-map('n', '<leader>gc', ':G commit<cr>')
-map('n', '<leader>gp', ':G push<cr>')
 
 -- terminal
 map('', '<C-w>', '<C-W>W')
@@ -527,7 +378,6 @@ map('n', '<C-z>', '<C-w>W')
 map('i', '<C-z>', '<C-w>W')
 map('', '<leader>t', ':ToggleTerm<cr>')
 map('t', '<leader>t', '<cmd>ToggleTerm<cr>')
-map('n', '<leader>G', GituiToggle)
 
 -- telescope
 map('', '<leader>ff', ':Telescope find_files<cr>')
@@ -552,26 +402,17 @@ map('n', '<leader>rv', ':so ~/.config/nvim/init.lua<cr>')
 map('v', '<', '<gv')
 map('v', '>', '>gv')
 
--- vimwiki
-map('', '<leader>/', ':VimwikiToggleListItem<cr>')
-
-
-
 --
 -- autocmds
 --
-local autocmds = {
-    comment_strings = {
-      { 'FileType', 'scnvim', 'setlocal wrap' },
-    },
-    supercollider_indent = {
-      { 'FileType', 'supercollider', 'setlocal tabstop=4 softtabstop=4 shiftwidth=4' },
-    },
-    packer = {
-      { 'BufWritePost', '~/.config/nvim/init.lua', 'source ~/.config/nvim/init.lua | PackerCompile' },
-   },
-    highlight_yank = {
-      { 'TextYankPost', '*', 'lua require("vim.highlight").on_yank{"Search", 2000}' },
-    },
-}
-nvim_create_augroups(autocmds)
+api.nvim_create_autocmd('TextYankPost', {
+  command = 'silent! lua vim.highlight.on_yank()',
+})
+
+api.nvim_create_autocmd('FocusGained', {
+  command = [[:checktime]]
+})
+
+api.nvim_create_autocmd('BufEnter', {
+  command = [[set formatoptions-=cro]]
+})
