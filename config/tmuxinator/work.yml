@@ -26,5 +26,5 @@ windows:
       panes:
         - cd ~/code/design-system
         - cd ~/code/design-system
-        - vi -c VimwikiIndex
+        - null
         - null
