@@ -182,7 +182,7 @@ require('nvim-treesitter.configs').setup {
   autotag = {
     enable = true
   },
-  ensure_installed = { 'regex', 'fennel', 'c', 'javascript', 'lua', 'typescript', 'html' },
+  ensure_installed = { 'regex', 'javascript', 'lua', 'typescript', 'html' },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -216,11 +216,10 @@ telescope.load_extension('file_browser')
 
 telescope.setup{
   defaults = {
-    prompt_prefix = ' -> ',
     initial_mode = 'insert',
     selection_strategy = 'reset',
     sorting_strategy = 'descending',
-    layout_strategy = 'vertical',
+    -- layout_strategy = 'vertical',
     color_devicons = true,
     file_ignore_patterns = {
       'node_modules',
@@ -231,6 +230,8 @@ telescope.setup{
     mappings = {
       i = {
         ['<esc>'] = actions.close,
+        ["<C-i>"] = actions.preview_scrolling_up,
+        ["<C-e>"] = actions.preview_scrolling_down,
       },
     },
     pickers = {
@@ -325,31 +326,33 @@ require('toggleterm').setup{
 --
 require('bufferline').setup {
   highlights = {
-    separator = { fg = '#AAAAAA', bg = '#222222' },
-    separator_selected = { fg = '#FFFFFF' },
+    separator = { fg = '#000000', bg = '#111111' },
+    separator_selected = { fg = '#DDDDDD', bg = '#111111' },
+    fill = {
+      fg = '#DDDDDD',
+      bg = '#111111',
+    },
+    background = {
+      fg = '#AAAAAA',
+      bg = '#111111',
+    },
   },
   options = {
+    indicator = {
+      style = 'underline',
+    },
     numbers = "none",
-    max_name_length = 18,
+    max_name_length = 15,
     max_prefix_length = 15,
-    tab_size = 18,
-    diagnostics = "nvim_lsp",
-    diagnostics_update_in_insert = false,
-    diagnostics_indicator = function(count)
-      return "("..count..")"
-    end,
-    custom_filter = function(buf_number)
-      if vim.bo[buf_number].filetype ~= "scnvim" then
-        return true
-      end
-    end,
-    color_icons = true,
-    separator_style = {'..', '..'},
+    tab_size = 22,
+    diagnostics = false,
+    color_icons = false,
+    separator_style = 'thick',
     show_buffer_icons = true,
     show_buffer_close_icons = false,
     show_buffer_default_icon = true,
     show_close_icon = false,
-    show_tab_indicators = true,
+    show_tab_indicators = false,
     always_show_bufferline = true,
   },
 }
