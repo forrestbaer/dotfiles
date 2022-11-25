@@ -47,12 +47,12 @@ font:
   size: 18.0
 
   offset:
-    x: 0
-    y: 0
+    x: 1
+    y: 3
 
   glyph_offset:
     x: 0
-    y: 1
+    y: 3
 
   builtin_box_drawing: true
 
