@@ -19,7 +19,7 @@
     prompt = false
 
 [mergetool "nvim"]
-    cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
+    cmd = vim -f -c \"Gdiffsplit!\" \"$MERGED\"
 
 [diff]
     colorMoved = default
