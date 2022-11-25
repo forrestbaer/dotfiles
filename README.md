@@ -15,6 +15,7 @@
 
   - alacritty
   - git / gh
+  - gitui
   - neovim
   - fzf / ripgrep
   - tmuxinator

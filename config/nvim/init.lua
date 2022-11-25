@@ -39,6 +39,7 @@ require('packer').startup({function(use)
   use 'nvim-lua/plenary.nvim'
   use 'tpope/vim-surround'
   use 'tpope/vim-repeat'
+  use 'tpope/vim-fugitive'
   use 'tpope/vim-commentary'
   use 'svermeulen/vim-easyclip'
   use 'kyazdani42/nvim-web-devicons'
@@ -318,8 +319,24 @@ require('toggleterm').setup{
   persist_size = true,
   direction = 'horizontal',
   close_on_exit = true,
-  shell = '/bin/zsh',
+  shell = '/usr/local/bin/bash',
 }
+local Terminal = require('toggleterm.terminal').Terminal
+local gitui = Terminal:new({
+  cmd = 'gitui',
+  dir = '.',
+  hidden = true,
+  direction = 'float',
+  close_on_exit = true,
+  float_opts = { border = 'single' },
+  on_open = function(term)
+    vim.cmd('startinsert!')
+    vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', ':close<cr>', {noremap = true, silent = true})
+  end,
+})
+function GituiToggle()
+  gitui:toggle()
+end
 
 --
 -- bufferline
@@ -401,6 +418,8 @@ map('', '<c-o>', ':BufferLineCycleNext<cr>')
 map('', '<c-n>', ':BufferLineCyclePrev<cr>')
 map('n', '<leader>ev', ':cd ~/.config/nvim | e init.lua<cr>')
 map('n', '<leader>rv', ':so ~/.config/nvim/init.lua<cr>')
+
+map('n', '<leader>G', '<cmd>lua GituiToggle()<cr>')
 
 map('v', '<', '<gv')
 map('v', '>', '>gv')
