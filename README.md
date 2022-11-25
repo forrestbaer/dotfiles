@@ -14,13 +14,9 @@
 ### Dependencies
 
   - alacritty
-  - zsh
   - git / gh
   - neovim
-  - git-delta
-  - gitui
   - fzf / ripgrep
   - tmuxinator
   - tmux
-  - tmux-mem-cpu-load
   - bat
