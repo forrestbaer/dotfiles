@@ -218,8 +218,8 @@ cursor:
   #unfocused_hollow: true
   #thickness: 0.15
 
-shell:
-  program: /bin/zsh
+# shell:
+#   program: /usr/local/bin/bash
 #  args:
 #    - --login
 
