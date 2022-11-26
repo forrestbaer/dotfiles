@@ -23,7 +23,7 @@ alias vi='nvim'
 
 # tmux
 
-# alias tmux='tmux new -As0'
+alias tmux='tmux new -As0'
 alias home='tmuxinator start home'
 alias work='tmuxinator start work'
 
