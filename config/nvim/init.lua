@@ -332,7 +332,7 @@ require('toggleterm').setup{
   persist_size = true,
   direction = 'horizontal',
   close_on_exit = true,
-  shell = '/usr/local/bin/bash',
+  shell = '/usr/local/bin/bash --login',
 }
 local Terminal = require('toggleterm.terminal').Terminal
 local gitui = Terminal:new({

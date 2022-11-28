@@ -5,6 +5,7 @@ then
 fi
 
 set -o noclobber
+set -o vi
 
 shopt -s checkwinsize
 shopt -s globstar 2> /dev/null
@@ -41,10 +42,5 @@ export PS1='\e[32m\]@\h \e[37m\w \e[35m$(__git_ps1 "(%s)") \e[$(($?==0?0:31))m$ 
 
 export PATH=/usr/local/bin:/usr/local/sbin:.local/bin:~/bin:/usr/bin:/bin:$PATH
 
-if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-  PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
-fi
-
-if [ -f ~/.bashrc ]; then
-	. ~/.bashrc
-fi
+[[ -r /usr/local/opt/fzf/bin ]] && PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
+[[ -f ~/.bashrc ]] && source ~/.bashrc
