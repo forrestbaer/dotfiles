@@ -1,3 +1,5 @@
+-- lua print(vim.inspect(vim.lsp.buf_get_clients()[1].resolved_capabilities))
+
 --
 -- constants
 --
@@ -63,6 +65,17 @@ require('packer').startup({function(use)
     'nvim-telescope/telescope-file-browser.nvim'
   }
 
+  use({
+    "glepnir/lspsaga.nvim",
+    branch = "main",
+    config = function()
+      local saga = require("lspsaga")
+
+      saga.init_lsp_saga({
+      })
+    end,
+  })
+
   if PACKER_BOOTSTRAP then
     require('packer').sync()
   end
@@ -126,7 +139,7 @@ g.gitgutter_terminal_reports_focus  =  0
 g.terminal_color_3                  =  '#ac882f'
 
 --
--- helper functions & commands
+-- Create a keymap with some sane defaults.
 --
 local map = function(mode, lhs, rhs, opts)
   local options = {noremap = true, silent = true}
@@ -154,7 +167,7 @@ lspconfig.sumneko_lua.setup{
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
 }
 
-local servers = { 'html', 'tsserver', 'clangd', 'bashls', 'eslint' }
+local servers = { 'html', 'tsserver', 'clangd', 'bashls', 'eslint', 'pylsp'  }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {}
 end
@@ -388,8 +401,10 @@ require 'colorizer'.setup {
 --
 
 -- lsp
-map('n', 'gd', vim.lsp.buf.definition)
-map('n', '<leader>d', vim.diagnostic.open_float)
+map('n', 'gd', '<cmd>Lspsaga peek_definition<cr>')
+map('n', '<leader>i', '<cmd>Lspsaga hover_doc<cr>')
+map('n', '<leader>d', '<cmd>Lspsaga show_line_diagnostics<cr>')
+map({'n', 'v'}, '<leader>ca', '<cmd>Lspsaga code_action<cr>')
 
 -- terminal
 map('', '<C-w>', '<C-W>W')

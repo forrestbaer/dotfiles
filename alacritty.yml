@@ -47,7 +47,7 @@ font:
   size: 18.0
 
   offset:
-    x: 1
+    x: 0
     y: 3
 
   glyph_offset:
