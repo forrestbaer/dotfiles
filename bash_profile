@@ -31,7 +31,10 @@ HISTTIMEFORMAT='%F %T '
 PROMPT_COMMAND='history -a'
 PROMPT_DIRTRIM=2
 
-source /usr/local/etc/bash_completion.d/git-prompt.sh
+[[ -r "/usr/local/etc/bash_completion.d/git-prompt.sh" ]] && . "/usr/local/etc/bash_completion.d/git-prompt.sh"
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+[[ -r "/Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh" ]] && . "/Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh"
+
 export GIT_PS1_SHOWDIRTYSTATE=1
 
 export PS1='\e[32m\]@\h \e[37m\w \e[35m$(__git_ps1 "(%s)") \e[$(($?==0?0:31))m$ \e[0m'
