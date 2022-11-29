@@ -241,6 +241,12 @@ telescope.setup{
       '__tests__',
       '__snapshots__',
     },
+    layout_strategy = 'vertical',
+    layout_config = {
+      preview_height = 0.4,
+      width = 0.8,
+      height = 0.9,
+    },
     mappings = {
       i = {
         ['<esc>'] = actions.close,

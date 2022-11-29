@@ -1,11 +1,11 @@
 window:
   dimensions:
-    columns: 235 
-    lines: 51
+    columns: 123 
+    lines: 52
 
   position:
-    x: 10
-    y: 33
+    x: 20
+    y: 40
 
   padding:
     x: 10 
@@ -19,7 +19,7 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background and no title bar buttons
-  decorations: none
+  decorations: buttonless
 
   #opacity: 1.0
 
@@ -44,15 +44,15 @@ font:
     style: Regular Italic
 
   # Point size
-  size: 18.0
+  size: 20.0
 
   offset:
     x: 0
-    y: 3
+    y: 2
 
   glyph_offset:
     x: 0
-    y: 3
+    y: 2
 
   builtin_box_drawing: true
 
@@ -124,7 +124,7 @@ colors:
     red:     '#A80000'
     green:   '#00A800'
     yellow:  '#936f39'
-    blue:    '#0000AA'
+    blue:    '#0219b0'
     magenta: '#AA00AA'
     cyan:    '#00AAAA'
     white:   '#A8A8A8'
@@ -132,10 +132,10 @@ colors:
   # Bright colors
   bright:
     black:   '#545454'
-    red:     '#DF4A4A'
+    red:     '#f76375'
     green:   '#4CE54C'
     yellow:  '#FFFF55'
-    blue:    '#3b63d5'
+    blue:    '#2970e3'
     magenta: '#EC60EC'
     cyan:    '#55F7F7'
     white:   '#FEFEFE'
