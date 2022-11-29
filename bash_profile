@@ -38,9 +38,24 @@ PROMPT_DIRTRIM=2
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 
-export PS1='\e[32m\]@\h \e[37m\w \e[35m$(__git_ps1 "(%s)") \e[$(($?==0?0:31))m$ \e[0m'
+export PS1='\e[35m$(__git_ps1 "(%s)") \e[$(($?==0?0:31))m\n\e[32m\]@\h \e[37m\w $ \e[0m'
 
 export PATH=/usr/local/bin:/usr/local/sbin:.local/bin:~/bin:/usr/bin:/bin:$PATH
 
 [[ -r /usr/local/opt/fzf/bin ]] && PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
 [[ -f ~/.bashrc ]] && source ~/.bashrc
+
+if [[ $TERM != 'dumb' ]]; then
+    export TERM=screen-256color
+fi
+
+export CLICOLOR=1
+export LSCOLORS=dxfxcxdxGxegedabagacad
+
+export FZF_DEFAULT_OPTS='--color=bg+:#222222,bg:#000000,border:#6B6B6B,spinner:#00A800,hl:#AA00AA,fg:#D9D9D9,header:#00A800,info:#A4722C,pointer:#00AAAA,marker:#55F7F7,fg+:#D9D9D9,preview-bg:#000000,prompt:#A4722C,hl+:#55F7F7'
+
+export NVM_DIR="$HOME/.nvm"
+
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" 
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
