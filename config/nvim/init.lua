@@ -41,7 +41,6 @@ require('packer').startup({ function(use)
   use 'nvim-lua/plenary.nvim'
   use 'tpope/vim-surround'
   use 'tpope/vim-repeat'
-  use 'tpope/vim-fugitive'
   use 'tpope/vim-commentary'
   use 'svermeulen/vim-easyclip'
   use 'kyazdani42/nvim-web-devicons'
@@ -49,6 +48,8 @@ require('packer').startup({ function(use)
   use 'nvim-lualine/lualine.nvim'
   use 'akinsho/toggleterm.nvim'
   use 'norcalli/nvim-colorizer.lua'
+  use 'TimUntersberger/neogit'
+  use 'sindrets/diffview.nvim'
   use 'forrestbaer/minimal_dark'
 
   use "nvim-treesitter/nvim-treesitter"
@@ -233,7 +234,6 @@ telescope.setup {
     initial_mode = 'insert',
     selection_strategy = 'reset',
     sorting_strategy = 'descending',
-    -- layout_strategy = 'vertical',
     color_devicons = true,
     file_ignore_patterns = {
       'node_modules',
@@ -256,6 +256,7 @@ telescope.setup {
     },
     pickers = {
       find_files = {
+        follow = true,
         hidden = true,
       },
     },
@@ -358,6 +359,13 @@ local gitui = Terminal:new({
 function GituiToggle()
   gitui:toggle()
 end
+local neogit = require('neogit')
+neogit.setup {
+  kind = "split",
+  integrations = {
+    diffview = true,
+  }
+}
 
 --
 -- bufferline
@@ -442,7 +450,8 @@ map('', '<c-n>', ':BufferLineCyclePrev<cr>')
 map('n', '<leader>ev', ':cd ~/.config/nvim | e init.lua<cr>')
 map('n', '<leader>rv', ':so ~/.config/nvim/init.lua<cr>')
 
-map('n', '<leader>G', '<cmd>lua GituiToggle()<cr>')
+map('n', '<leader>g', ':Neogit<cr>')
+map('n', '<leader>h', ':DiffviewFileHistory<cr>')
 
 map('v', '<', '<gv')
 map('v', '>', '>gv')
@@ -461,6 +470,11 @@ api.nvim_create_autocmd('FocusGained', {
 api.nvim_create_autocmd('BufNewFile', {
   pattern = { '*.html', '*.htm' },
   command = '0r ~/code/dotfiles/templates/html5.html',
+})
+
+api.nvim_create_autocmd('BufReadPre,FileReadPre', {
+  pattern = { 'bash*' },
+  command = [[set ft=bash]]
 })
 
 api.nvim_create_autocmd('BufEnter', {
