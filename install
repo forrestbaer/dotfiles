@@ -2,8 +2,8 @@
 
 links_made=0
 
-folders="config/tmuxinator config/nvim"
-files="alacritty.yml bash_profile bashrc gitconfig tmux.conf config/tmuxinator/home.yml config/tmuxinator/work.yml config/nvim/init.lua"
+folders="config/tmuxinator config/nvim bin"
+files="alacritty.yml bash_profile bashrc gitconfig tmux.conf config/tmuxinator/home.yml config/tmuxinator/work.yml config/nvim/init.lua bin/rfv"
 
 for folder in $folders; do
   mkdir -p ~/.$folder
