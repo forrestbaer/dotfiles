@@ -362,6 +362,8 @@ end
 local neogit = require('neogit')
 neogit.setup {
   kind = "split",
+  disable_insert_on_commit = false,
+  disable_hint = true,
   integrations = {
     diffview = true,
   }
