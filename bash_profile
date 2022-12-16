@@ -42,7 +42,7 @@ export GIT_PS1_SHOWDIRTYSTATE=1
 
 export PS1='\e[35m$(__git_ps1 "(%s)") \e[$(($?==0?0:31))m\n\e[32m\]@\h \e[37m\w $ \e[0m'
 
-export PATH=/usr/local/bin:/usr/local/sbin:.local/bin:~/bin:/usr/bin:/bin:~/.bin:$PATH
+export PATH=/usr/local/opt/texinfo/bin:/usr/local/bin:/usr/local/sbin:.local/bin:~/bin:/usr/bin:/bin:~/.bin:$PATH
 
 [[ -r /usr/local/opt/fzf/bin ]] && PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
 [[ -f ~/.bashrc ]] && source ~/.bashrc

@@ -8,6 +8,8 @@ alias cat='bat'
 alias dh='dirs -v'
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
 
+alias ocd="openocd -s ../tcl -f ./interface/picoprobe.cfg -f ./target/rp2040.cfg"
+
 # Git
 
 alias gs='git status'
@@ -35,3 +37,4 @@ alias cddf='cd ~/code/dotfiles'
 export SHELL=/usr/local/bin/bash
 export GNUPGHOME=~/store/gpg
 export GPG_TTY="$TTY"
+export PICO_SDK_PATH="$HOME/code/pico-sdk"
