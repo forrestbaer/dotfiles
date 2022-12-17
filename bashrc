@@ -38,3 +38,4 @@ export SHELL=/usr/local/bin/bash
 export GNUPGHOME=~/store/gpg
 export GPG_TTY="$TTY"
 export PICO_SDK_PATH="$HOME/code/pico-sdk"
+export EDITOR=nvim

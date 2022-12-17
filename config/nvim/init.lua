@@ -48,34 +48,39 @@ require('packer').startup({ function(use)
   use 'nvim-lualine/lualine.nvim'
   use 'akinsho/toggleterm.nvim'
   use 'norcalli/nvim-colorizer.lua'
-  use 'TimUntersberger/neogit'
-  use 'sindrets/diffview.nvim'
   use 'forrestbaer/minimal_dark'
 
-  use "nvim-treesitter/nvim-treesitter"
+  -- git
+  use 'tpope/vim-fugitive'
+  use 'airblade/vim-gitgutter'
+  use {'akinsho/git-conflict.nvim', tag = "*", config = function()
+    require('git-conflict').setup({
+      default_mappings = false,
+    })
+  end}
 
+  -- lsp/treesitter
+  use "nvim-treesitter/nvim-treesitter"
   use {
     "neovim/nvim-lspconfig",
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
   }
-
-  use {
-    'nvim-telescope/telescope.nvim',
-    { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
-    'nvim-telescope/telescope-file-browser.nvim'
-  }
-
   use({
     "glepnir/lspsaga.nvim",
     branch = "main",
     config = function()
       local saga = require("lspsaga")
-
-      saga.init_lsp_saga({
-      })
+      saga.init_lsp_saga({ })
     end,
   })
+
+  -- telescope
+  use {
+    'nvim-telescope/telescope.nvim',
+    { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+    'nvim-telescope/telescope-file-browser.nvim'
+  }
 
   if PACKER_BOOTSTRAP then
     require('packer').sync()
@@ -359,15 +364,6 @@ local gitui = Terminal:new({
 function GituiToggle()
   gitui:toggle()
 end
-local neogit = require('neogit')
-neogit.setup {
-  kind = "split",
-  disable_insert_on_commit = false,
-  disable_hint = true,
-  integrations = {
-    diffview = true,
-  }
-}
 
 --
 -- bufferline
@@ -440,6 +436,17 @@ map('n', '<leader>ft', ':Telescope file_browser<cr>')
 map('', '<leader>fm', ':Telescope man_pages<cr>')
 map('', '<leader>fh', ':Telescope help_tags<cr>')
 
+-- git
+map('n', '<leader>gco', ':<plug>(git-conflict-ours)<cr>')
+map('n', '<leader>gct', ':<plug>(git-conflict-theirs)<cr>')
+map('n', '<leader>gcb', ':<plug>(git-conflict-both)<cr>')
+map('n', '<leader>gcn', ':<plug>(git-conflict-next-conflict)<cr>')
+map('n', '<leader>gcp', ':<plug>(git-conflict-prev-conflict)<cr>')
+map('n', '<leader>gg', ':lua GituiToggle()<cr>')
+map('n', '<leader>gl', ':Git log --<cr>')
+map('n', '<leader>gb', ':Git blame<cr>')
+map('n', '<leader>gd', ':Gvdiffsplit<cr>')
+
 -- vim
 map('', '<Space>', ':silent noh<Bar>echo<cr>')
 map('n', 'U', '<C-r>')
@@ -452,7 +459,6 @@ map('', '<c-n>', ':BufferLineCyclePrev<cr>')
 map('n', '<leader>ev', ':cd ~/.config/nvim | e init.lua<cr>')
 map('n', '<leader>rv', ':so ~/.config/nvim/init.lua<cr>')
 
-map('n', '<leader>g', ':Neogit<cr>')
 map('n', '<leader>h', ':DiffviewFileHistory<cr>')
 
 map('v', '<', '<gv')
@@ -467,11 +473,6 @@ api.nvim_create_autocmd('TextYankPost', {
 
 api.nvim_create_autocmd('FocusGained', {
   command = [[:checktime]]
-})
-
-api.nvim_create_autocmd('BufNewFile', {
-  pattern = { '*.html', '*.htm' },
-  command = '0r ~/code/dotfiles/templates/html5.html',
 })
 
 api.nvim_create_autocmd('BufReadPre,FileReadPre', {
