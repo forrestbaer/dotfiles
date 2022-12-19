@@ -1,0 +1,32 @@
+general {
+	colors = true
+	color_good = "#BBBBBB"
+	color_bad = "#CC1616"
+	color_degraded = "#55858E"
+	interval = 2
+}
+
+order += "cpu_usage"
+order += "wireless wlp2s0b1"
+order += "volume master"
+order += "tztime local"
+
+volume master {
+	format = " ♪ %volume " 
+	device = "default"
+	mixer = "Master"
+	mixer_idx = 0
+}
+
+cpu_usage {
+	format = " %usage CPU "
+}
+
+wireless wlp2s0b1 {
+	format_up = " %essid%quality (%ip) "
+	format_down = " ☡ WiFi "
+}
+
+tztime local {
+	format = " %h-%d %I:%M%p ☰ "
+}
