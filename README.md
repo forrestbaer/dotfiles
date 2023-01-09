@@ -14,6 +14,7 @@
 ### Dependencies
 
   - alacritty
+  - AutoRaise
   - git / gh
   - gitui
   - neovim
