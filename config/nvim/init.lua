@@ -49,6 +49,7 @@ require('packer').startup({ function(use)
   use 'akinsho/toggleterm.nvim'
   use 'norcalli/nvim-colorizer.lua'
   use 'forrestbaer/minimal_dark'
+  use 'tidalcycles/vim-tidal'
 
   -- git
   use 'tpope/vim-fugitive'

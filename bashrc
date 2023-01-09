@@ -7,6 +7,7 @@ alias md='mkdir'
 alias cat='bat'
 alias dh='dirs -v'
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
+alias sclang="/Applications/SuperCollider.app/Contents/MacOS/sclang"
 
 alias ocd="openocd -s ../tcl -f ./interface/picoprobe.cfg -f ./target/rp2040.cfg"
 
@@ -39,3 +40,12 @@ export GNUPGHOME=~/store/gpg
 export GPG_TTY="$TTY"
 export PICO_SDK_PATH="$HOME/code/pico-sdk"
 export EDITOR=nvim
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+. "$HOME/.cargo/env"
+
+[ -f "/Users/monk/.ghcup/env" ] && source "/Users/monk/.ghcup/env" # ghcup-env
