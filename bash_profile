@@ -40,7 +40,6 @@ PROMPT_DIRTRIM=2
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 
-# export PS1='\e[35m$(__git_ps1 "(%s)") \e[$(($?==0?0:31))m\n\e[32m\]@\h \e[37m\w $ \e[0m'
 export PS1='\[\e[0;1m\]$? [\[\e[0;38;5;232;48;5;252m\]\w\[\e[0m\]] $(__git_ps1 "\[\e[0;38;5;242m\](\[\e[0;38;5;171m\]%s\[\e[0;38;5;242m\])") \[\e[0;38;5;251m\]\$ \[\e[0m\]'
 
 
@@ -59,10 +58,8 @@ export LSCOLORS=dxfxcxdxGxegedabagacad
 export FZF_DEFAULT_OPTS='--color=bg+:#222222,bg:#000000,border:#6B6B6B,spinner:#00A800,hl:#AA00AA,fg:#D9D9D9,header:#00A800,info:#A4722C,pointer:#00AAAA,marker:#55F7F7,fg+:#D9D9D9,preview-bg:#000000,prompt:#A4722C,hl+:#55F7F7'
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+[[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"
+[[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion"
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-. "$HOME/.cargo/env"
-
+[[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
 [[ -f ~/.bashrc ]] && source ~/.bashrc # ghcup-env
