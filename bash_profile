@@ -62,7 +62,5 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-. "$HOME/.cargo/env"
-
+[[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
 [[ -f ~/.bashrc ]] && source ~/.bashrc # ghcup-env
