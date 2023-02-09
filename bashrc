@@ -38,7 +38,7 @@ alias cddf='cd ~/code/dotfiles'
 export SHELL=/usr/local/bin/bash
 export GNUPGHOME=~/store/gpg
 export GPG_TTY="$TTY"
-export PICO_SDK_PATH="$HOME/code/pico-sdk"
+export PICO_SDK_PATH="$HOME/code/pico/pico-sdk"
 export EDITOR=nvim
 
 export NVM_DIR="$HOME/.nvm"
