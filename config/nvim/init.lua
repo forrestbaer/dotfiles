@@ -50,6 +50,7 @@ require('packer').startup({ function(use)
   use 'norcalli/nvim-colorizer.lua'
   use 'forrestbaer/minimal_dark'
   use 'tidalcycles/vim-tidal'
+  use 'MattesGroeger/vim-bookmarks'
 
   -- git
   use 'tpope/vim-fugitive'
@@ -164,12 +165,12 @@ api.nvim_create_user_command(
 --
 require("mason").setup()
 require('mason-lspconfig').setup({
-  ensure_installed = { 'sumneko_lua', 'tsserver', 'html', 'bashls', 'eslint' }
+  ensure_installed = { 'lua_ls', 'tsserver', 'html', 'bashls', 'eslint' }
 })
 
 local lspconfig = require('lspconfig')
 
-lspconfig.sumneko_lua.setup {
+lspconfig.lua_ls.setup {
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
 }
 
@@ -431,7 +432,6 @@ map('t', '<leader>t', '<cmd>ToggleTerm<cr>')
 -- telescope
 map('', '<leader>ff', ':Telescope find_files<cr>')
 map('', '<leader>fg', ':Telescope live_grep<cr>')
-map('', '<leader>fb', ':Telescope buffers<cr>')
 map('n', '<leader>ft', ':Telescope file_browser<cr>')
 map('', '<leader>fm', ':Telescope man_pages<cr>')
 map('', '<leader>fh', ':Telescope help_tags<cr>')
