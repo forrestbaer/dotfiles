@@ -210,7 +210,7 @@ cursor:
     #   - ▇ Block
     #   - _ Underline
     #   - | Beam
-    #shape: Block
+   shape: Block
    blinking: On
 
   #vi_mode_style: None
