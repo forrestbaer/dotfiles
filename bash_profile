@@ -43,7 +43,7 @@ export GIT_PS1_SHOWDIRTYSTATE=1
 export PS1='$? [\[\e[0;97m\]\w\[\e[0m\]] $(__git_ps1 "\[\e[0;38;5;242m\](\[\e[0;38;5;237m\]%s\[\e[0;38;5;242m\])") \[\e[0;90m\]\$ \[\e[0m\]'
 
 
-export PATH=/usr/local/opt/texinfo/bin:/usr/local/bin:/usr/local/sbin:.local/bin:~/bin:/usr/bin:/bin:~/.bin:$PATH
+export PATH=/usr/local/opt/python/libexec/bin:/usr/local/opt/texinfo/bin:/usr/local/bin:/usr/local/sbin:.local/bin:~/bin:/usr/bin:/bin:~/.bin:$PATH
 
 [[ -r /usr/local/opt/fzf/bin ]] && PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
 [[ -f ~/.bashrc ]] && source ~/.bashrc

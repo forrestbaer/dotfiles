@@ -144,6 +144,7 @@ g.mapleader                        = ','
 g.maplocalleader                   = ','
 g.gitgutter_terminal_reports_focus = 0
 g.terminal_color_3                 = '#ac882f'
+g.bookmark_no_default_key_mappings = 1
 
 --
 -- Create a keymap with some sane defaults.
@@ -428,6 +429,9 @@ map('n', '<C-z>', '<C-w>W')
 map('i', '<C-z>', '<C-w>W')
 map('', '<leader>t', ':ToggleTerm<cr>')
 map('t', '<leader>t', '<cmd>ToggleTerm<cr>')
+map('', '<leader>rl', '<cmd>ToggleTermSendCurrentLine<cr>')
+map('v', '<leader>rv', '<cmd>ToggleTermSendVisualLines<cr>')
+map('v', '<leader>rs', '<cmd>ToggleTermSendVisualSelection<cr>')
 
 -- telescope
 map('', '<leader>ff', ':Telescope find_files<cr>')
@@ -435,6 +439,15 @@ map('', '<leader>fg', ':Telescope live_grep<cr>')
 map('n', '<leader>ft', ':Telescope file_browser<cr>')
 map('', '<leader>fm', ':Telescope man_pages<cr>')
 map('', '<leader>fh', ':Telescope help_tags<cr>')
+
+-- bookmarks
+map('', '<leader>ma', ':BookmarkShowAll<cr>')
+map('', '<leader>mm', ':BookmarkToggle<cr>')
+map('', '<leader>mi', ':BookmarkAnnotate<cr>')
+map('', '<leader>mn', ':BookmarkNext<cr>')
+map('', '<leader>mp', ':BookmarkPrev<cr>')
+map('', '<leader>mc', ':BookmarkClear<cr>')
+map('', '<leader>mx', ':BookmarkClearAll<cr>')
 
 -- git
 map('n', '<leader>gco', ':<plug>git-conflict-ours<cr>')
