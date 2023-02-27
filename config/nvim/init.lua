@@ -83,6 +83,8 @@ require('packer').startup({ function(use)
     'nvim-telescope/telescope-file-browser.nvim'
   }
 
+  use 'p00f/clangd_extensions.nvim'
+
   if PACKER_BOOTSTRAP then
     require('packer').sync()
   end
@@ -175,10 +177,30 @@ lspconfig.lua_ls.setup {
   settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
 }
 
-local servers = { 'html', 'tsserver', 'clangd', 'bashls', 'eslint', 'pylsp', 'jsonls'  }
+local servers = { 'html', 'tsserver', 'bashls', 'eslint', 'pylsp', 'jsonls'  }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {}
 end
+
+require("clangd_extensions").setup(
+  {
+    cmd = {
+      "clangd",
+      "--background-index",
+      "--suggest-missing-includes",
+      '--query-driver="/usr/local/opt/arm-none-eabi-gcc/bin/arm-none-eabi-gcc"'
+    },
+    filetypes = {"c", "cpp", "objc", "objcpp"},
+  })
+-- require('lspconfig').clangd.setup {
+--         cmd = {
+--             "clangd",
+--             "--background-index",
+--             "--suggest-missing-includes",
+--             '--query-driver="/usr/local/opt/gcc-arm-none-eabi/bin/arm-none-eabi-gcc"'
+--         },
+--         filetypes = {"c", "cpp", "objc", "objcpp"},
+-- }
 
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -417,10 +439,9 @@ require 'colorizer'.setup {
 --
 
 -- lsp
-map('n', 'gd', '<cmd>Lspsaga peek_definition<cr>')
-map('n', '<leader>i', '<cmd>Lspsaga hover_doc<cr>')
+map('n', '<leader>i', '<cmd>Lspsaga peek_definition<cr>')
+map('n', '<leader>I', '<cmd>Lspsaga hover_doc<cr>')
 map('n', '<leader>d', '<cmd>Lspsaga show_line_diagnostics<cr>')
-map({ 'n', 'v' }, '<leader>ca', '<cmd>Lspsaga code_action<cr>')
 
 -- terminal
 map('', '<C-w>', '<C-W>W')
@@ -430,8 +451,8 @@ map('i', '<C-z>', '<C-w>W')
 map('', '<leader>t', ':ToggleTerm<cr>')
 map('t', '<leader>t', '<cmd>ToggleTerm<cr>')
 map('', '<leader>rl', '<cmd>ToggleTermSendCurrentLine<cr>')
-map('v', '<leader>rv', '<cmd>ToggleTermSendVisualLines<cr>')
-map('v', '<leader>rs', '<cmd>ToggleTermSendVisualSelection<cr>')
+map({'n', 'v'}, '<leader>rv', ":'<,'>ToggleTermSendVisualLines<cr>")
+map({'n', 'v'}, '<leader>rs', "<cmd>ToggleTermSendVisualSelection<cr>")
 
 -- telescope
 map('', '<leader>ff', ':Telescope find_files<cr>')
