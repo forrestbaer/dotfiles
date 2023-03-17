@@ -168,7 +168,7 @@ api.nvim_create_user_command(
 --
 require("mason").setup()
 require('mason-lspconfig').setup({
-  ensure_installed = { 'lua_ls', 'tsserver', 'html', 'bashls', 'eslint' }
+  ensure_installed = { 'lua_ls', 'tsserver', 'html', 'bashls', 'eslint', 'clangd' }
 })
 
 local lspconfig = require('lspconfig')
