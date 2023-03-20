@@ -14,12 +14,14 @@ alias ocd="openocd -s ../tcl -f ./interface/picoprobe.cfg -f ./target/rp2040.cfg
 # Git
 
 alias gs='git status'
-alias gc='git commit -m'
+alias gc='git commit'
 alias gd='git diff'
 alias gp='git push'
 alias gf='git fetch'
 alias hist="git log --oneline --decorate --color | fzf --ansi --preview 'git show $(echo {} | cut -d" " -f1)'"
 alias ga='git add -u'
+alias gco='git checkout $(git branch | fzf| tr -d "[:space:]")'
+alias gcx="git checkout \$(git branch -a | sed -E 's/remotes\/([a-zA-Z-]*\/)//' | grep -v '\*|HEAD' | sort |uniq | fzf --select-1)"
 
 alias vim='nvim'
 alias vi='nvim'
