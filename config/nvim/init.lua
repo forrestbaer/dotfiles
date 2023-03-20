@@ -49,7 +49,6 @@ require('packer').startup({ function(use)
   use 'akinsho/toggleterm.nvim'
   use 'norcalli/nvim-colorizer.lua'
   use 'forrestbaer/minimal_dark'
-  use 'tidalcycles/vim-tidal'
   use 'MattesGroeger/vim-bookmarks'
 
   -- git
@@ -442,6 +441,7 @@ require 'colorizer'.setup {
 map('n', '<leader>i', '<cmd>Lspsaga peek_definition<cr>')
 map('n', '<leader>I', '<cmd>Lspsaga hover_doc<cr>')
 map('n', '<leader>d', '<cmd>Lspsaga show_line_diagnostics<cr>')
+map('n', 'K', '<cmd>Lspsaga hover_doc ++keep<cr>')
 
 -- terminal
 map('', '<C-w>', '<C-W>W')
