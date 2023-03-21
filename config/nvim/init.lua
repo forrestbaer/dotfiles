@@ -441,7 +441,6 @@ require 'colorizer'.setup {
 map('n', '<leader>i', '<cmd>Lspsaga peek_definition<cr>')
 map('n', '<leader>I', '<cmd>Lspsaga hover_doc<cr>')
 map('n', '<leader>d', '<cmd>Lspsaga show_line_diagnostics<cr>')
-map('n', 'K', '<cmd>Lspsaga hover_doc ++keep<cr>')
 
 -- terminal
 map('', '<C-w>', '<C-W>W')
@@ -490,8 +489,8 @@ map('n', '<leader>n', ':ene<cr>')
 map('n', '<leader>x', ':bd!<cr>')
 map('', '<c-o>', ':BufferLineCycleNext<cr>')
 map('', '<c-n>', ':BufferLineCyclePrev<cr>')
-map('n', '<leader>ev', ':cd ~/.config/nvim | e init.lua<cr>')
-map('n', '<leader>rv', ':so ~/.config/nvim/init.lua<cr>')
+map('n', '<leader>ev', ':cd ~/code/dotfiles/config/nvim | e init.lua<cr>')
+map('n', '<leader>rv', ':so ~/code/dotfiles/config/nvim/init.lua<cr>')
 
 map('n', '<leader>h', ':DiffviewFileHistory<cr>')
 
