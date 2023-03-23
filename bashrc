@@ -1,3 +1,24 @@
+fd() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+fkill() {
+    local pid 
+    if [ "$UID" != "0" ]; then
+        pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
+    else
+        pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+    fi  
+
+    if [ "x$pid" != "x" ]
+    then
+        echo $pid | xargs kill -${1:-9}
+    fi  
+}
+
 alias ls='ls -GhF'
 alias ll='ls -GhlFa'
 alias la='ls -GalaF'
@@ -7,9 +28,6 @@ alias md='mkdir'
 alias cat='bat'
 alias dh='dirs -v'
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
-alias sclang="/Applications/SuperCollider.app/Contents/MacOS/sclang"
-
-alias ocd="openocd -s ../tcl -f ./interface/picoprobe.cfg -f ./target/rp2040.cfg"
 
 # Git
 
