@@ -424,7 +424,6 @@ map('', '<leader>ff', ':Telescope find_files<cr>')
 map('', '<leader>fg', ':Telescope live_grep<cr>')
 map('', '<leader>ft', ':Telescope file_browser<cr>')
 map('', '<leader>fb', ':Telescope buffers<cr>')
-map('', '<leader>fm', ':Telescope man_pages<cr>')
 map('', '<leader>fh', ':Telescope help_tags<cr>')
 
 -- bookmarks
