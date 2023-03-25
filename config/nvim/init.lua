@@ -50,6 +50,8 @@ if (packer) then
     use 'norcalli/nvim-colorizer.lua'
     use 'forrestbaer/minimal_dark'
     use 'MattesGroeger/vim-bookmarks'
+    use 'MunifTanjim/nui.nvim'
+    use 'dpayne/CodeGPT.nvim'
 
     -- git
     use 'tpope/vim-fugitive'
@@ -318,9 +320,19 @@ if (lualine) then
           separator = { right = '' },
           color = { fg = '#000000', bg = '#009933' } }
       },
-      lualine_b = { 
+      lualine_b = {
         {
-          '%{expand("%:~:.")}',
+          'filename',
+          file_status = true,
+          newfile_status = true,
+          path = 1,
+          shorting_target = 40,
+          symbols = {
+            modified = '[+]',
+            readonly = '[-]',
+            unnamed = '[No Name]',
+            newfile = '[New]',
+          },
           separator = { right = '' },
           color = { fg = '#999999' }
         },
@@ -397,6 +409,20 @@ if (colorizer) then
     html = { names = false; }
   }
 end
+
+
+--
+-- chatgpt
+--
+-- local codegpt = check_package('codegpt.config')
+require("codegpt.config")
+-- Open API key and api endpoint
+vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
+vim.g["codegpt_chat_completions_url"] = "https://api.openai.com/v1/chat/completions"
+vim.g["codegpt_openai_api_provider"] = "OpenAI" -- or Azure
+
+-- clears visual selection after completion
+vim.g["codegpt_clear_visual_selection"] = true
 
 
 --

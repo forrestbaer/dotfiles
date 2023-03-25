@@ -8,17 +8,12 @@
 ### Installation
 
   - run install.sh
-  - install dependencies
-  - tmuxinator start work/home
 
 ### Dependencies
 
   - alacritty
-  - AutoRaise
   - git / gh
   - gitui
   - neovim
   - fzf / ripgrep
-  - tmuxinator
   - tmux
-  - bat
