@@ -43,8 +43,8 @@ if (packer) then
     use 'tpope/vim-surround'
     use 'tpope/vim-repeat'
     use 'tpope/vim-commentary'
+    use 'nvim-tree/nvim-web-devicons'
     use 'svermeulen/vim-easyclip'
-    use 'kyazdani42/nvim-web-devicons'
     use 'nvim-lualine/lualine.nvim'
     use 'akinsho/toggleterm.nvim'
     use 'norcalli/nvim-colorizer.lua'
@@ -73,7 +73,11 @@ if (packer) then
       'glepnir/lspsaga.nvim',
       branch = 'main',
       config = function()
-        require('lspsaga').setup({})
+        require('lspsaga').setup({
+          diagnostic = { show_code_action = false, },
+          lightbulb = { enable = false },
+          ui = { title = false }
+        })
       end,
     })
 
@@ -83,8 +87,6 @@ if (packer) then
       { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
       'nvim-telescope/telescope-file-browser.nvim'
     }
-
-    use 'p00f/clangd_extensions.nvim'
 
     if PACKER_BOOTSTRAP then
       require('packer').sync()
@@ -430,9 +432,11 @@ vim.g["codegpt_clear_visual_selection"] = true
 --
 
 -- lsp
-map('n', '<leader>i', '<cmd>Lspsaga peek_definition<cr>')
-map('n', '<leader>I', '<cmd>Lspsaga hover_doc<cr>')
-map('n', '<leader>d', '<cmd>Lspsaga show_line_diagnostics<cr>')
+map('', 'K', ':Lspsaga hover_doc ++quiet<cr>')
+map('', '<leader>i', ':Lspsaga peek_definition<cr>')
+map('', '<leader>lr', ':Lspsaga lsp_finder<cr>')
+map('', '<leader>lo', ':Lspsaga outline<cr>')
+map('', '<leader>d', ':Lspsaga show_line_diagnostics<cr>')
 
 -- terminal
 map('', '<C-w>', '<C-W>W')
@@ -451,6 +455,7 @@ map('', '<leader>fg', ':Telescope live_grep<cr>')
 map('', '<leader>ft', ':Telescope file_browser<cr>')
 map('', '<leader>fb', ':Telescope buffers<cr>')
 map('', '<leader>fh', ':Telescope help_tags<cr>')
+map('', '<leader>fd', ':Telescope diagnostics<cr>')
 
 -- bookmarks
 map('', '<leader>ma', ':BookmarkShowAll<cr>')
