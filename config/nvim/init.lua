@@ -458,7 +458,7 @@ map('n', '<leader>gl', ':Git log --<cr>')
 map('n', '<leader>gb', ':Git blame<cr>')
 map('n', '<leader>gp', ':Git push<cr>')
 map('n', '<leader>gs', ':Git status<cr>')
-map('n', '<leader>gc', ':Git commit<cr>')
+map('n', '<leader>gC', ':Git commit<cr>')
 map('n', '<leader>gd', ':DiffviewOpen<cr>')
 
 -- vim
