@@ -498,3 +498,7 @@ vim.api.nvim_create_autocmd('BufReadPre,FileReadPre', {
 vim.api.nvim_create_autocmd('BufEnter', {
   command = [[set formatoptions-=cro]]
 })
+
+vim.api.nvim_create_autocmd('BufEnter', {
+  command = [[silent! lcd %:p:h]]
+})
