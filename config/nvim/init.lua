@@ -412,9 +412,9 @@ if (notify) then
       WARN = "  "
     },
     level = 2,
-    max_width = 50,
+    max_width = 70,
     minimum_width = 50,
-    render = "default",
+    render = "compact",
     stages = "fade",
     timeout = 3000,
     top_down = true
@@ -424,35 +424,8 @@ end
 local noice = check_package('noice')
 if (noice) then
     noice.setup({
-    views = {
-      cmdline_popup = {
-        position = {
-          row = 5,
-          col = "50%",
-        },
-        size = {
-          width = 60,
-          height = "auto",
-        },
-      },
-      popupmenu = {
-        relative = "editor",
-        position = {
-          row = 8,
-          col = "50%",
-        },
-        size = {
-          width = 60,
-          height = 10,
-        },
-        border = {
-          style = "rounded",
-          padding = { 0, 1 },
-        },
-        win_options = {
-          winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
-        },
-      },
+    cmdline = {
+      view = 'cmdline'
     },
   })
 end
