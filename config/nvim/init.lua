@@ -38,50 +38,40 @@ if (packer) then
   }
 
   require('packer').startup({ function(use)
-    use 'wbthomason/packer.nvim'
-    use 'nvim-lua/plenary.nvim'
-    use 'tpope/vim-surround'
-    use 'tpope/vim-repeat'
-    use 'tpope/vim-commentary'
-    use 'nvim-tree/nvim-web-devicons'
-    use 'svermeulen/vim-easyclip'
-    use 'nvim-lualine/lualine.nvim'
+    use 'airblade/vim-gitgutter'
     use 'akinsho/toggleterm.nvim'
-    use 'norcalli/nvim-colorizer.lua'
+    use 'dpayne/CodeGPT.nvim'
     use 'forrestbaer/minimal_dark'
     use 'MattesGroeger/vim-bookmarks'
     use 'MunifTanjim/nui.nvim'
-    use 'dpayne/CodeGPT.nvim'
-
-    -- git
+    use 'norcalli/nvim-colorizer.lua'
+    use 'nvim-lua/plenary.nvim'
+    use 'nvim-tree/nvim-web-devicons'
+    use 'nvim-lualine/lualine.nvim'
+    use 'tpope/vim-surround'
+    use 'tpope/vim-repeat'
+    use 'tpope/vim-commentary'
     use 'tpope/vim-fugitive'
-    use 'airblade/vim-gitgutter'
-    use {'akinsho/git-conflict.nvim', tag = '*', config = function()
-      require('git-conflict').setup({
-        default_mappings = false,
-      })
-    end}
-
-    -- lsp/treesitter
+    use 'sindrets/diffview.nvim'
+    use 'svermeulen/vim-easyclip'
+    use 'wbthomason/packer.nvim'
     use 'nvim-treesitter/nvim-treesitter'
     use {
       'neovim/nvim-lspconfig',
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
     }
-    use({
+    use {
       'glepnir/lspsaga.nvim',
       branch = 'main',
       config = function()
-        require('lspsaga').setup({
+        require('lspsaga').setup {
           diagnostic = { show_code_action = false, },
           lightbulb = { enable = false },
           ui = { title = false }
-        })
+        }
       end,
-    })
-
-    -- telescope
+    }
     use {
       'nvim-telescope/telescope.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
@@ -165,39 +155,31 @@ vim.g.bookmark_no_default_key_mappings = 1
 --
 -- lsp / mason
 --
+local lsp_servers = { 
+  'lua_ls', 'tsserver', 'html', 'bashls', 'eslint', 'jsonls' }
+
 local mason = check_package('mason')
 if (mason) then
-  require('mason').setup()
-  require('mason-lspconfig').setup({
-    ensure_installed = { 'lua_ls', 'tsserver', 'html', 'bashls', 'eslint', 'clangd' }
-  })
+  require('mason').setup {}
+  require('mason-lspconfig').setup {
+    ensure_installed = lsp_servers
+  }
 end
 
-
---
--- lspconfig
---
 local lspconfig = check_package('lspconfig')
 if (lspconfig) then
-  -- gets rid of some stupid errors
-  lspconfig.lua_ls.setup {
-    settings = { Lua = { diagnostics = { globals = { 'vim' } } } }
-  }
-
-  local servers = { 'html', 'tsserver', 'bashls', 'eslint', 'pylsp', 'jsonls'  }
-  for _, lsp in ipairs(servers) do
+  for _, lsp in ipairs(lsp_servers) do
     lspconfig[lsp].setup {}
   end
-
-  vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-      underline = true,
-      virtual_text = true,
-      signs = true,
-      update_in_insert = false,
-      severity_sort = true,
-    }
-  )
+  lspconfig.lua_ls.setup {
+    settings = {
+      Lua = {
+        runtime = { version = 'LuaJIT' },
+        diagnostics = { globals = {'vim'} },
+        telemetry = { enable = false },
+      }
+    },
+  }
 end
 
 
@@ -489,10 +471,9 @@ map('', '<c-n>', ':<cr>')
 map('n', '<leader>ev', ':cd ~/code/dotfiles/config/nvim | e init.lua<cr>')
 map('n', '<leader>rv', ':so ~/code/dotfiles/config/nvim/init.lua<cr>')
 
-map('n', '<leader>h', ':DiffviewFileHistory<cr>')
-
 map('v', '<', '<gv')
 map('v', '>', '>gv')
+
 
 --
 -- autocmds
