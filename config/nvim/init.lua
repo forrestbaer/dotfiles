@@ -151,7 +151,6 @@ vim.g.gitgutter_terminal_reports_focus = 0
 vim.g.terminal_color_3                 = '#ac882f'
 vim.g.bookmark_no_default_key_mappings = 1
 
-
 --
 -- lsp / mason
 --
@@ -457,7 +456,10 @@ map('n', '<leader>gcp', ':<plug>git-conflict-prev-conflict<cr>')
 map('n', '<leader>gg', ':lua GituiToggle()<cr>')
 map('n', '<leader>gl', ':Git log --<cr>')
 map('n', '<leader>gb', ':Git blame<cr>')
-map('n', '<leader>gd', ':Gvdiffsplit<cr>')
+map('n', '<leader>gp', ':Git push<cr>')
+map('n', '<leader>gs', ':Git status<cr>')
+map('n', '<leader>gc', ':Git commit<cr>')
+map('n', '<leader>gd', ':DiffviewOpen<cr>')
 
 -- vim
 map('', '<Space>', ':silent noh<Bar>echo<cr>')
@@ -465,7 +467,7 @@ map('n', 'U', '<C-r>')
 map('n', '<leader>q', ':q!<cr>')
 map('n', '<leader>s', ':w!<cr>')
 map('n', '<leader>n', ':ene<cr>')
-map('n', '<leader>x', ':bd!<cr>')
+map('n', '<leader>x', ':tabclose<cr>')
 map('', '<c-o>', ':<cr>')
 map('', '<c-n>', ':<cr>')
 map('n', '<leader>ev', ':cd ~/code/dotfiles/config/nvim | e init.lua<cr>')
