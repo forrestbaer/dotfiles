@@ -42,12 +42,10 @@ if (packer) then
     use 'akinsho/toggleterm.nvim'
     use 'dpayne/CodeGPT.nvim'
     use 'forrestbaer/minimal_dark'
-    use 'folke/noice.nvim'
     use 'MattesGroeger/vim-bookmarks'
     use 'MunifTanjim/nui.nvim'
     use 'norcalli/nvim-colorizer.lua'
     use 'nvim-lua/plenary.nvim'
-    use 'rcarriga/nvim-notify'
     use 'nvim-tree/nvim-web-devicons'
     use 'nvim-lualine/lualine.nvim'
     use 'tpope/vim-surround'
@@ -397,45 +395,6 @@ end
 
 
 --
--- nvim notify
---
-local notify = check_package('notify')
-if (notify) then
-  notify.setup {
-    background_colour = '#111111',
-    max_width = 70,
-    minimum_width = 50,
-    render = "compact",
-    stages = "static",
-    timeout = 3000,
-  }
-end
-
-local noice = check_package('noice')
-if (noice) then
-    noice.setup({
-    cmdline = { view = 'cmdline' },
-    format = {
-      default = "{message}",
-      notify = { "{message}" }
-    },
-    routes = {
-      {
-        filter = {
-          event = 'msg_show',
-          max_length = 1
-        }
-      },
-      {
-        filter = { find = 'exit code' },
-        opts = { skip = true }
-      }
-    }
-  })
-end
-
-
---
 -- chatgpt
 --
 -- local codegpt = check_package('codegpt.config')
@@ -489,17 +448,19 @@ map('', '<leader>mc', ':BookmarkClear<cr>')
 map('', '<leader>mx', ':BookmarkClearAll<cr>')
 
 -- git
-map('n', '<leader>gco', ':<plug>git-conflict-ours<cr>')
-map('n', '<leader>gct', ':<plug>git-conflict-theirs<cr>')
-map('n', '<leader>gcb', ':<plug>git-conflict-both<cr>')
-map('n', '<leader>gcn', ':<plug>git-conflict-next-conflict<cr>')
-map('n', '<leader>gcp', ':<plug>git-conflict-prev-conflict<cr>')
+map('n', '<leader>gxo', ':<plug>git-conflict-ours<cr>')
+map('n', '<leader>gxt', ':<plug>git-conflict-theirs<cr>')
+map('n', '<leader>gxb', ':<plug>git-conflict-both<cr>')
+map('n', '<leader>gxn', ':<plug>git-conflict-next-conflict<cr>')
+map('n', '<leader>gxp', ':<plug>git-conflict-prev-conflict<cr>')
 map('n', '<leader>gg', ':lua GituiToggle()<cr>')
 map('n', '<leader>gl', ':Git log --<cr>')
-map('n', '<leader>gb', ':Git blame<cr>')
-map('n', '<leader>gp', ':Git push<cr>')
+map('n', '<leader>gB', ':Git blame<cr>')
+map('n', '<leader>gb', ':Telescope git_branch<cr>')
+map('n', '<leader>gP', ':Git push<cr>')
+map('n', '<leader>gp', ':Git pull<cr>')
 map('n', '<leader>gs', ':Git status<cr>')
-map('n', '<leader>gC', ':Git commit<cr>')
+map('n', '<leader>gc', ':Git commit<cr>')
 map('n', '<leader>gd', ':DiffviewOpen<cr>')
 
 -- vim
