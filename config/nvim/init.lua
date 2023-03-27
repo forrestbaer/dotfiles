@@ -403,30 +403,34 @@ local notify = check_package('notify')
 if (notify) then
   notify.setup {
     background_colour = '#111111',
-    fps = 30,
-    icons = {
-      DEBUG = "  ",
-      ERROR = "  ",
-      INFO = "  ",
-      TRACE = "✎  ",
-      WARN = "  "
-    },
-    level = 2,
     max_width = 70,
     minimum_width = 50,
     render = "compact",
-    stages = "fade",
+    stages = "static",
     timeout = 3000,
-    top_down = true
   }
 end
 
 local noice = check_package('noice')
 if (noice) then
     noice.setup({
-    cmdline = {
-      view = 'cmdline'
+    cmdline = { view = 'cmdline' },
+    format = {
+      default = "{message}",
+      notify = { "{message}" }
     },
+    routes = {
+      {
+        filter = {
+          event = 'msg_show',
+          max_length = 1
+        }
+      },
+      {
+        filter = { find = 'exit code' },
+        opts = { skip = true }
+      }
+    }
   })
 end
 
