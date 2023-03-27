@@ -42,10 +42,12 @@ if (packer) then
     use 'akinsho/toggleterm.nvim'
     use 'dpayne/CodeGPT.nvim'
     use 'forrestbaer/minimal_dark'
+    use 'folke/noice.nvim'
     use 'MattesGroeger/vim-bookmarks'
     use 'MunifTanjim/nui.nvim'
     use 'norcalli/nvim-colorizer.lua'
     use 'nvim-lua/plenary.nvim'
+    use 'rcarriga/nvim-notify'
     use 'nvim-tree/nvim-web-devicons'
     use 'nvim-lualine/lualine.nvim'
     use 'tpope/vim-surround'
@@ -391,6 +393,67 @@ if (colorizer) then
     css = { rgb_fn = true; };
     html = { names = false; }
   }
+end
+
+
+--
+-- nvim notify
+--
+local notify = check_package('notify')
+if (notify) then
+  notify.setup {
+    background_colour = '#111111',
+    fps = 30,
+    icons = {
+      DEBUG = "",
+      ERROR = "",
+      INFO = "",
+      TRACE = "✎",
+      WARN = ""
+    },
+    level = 2,
+    minimum_width = 50,
+    render = "default",
+    stages = "fade_in_slide_out",
+    timeout = 5000,
+    top_down = true
+  }
+end
+
+local noice = check_package('noice')
+if (noice) then
+    noice.setup({
+    views = {
+      cmdline_popup = {
+        position = {
+          row = 5,
+          col = "50%",
+        },
+        size = {
+          width = 60,
+          height = "auto",
+        },
+      },
+      popupmenu = {
+        relative = "editor",
+        position = {
+          row = 8,
+          col = "50%",
+        },
+        size = {
+          width = 60,
+          height = 10,
+        },
+        border = {
+          style = "rounded",
+          padding = { 0, 1 },
+        },
+        win_options = {
+          winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+        },
+      },
+    },
+  })
 end
 
 
