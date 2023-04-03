@@ -52,9 +52,20 @@ if (packer) then
     use 'tpope/vim-repeat'
     use 'tpope/vim-commentary'
     use 'tpope/vim-fugitive'
-    use 'sindrets/diffview.nvim'
     use 'svermeulen/vim-easyclip'
     use 'wbthomason/packer.nvim'
+    use {
+      'stevearc/oil.nvim',
+      config = function() require('oil').setup{
+        columns = {
+          'icon', 'size', 'mtime',
+        },
+        view_options = {
+          show_hidden = true,
+        }
+      }
+      end
+    }
     use 'nvim-treesitter/nvim-treesitter'
     use {
       'neovim/nvim-lspconfig',
@@ -70,7 +81,7 @@ if (packer) then
           lightbulb = { enable = false },
           ui = { title = false }
         }
-      end,
+      end
     }
     use {
       'nvim-telescope/telescope.nvim',
@@ -461,7 +472,6 @@ map('n', '<leader>gP', ':Git push<cr>')
 map('n', '<leader>gp', ':Git pull<cr>')
 map('n', '<leader>gs', ':Git status<cr>')
 map('n', '<leader>gc', ':Git commit<cr>')
-map('n', '<leader>gd', ':DiffviewOpen<cr>')
 
 -- vim
 map('', '<Space>', ':silent noh<Bar>echo<cr>')
@@ -469,7 +479,7 @@ map('n', 'U', '<C-r>')
 map('n', '<leader>q', ':q!<cr>')
 map('n', '<leader>s', ':w!<cr>')
 map('n', '<leader>n', ':ene<cr>')
-map('n', '<leader>x', ':tabclose<cr>')
+map('n', '<leader>x', ':bd<cr>')
 map('', '<c-o>', ':<cr>')
 map('', '<c-n>', ':<cr>')
 map('n', '<leader>ev', ':cd ~/code/dotfiles/config/nvim | e init.lua<cr>')
