@@ -372,22 +372,6 @@ if (toggleterm) then
     close_on_exit = true,
     shell = '/usr/local/bin/bash --login',
   }
-  local Terminal = require('toggleterm.terminal').Terminal
-  local gitui = Terminal:new({
-    cmd = 'gitui',
-    dir = '.',
-    hidden = true,
-    direction = 'float',
-    close_on_exit = true,
-    float_opts = { border = 'single' },
-    on_open = function(term)
-      vim.cmd('startinsert!')
-      vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', ':close<cr>', { noremap = true, silent = true })
-    end,
-  })
-  function GituiToggle()
-    gitui:toggle()
-  end
 end
 
 
@@ -449,12 +433,11 @@ map('n', '<leader>gxt', ':<plug>git-conflict-theirs<cr>')
 map('n', '<leader>gxb', ':<plug>git-conflict-both<cr>')
 map('n', '<leader>gxn', ':<plug>git-conflict-next-conflict<cr>')
 map('n', '<leader>gxp', ':<plug>git-conflict-prev-conflict<cr>')
-map('n', '<leader>gg', ':lua GituiToggle()<cr>')
+map('n', '<leader>gg', ':Git<cr>')
 map('n', '<leader>gl', ':Git log --<cr>')
 map('n', '<leader>gB', ':Git blame<cr>')
 map('n', '<leader>gb', ':Telescope git_branches<cr>')
 map('n', '<leader>gP', ':Git push<cr>')
-map('n', '<leader>ga', ':Git add .<cr>')
 map('n', '<leader>gp', ':Git pull<cr>')
 map('n', '<leader>gs', ':Git status<cr>')
 map('n', '<leader>gc', ':Git commit<cr>')
