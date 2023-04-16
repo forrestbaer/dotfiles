@@ -53,6 +53,7 @@ if (packer) then
     use 'tpope/vim-fugitive'
     use 'svermeulen/vim-easyclip'
     use 'wbthomason/packer.nvim'
+    use 'nvim-tree/nvim-tree.lua'
     use {
       'stevearc/oil.nvim',
       config = function() require('oil').setup{
@@ -160,6 +161,17 @@ vim.g.maplocalleader                   = ','
 vim.g.gitgutter_terminal_reports_focus = 0
 vim.g.terminal_color_3                 = '#ac882f'
 vim.g.bookmark_no_default_key_mappings = 1
+vim.g.loaded_netrw                     = 1
+vim.g.loaded_netrwPlugin               = 1
+
+
+--
+-- nvim-tree
+--
+local nvimtree = check_package('nvim-tree')
+if (nvimtree) then
+  nvimtree.setup{}
+end
 
 --
 -- lsp / mason
@@ -413,7 +425,7 @@ map({'n', 'v'}, '<leader>rs', '<cmd>ToggleTermSendVisualSelection<cr>')
 -- telescope
 map('', '<leader>ff', ':Telescope find_files<cr>')
 map('', '<leader>fg', ':Telescope live_grep<cr>')
-map('', '<leader>ft', ':Telescope file_browser<cr>')
+map('', '<leader>ft', ':NvimTreeToggle<cr>')
 map('', '<leader>fb', ':Telescope buffers<cr>')
 map('', '<leader>fh', ':Telescope help_tags<cr>')
 map('', '<leader>fd', ':Telescope diagnostics<cr>')
