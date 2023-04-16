@@ -40,7 +40,6 @@ if (packer) then
   require('packer').startup({ function(use)
     use 'airblade/vim-gitgutter'
     use 'akinsho/toggleterm.nvim'
-    use 'dpayne/CodeGPT.nvim'
     use 'forrestbaer/minimal_dark'
     use 'MattesGroeger/vim-bookmarks'
     use 'MunifTanjim/nui.nvim'
@@ -165,7 +164,7 @@ vim.g.bookmark_no_default_key_mappings = 1
 --
 -- lsp / mason
 --
-local lsp_servers = { 
+local lsp_servers = {
   'lua_ls', 'tsserver', 'html', 'bashls', 'eslint', 'jsonls' }
 
 local mason = check_package('mason')
@@ -403,20 +402,6 @@ if (colorizer) then
     html = { names = false; }
   }
 end
-
-
---
--- chatgpt
---
--- local codegpt = check_package('codegpt.config')
-require("codegpt.config")
--- Open API key and api endpoint
-vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
-vim.g["codegpt_chat_completions_url"] = "https://api.openai.com/v1/chat/completions"
-vim.g["codegpt_openai_api_provider"] = "OpenAI" -- or Azure
-
--- clears visual selection after completion
-vim.g["codegpt_clear_visual_selection"] = true
 
 
 --
