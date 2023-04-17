@@ -16,6 +16,3 @@ done
 
 mkdir -p ~/bin
 cp ${PWD}/bin/* ~/bin
-
-# to configure fzf
-# $(brew --prefix)/opt/fzf/install

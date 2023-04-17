@@ -13,7 +13,6 @@
 
   - alacritty
   - git / gh
-  - gitui
   - neovim
   - fzf / ripgrep
   - tmux
