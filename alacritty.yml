@@ -96,4 +96,4 @@ cursor:
   blink_interval: 350
 
 mouse:
-  hide_when_typing: true
+  hide_when_typing: false
