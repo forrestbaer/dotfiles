@@ -54,13 +54,6 @@ if (packer) then
     use 'svermeulen/vim-easyclip'
     use 'wbthomason/packer.nvim'
     use 'nvim-tree/nvim-tree.lua'
-    use({'jakewvincent/mkdnflow.nvim',
-      rocks = 'luautf8',
-      config = function()
-        require('mkdnflow').setup({
-        })
-      end
-    })
     use {
       'stevearc/oil.nvim',
       config = function() require('oil').setup{
