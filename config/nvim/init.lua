@@ -409,6 +409,7 @@ map('', 'K', ':Lspsaga hover_doc ++quiet<cr>')
 map('', '<leader>i', ':Lspsaga peek_definition<cr>')
 map('', '<leader>lr', ':Lspsaga lsp_finder<cr>')
 map('', '<leader>lo', ':Lspsaga outline<cr>')
+map('', '<leader>gd', ':Lspsaga lsp_finder<cr>')
 map('', '<leader>d', ':Lspsaga show_line_diagnostics<cr>')
 
 -- terminal
