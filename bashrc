@@ -45,6 +45,9 @@ alias tmux='tmux new -As0'
 alias cdds='cd ~/code/design-system'
 alias cddf='cd ~/code/dotfiles'
 
+# fix quarrantine
+alias fixq='sudo xattr -rd com.apple.quarantine'
+
 export SHELL=/usr/local/bin/bash
 export EDITOR=nvim
 
