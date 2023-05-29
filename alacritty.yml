@@ -28,19 +28,19 @@ scrolling:
 
 font:
   normal:
-    family: Iosevka Nerd Font
-    style: Extralight
+    family: Iosevka Nerd Font Mono
+    style: Light
 
   bold:
-    family: Iosevka Nerd Font
+    family: Iosevka Nerd Font Mono
     style: Regular
 
   italic:
-    family: Iosevka Nerd Font
+    family: Iosevka Nerd Font Mono
     style: Extralight Italic
 
   bold_italic:
-    family: Iosevka Nerd Font
+    family: Iosevka Nerd Font Mono
     style: Regular Italic
 
   size: 20.0

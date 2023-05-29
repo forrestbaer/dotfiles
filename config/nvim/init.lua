@@ -23,7 +23,6 @@ vim.api.nvim_create_user_command(
   { range = '%' }
 )
 
-
 --
 -- packer/plugins
 --
@@ -54,6 +53,22 @@ if (packer) then
     use 'svermeulen/vim-easyclip'
     use 'wbthomason/packer.nvim'
     use 'nvim-tree/nvim-tree.lua'
+    use 'windwp/nvim-ts-autotag'
+    use {
+      "windwp/nvim-autopairs",
+      config = function() require("nvim-autopairs").setup {} end
+    }
+    use {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      'hrsh7th/cmp-emoji',
+      'hrsh7th/nvim-cmp',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
+      'dcampos/nvim-snippy',
+      'dcampos/cmp-snippy'
+    }
     use {
       'stevearc/oil.nvim',
       config = function() require('oil').setup{
@@ -188,33 +203,89 @@ if (mason) then
 end
 
 local lspconfig = check_package('lspconfig')
-if (lspconfig) then
-  for _, lsp in ipairs(lsp_servers) do
-    lspconfig[lsp].setup {}
-  end
-  lspconfig.lua_ls.setup {
-    settings = {
-      Lua = {
-        runtime = { version = 'LuaJIT' },
-        diagnostics = { globals = {'vim'} },
-        telemetry = { enable = false },
-      }
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local cmp = check_package('cmp')
+if (cmp) then
+   cmp.setup({
+    snippet = {
+      expand = function(args)
+        require('snippy').expand_snippet(args.body)
+      end,
     },
-  }
+    window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    }),
+    sources = {
+      { name = 'nvim_lsp' },
+      { name = 'snippy' },
+      { name = 'buffer' },
+      { name = 'emoji' },
+      { name = 'nvim_lsp_signature_help' }
+    }
+  })
+
+  cmp.setup.filetype('gitcommit', {
+    sources = cmp.config.sources({
+      { name = 'cmp_git' },
+    }, {
+      { name = 'buffer' },
+    })
+  })
+
+  cmp.setup.cmdline({ '/', '?' }, {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    })
+  })
+
+  if (lspconfig) then
+    for _, lsp in ipairs(lsp_servers) do
+      lspconfig[lsp].setup {
+        capabilities = capabilities
+      }
+    end
+    lspconfig.lua_ls.setup {
+      settings = {
+        Lua = {
+          runtime = { version = 'LuaJIT' },
+          diagnostics = { globals = {'vim'} },
+          telemetry = { enable = false },
+        }
+      },
+    }
+  end
 end
 
 
 --
 ---- treesitter
 --
+local autotag = check_package('nvim-ts-autotag')
+if (autotag) then autotag.setup {} end
+
 local treesitter = check_package('nvim-treesitter')
 if (treesitter) then
   treesitter.setup {}
 
   require('nvim-treesitter.configs').setup {
-    autotag = {
-      enable = true
-    },
     ensure_installed = { 'regex', 'javascript', 'lua', 'typescript', 'html' },
     incremental_selection = {
       enable = true,
