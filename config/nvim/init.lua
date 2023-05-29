@@ -81,7 +81,11 @@ if (packer) then
       }
       end
     }
-    use 'nvim-treesitter/nvim-treesitter'
+    use {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-treesitter/playground'
+    }
+    use 'vimwiki/vimwiki'
     use {
       'neovim/nvim-lspconfig',
       'williamboman/mason.nvim',
@@ -178,7 +182,11 @@ vim.g.terminal_color_3                 = '#ac882f'
 vim.g.bookmark_no_default_key_mappings = 1
 vim.g.loaded_netrw                     = 1
 vim.g.loaded_netrwPlugin               = 1
-
+vim.g.vimwiki_list = {{
+  path = '~/cloud/org',
+  syntax = 'markdown',
+  ext = '.md'
+}}
 
 --
 -- nvim-tree
@@ -303,11 +311,28 @@ if (treesitter) then
     indent = {
       enable = true,
     },
+    playground = {
+      enable = true,
+      disable = {},
+      updatetime = 25,
+      persist_queries = false,
+      keybindings = {
+        toggle_query_editor = 'o',
+        toggle_hl_groups = 'i',
+        toggle_injected_languages = 't',
+        toggle_anonymous_nodes = 'a',
+        toggle_language_display = 'I',
+        focus_language = 'f',
+        unfocus_language = 'F',
+        update = 'R',
+        goto_node = '<cr>',
+        show_help = '?',
+      },
+    }
   }
 else
   vim.cmd('lua TSUpdate')
 end
-
 
 --
 -- telescope stuff
@@ -394,18 +419,30 @@ if (lualine) then
       lualine_a = {
         { 'mode',
           separator = { right = '' },
-          color = { fg = '#000000', bg = '#009933' } }
+          color = function (section)
+            local mode = vim.api.nvim_get_mode().mode
+            local fgc = '#000000'
+
+            if (mode == 'n') then
+              return { fg = fgc, bg = '#C0C0C0' }
+            elseif (mode == 'v') then
+              return { fg = fgc, bg = '#EEEEEE' }
+            elseif (mode == 'i') then
+              return { fg = fgc, bg = '#00AF87' }
+            end
+
+          end}
       },
       lualine_b = {
         {
           'filename',
           file_status = true,
           newfile_status = true,
-          path = 1,
+          path = 3,
           shorting_target = 40,
           symbols = {
-            modified = '[+]',
-            readonly = '[-]',
+            modified = '*',
+            readonly = '-',
             unnamed = '[No Name]',
             newfile = '[New]',
           },
@@ -569,3 +606,6 @@ vim.api.nvim_create_autocmd('BufEnter', {
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown", command = "set awa"
 })
+
+-- some commands to remember to do something with:
+-- TSHighlightCapturesUnderCursor
