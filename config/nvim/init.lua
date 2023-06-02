@@ -85,7 +85,10 @@ if (packer) then
       'nvim-treesitter/nvim-treesitter',
       'nvim-treesitter/playground'
     }
-    use 'vimwiki/vimwiki'
+    use {
+      'vimwiki/vimwiki',
+      'ElPiloto/telescope-vimwiki.nvim'
+    }
     use {
       'neovim/nvim-lspconfig',
       'williamboman/mason.nvim',
@@ -342,6 +345,7 @@ if (telescope) then
   local actions = require('telescope.actions')
   telescope.load_extension('fzf')
   telescope.load_extension('file_browser')
+  telescope.load_extension('vimwiki')
   telescope.setup {
     defaults = {
       initial_mode = 'insert',
@@ -424,11 +428,15 @@ if (lualine) then
             local fgc = '#000000'
 
             if (mode == 'n') then
-              return { fg = fgc, bg = '#C0C0C0' }
+              if (vim.bo.modified) then
+                return { fg = fgc, bg = '#008834' }
+              else
+                return { fg = fgc, bg = '#00AF87' }
+              end
             elseif (mode == 'v') then
               return { fg = fgc, bg = '#EEEEEE' }
             elseif (mode == 'i') then
-              return { fg = fgc, bg = '#00AF87' }
+              return { fg = fgc, bg = '#A0A0A0' }
             end
 
           end}
@@ -512,6 +520,9 @@ end
 -- key mappings
 --
 
+-- misc
+map('', '<leader>D', ":put =strftime('### %A %Y-%m-%d %H:%M:%S')<CR>")
+
 -- lsp
 map('', 'K', ':Lspsaga hover_doc ++quiet<cr>')
 map('', '<leader>i', ':Lspsaga peek_definition<cr>')
@@ -538,6 +549,7 @@ map('', '<leader>ft', ':NvimTreeToggle<cr>')
 map('', '<leader>fb', ':Telescope buffers<cr>')
 map('', '<leader>fh', ':Telescope help_tags<cr>')
 map('', '<leader>fd', ':Telescope diagnostics<cr>')
+map('', '<leader>fw', ':Telescope vimwiki<cr>')
 
 -- bookmarks
 map('', '<leader>ma', ':BookmarkShowAll<cr>')
