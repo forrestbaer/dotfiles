@@ -38,10 +38,13 @@ if (packer) then
 
   require('packer').startup({ function(use)
     use 'airblade/vim-gitgutter'
-    use 'akinsho/toggleterm.nvim'
     use 'forrestbaer/minimal_dark'
     use 'MattesGroeger/vim-bookmarks'
     use 'MunifTanjim/nui.nvim'
+    use {
+      'junegunn/fzf.vim',
+      requires = { 'junegunn/fzf', run = ':call fzf#install()' }
+    }
     use 'norcalli/nvim-colorizer.lua'
     use 'nvim-lua/plenary.nvim'
     use 'nvim-tree/nvim-web-devicons'
@@ -51,13 +54,9 @@ if (packer) then
     use 'tpope/vim-commentary'
     use 'tpope/vim-fugitive'
     use 'svermeulen/vim-easyclip'
+    use 'tidalcycles/vim-tidal'
     use 'wbthomason/packer.nvim'
     use 'nvim-tree/nvim-tree.lua'
-    use 'windwp/nvim-ts-autotag'
-    use {
-      "windwp/nvim-autopairs",
-      config = function() require("nvim-autopairs").setup {} end
-    }
     use {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
@@ -65,7 +64,9 @@ if (packer) then
       'hrsh7th/cmp-cmdline',
       'hrsh7th/cmp-emoji',
       'hrsh7th/nvim-cmp',
+      'hrsh7th/cmp-nvim-lua',
       'hrsh7th/cmp-nvim-lsp-signature-help',
+      'fools-mate/cmp-tidal',
       'dcampos/nvim-snippy',
       'dcampos/cmp-snippy'
     }
@@ -110,6 +111,8 @@ if (packer) then
       { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
       'nvim-telescope/telescope-file-browser.nvim'
     }
+    use 'madskjeldgaard/reaper-nvim'
+    use 'davidgranstrom/osc.nvim'
 
     if PACKER_BOOTSTRAP then
       require('packer').sync()
@@ -178,6 +181,8 @@ vim.opt.completeopt    = 'menuone,noselect,noinsert'
 vim.opt.omnifunc       = 'syntaxcomplete#Complete'
 vim.opt.clipboard      = 'unnamed'
 
+vim.g.tidal_no_mappings                = 1
+vim.g.reaper_target_ip                 = '10.0.0.39'
 vim.g.mapleader                        = ','
 vim.g.maplocalleader                   = ','
 vim.g.gitgutter_terminal_reports_focus = 0
@@ -232,13 +237,16 @@ if (cmp) then
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      ['<CR>'] = cmp.mapping.confirm({ select = false }),
     }),
     sources = {
       { name = 'nvim_lsp' },
       { name = 'snippy' },
-      { name = 'buffer' },
+      -- { name = 'buffer' },
+      { name = "tidal" },
+		  { name = "tidal_samples" },
       { name = 'emoji' },
+      { name = 'nvim_lua' },
       { name = 'nvim_lsp_signature_help' }
     }
   })
@@ -285,13 +293,9 @@ if (cmp) then
   end
 end
 
-
 --
 ---- treesitter
 --
-local autotag = check_package('nvim-ts-autotag')
-if (autotag) then autotag.setup {} end
-
 local treesitter = check_package('nvim-treesitter')
 if (treesitter) then
   treesitter.setup {}
@@ -412,7 +416,6 @@ if (lualine) then
       theme = 'auto',
       component_separators = { left = '', right = '' },
       section_separators = { left = '', right = '' },
-      disabled_filetypes = { 'toggleterm' },
       always_divide_middle = true,
       color = {
         fg = '#CCCCCC',
@@ -486,24 +489,6 @@ end
 
 
 --
--- toggleterm
---
-local toggleterm = check_package('toggleterm')
-if (toggleterm) then
-  toggleterm.setup {
-    size = 25,
-    hide_numbers = true,
-    start_in_insert = true,
-    insert_mappings = true,
-    persist_size = true,
-    direction = 'horizontal',
-    close_on_exit = true,
-    shell = '/usr/local/bin/bash --login',
-  }
-end
-
-
---
 -- colorizer
 --
 local colorizer = check_package('colorizer')
@@ -536,11 +521,6 @@ map('', '<C-w>', '<C-W>W')
 map('t', '<C-z>', '<C-\\><C-n>')
 map('n', '<C-z>', '<C-w>W')
 map('i', '<C-z>', '<C-w>W')
-map('', '<leader>t', ':ToggleTerm<cr>')
-map('t', '<leader>t', '<cmd>ToggleTerm<cr>')
-map('', '<leader>rl', '<cmd>ToggleTermSendCurrentLine<cr>')
-map({'n', 'v'}, '<leader>rv', ":'<,'>ToggleTermSendVisualLines<cr>")
-map({'n', 'v'}, '<leader>rs', '<cmd>ToggleTermSendVisualSelection<cr>')
 
 -- telescope
 map('', '<leader>ff', ':Telescope find_files<cr>')
@@ -559,6 +539,12 @@ map('', '<leader>mn', ':BookmarkNext<cr>')
 map('', '<leader>mp', ':BookmarkPrev<cr>')
 map('', '<leader>mc', ':BookmarkClear<cr>')
 map('', '<leader>mx', ':BookmarkClearAll<cr>')
+
+-- tidalcycles
+map({'n','v'}, '<leader>ts', ':TidalSend<cr>')
+map({'n','v'}, '<leader>tS', 'vap:TidalSend<cr>')
+map({'n','v'}, '<leader>th', ':TidalHush<cr>')
+map({'n','v'}, '<leader>tp', ':TidalPlay<cr>')
 
 -- git
 map('n', '<leader>gxo', ':<plug>git-conflict-ours<cr>')
@@ -611,8 +597,18 @@ vim.api.nvim_create_autocmd('BufEnter', {
   command = [[set formatoptions-=cro]]
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "markdown", command = "set awa"
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'markdown', command = 'set awa'
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'tidal', 'supercollider', 'lua' },
+  command = "lua require'reaper-nvim'.setup()"
+})
+
+vim.api.nvim_create_autocmd( 'FileType', {
+  pattern = { 'tidal' },
+  command = 'setlocal commentstring=--%s'
 })
 
 -- some commands to remember to do something with:
