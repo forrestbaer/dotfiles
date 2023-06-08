@@ -3,7 +3,7 @@
 links_made=0
 
 folders="config/nvim bin"
-files="alacritty.yml bash_profile bashrc gitconfig tmux.conf config/nvim/init.lua bin/rfv"
+files="alacritty.yml bash_profile bashrc gitconfig tmux.conf config/nvim/init.lua bin/rfv screenrc"
 
 for folder in $folders; do
   mkdir -p ~/.$folder
