@@ -207,8 +207,7 @@ end
 --
 -- lsp / mason
 --
-local lsp_servers = {
-  'lua_ls', 'tsserver', 'html', 'bashls', 'eslint', 'jsonls' }
+local lsp_servers = { 'lua_ls', 'tsserver', 'html', 'bashls', 'eslint', 'jsonls', 'emmet_ls' }
 
 local mason = check_package('mason')
 if (mason) then
@@ -604,6 +603,11 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'tidal', 'supercollider', 'lua' },
   command = "lua require'reaper-nvim'.setup()"
+})
+
+vim.api.nvim_create_autocmd( 'FileType', {
+  pattern = { 'tidal' },
+  command = 'set nonumber'
 })
 
 vim.api.nvim_create_autocmd( 'FileType', {

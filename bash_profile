@@ -5,7 +5,7 @@ then
 fi
 
 if [[ $TERM != 'dumb' ]]; then
-    export TERM=alacritty
+    export TERM=screen-256color
 fi
 
 set -o noclobber
