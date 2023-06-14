@@ -37,6 +37,7 @@ alias hist="git log --oneline --decorate --color | fzf --ansi --preview 'git sho
 alias ga='git add'
 alias gco='git checkout $(git branch | fzf| tr -d "[:space:]")'
 alias gcx="git checkout \$(git branch -a | sed -E 's/remotes\/([a-zA-Z-]*\/)//' | grep -v '\*|HEAD' | sort |uniq | fzf --select-1)"
+alias glog='git log -p --'
 
 # tmux
 alias tmux='tmux new -As0'
