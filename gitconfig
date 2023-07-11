@@ -50,15 +50,6 @@
     autocrlf = false
     pager = delta
 
-[alias]
-    co = checkout
-    ci = commit
-    st = status
-    br = branch
-    hist = log --all --pretty=format:\"%C(yellow)%h %C(bold blue)%ad %C(black)| %C(reset)%C(normal)%s%d %C(dim magenta)[%an]%C(reset)\" --graph --date=short
-    type = cat-file -t
-    dump = cat-file -p
-
 [credential "https://github.com"]
 	  helper = !gh auth git-credential
 [push]
