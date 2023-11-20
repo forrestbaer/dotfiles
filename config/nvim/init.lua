@@ -23,6 +23,7 @@ vim.api.nvim_create_user_command(
   { range = '%' }
 )
 
+
 --
 -- packer/plugins
 --
@@ -53,10 +54,12 @@ if (packer) then
     use 'tpope/vim-repeat'
     use 'tpope/vim-commentary'
     use 'tpope/vim-fugitive'
+    use 'github/copilot.vim'
     use 'svermeulen/vim-easyclip'
-    use 'tidalcycles/vim-tidal'
     use 'wbthomason/packer.nvim'
+    use 'sbdchd/neoformat'
     use 'nvim-tree/nvim-tree.lua'
+    use 'evanleck/vim-svelte'
     use {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
@@ -66,7 +69,6 @@ if (packer) then
       'hrsh7th/nvim-cmp',
       'hrsh7th/cmp-nvim-lua',
       'hrsh7th/cmp-nvim-lsp-signature-help',
-      'fools-mate/cmp-tidal',
       'dcampos/nvim-snippy',
       'dcampos/cmp-snippy'
     }
@@ -111,7 +113,6 @@ if (packer) then
       { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
       'nvim-telescope/telescope-file-browser.nvim'
     }
-    use 'madskjeldgaard/reaper-nvim'
     use 'davidgranstrom/osc.nvim'
 
     if PACKER_BOOTSTRAP then
@@ -181,8 +182,7 @@ vim.opt.completeopt    = 'menuone,noselect,noinsert'
 vim.opt.omnifunc       = 'syntaxcomplete#Complete'
 vim.opt.clipboard      = 'unnamed'
 
-vim.g.tidal_no_mappings                = 1
-vim.g.reaper_target_ip                 = '10.0.0.39'
+vim.g.python3_host_prog = '/Library/Frameworks/Python.framework/Versions/3.12/bin/python3'
 vim.g.mapleader                        = ','
 vim.g.maplocalleader                   = ','
 vim.g.gitgutter_terminal_reports_focus = 0
@@ -207,7 +207,7 @@ end
 --
 -- lsp / mason
 --
-local lsp_servers = { 'lua_ls', 'tsserver', 'html', 'bashls', 'eslint', 'jsonls', 'emmet_ls' }
+local lsp_servers = { 'lua_ls', 'tsserver', 'html', 'bashls', 'eslint', 'jsonls', 'emmet_ls', 'pyright' }
 
 local mason = check_package('mason')
 if (mason) then
@@ -242,8 +242,6 @@ if (cmp) then
       { name = 'nvim_lsp' },
       { name = 'snippy' },
       -- { name = 'buffer' },
-      { name = "tidal" },
-		  { name = "tidal_samples" },
       { name = 'emoji' },
       { name = 'nvim_lua' },
       { name = 'nvim_lsp_signature_help' }
@@ -280,6 +278,20 @@ if (cmp) then
         capabilities = capabilities
       }
     end
+
+    lspconfig.pyright.setup {
+      filetypes = {"python"},
+      settings = {
+        python = {
+          analsys = {
+            autoSearchPaths = true,
+            useLibraryCodeForTypes = true,
+            diagnosticMode = 'openFilesOnly',
+          }
+        }
+      }
+    }
+
     lspconfig.lua_ls.setup {
       settings = {
         Lua = {
@@ -289,6 +301,7 @@ if (cmp) then
         }
       },
     }
+
   end
 end
 
@@ -300,7 +313,7 @@ if (treesitter) then
   treesitter.setup {}
 
   require('nvim-treesitter.configs').setup {
-    ensure_installed = { 'regex', 'javascript', 'lua', 'typescript', 'html' },
+    ensure_installed = { 'python', 'c', 'cpp', 'regex', 'javascript', 'lua', 'typescript', 'html', 'vim' },
     incremental_selection = {
       enable = true,
       keymaps = {
@@ -487,6 +500,7 @@ if (lualine) then
 end
 
 
+
 --
 -- colorizer
 --
@@ -539,12 +553,6 @@ map('', '<leader>mp', ':BookmarkPrev<cr>')
 map('', '<leader>mc', ':BookmarkClear<cr>')
 map('', '<leader>mx', ':BookmarkClearAll<cr>')
 
--- tidalcycles
-map({'n','v'}, '<leader>ts', ':TidalSend<cr>')
-map({'n','v'}, '<leader>tS', 'vap:TidalSend<cr>')
-map({'n','v'}, '<leader>th', ':TidalHush<cr>')
-map({'n','v'}, '<leader>tp', ':TidalPlay<cr>')
-
 -- git
 map('n', '<leader>gxo', ':<plug>git-conflict-ours<cr>')
 map('n', '<leader>gxt', ':<plug>git-conflict-theirs<cr>')
@@ -575,6 +583,8 @@ map('n', '<leader>rv', ':so ~/code/dotfiles/config/nvim/init.lua<cr>')
 map('v', '<', '<gv')
 map('v', '>', '>gv')
 
+map('n', '<leader>F', ':Neoformat<cr>')
+
 
 --
 -- autocmds
@@ -587,32 +597,12 @@ vim.api.nvim_create_autocmd('FocusGained', {
   command = [[:checktime]]
 })
 
-vim.api.nvim_create_autocmd('BufReadPre,FileReadPre', {
-  pattern = { 'bash*' },
-  command = [[set ft=bash]]
-})
-
 vim.api.nvim_create_autocmd('BufEnter', {
   command = [[set formatoptions-=cro]]
 })
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'markdown', command = 'set awa'
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'tidal', 'supercollider', 'lua' },
-  command = "lua require'reaper-nvim'.setup()"
-})
-
-vim.api.nvim_create_autocmd( 'FileType', {
-  pattern = { 'tidal' },
-  command = 'set nonumber'
-})
-
-vim.api.nvim_create_autocmd( 'FileType', {
-  pattern = { 'tidal' },
-  command = 'setlocal commentstring=--%s'
 })
 
 -- some commands to remember to do something with:
