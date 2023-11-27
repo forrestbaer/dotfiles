@@ -38,6 +38,7 @@ if (packer) then
   }
 
   require('packer').startup({ function(use)
+    use 'nvim-lua/plenary.nvim'
     use 'airblade/vim-gitgutter'
     use 'forrestbaer/minimal_dark'
     use 'MattesGroeger/vim-bookmarks'
@@ -47,7 +48,6 @@ if (packer) then
       requires = { 'junegunn/fzf', run = ':call fzf#install()' }
     }
     use 'norcalli/nvim-colorizer.lua'
-    use 'nvim-lua/plenary.nvim'
     use 'nvim-tree/nvim-web-devicons'
     use 'nvim-lualine/lualine.nvim'
     use 'tpope/vim-surround'
@@ -57,9 +57,6 @@ if (packer) then
     use 'github/copilot.vim'
     use 'svermeulen/vim-easyclip'
     use 'wbthomason/packer.nvim'
-    use 'sbdchd/neoformat'
-    use 'nvim-tree/nvim-tree.lua'
-    use 'evanleck/vim-svelte'
     use {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
@@ -84,14 +81,7 @@ if (packer) then
       }
       end
     }
-    use {
-      'nvim-treesitter/nvim-treesitter',
-      'nvim-treesitter/playground'
-    }
-    use {
-      'vimwiki/vimwiki',
-      'ElPiloto/telescope-vimwiki.nvim'
-    }
+    use 'nvim-treesitter/nvim-treesitter'
     use {
       'neovim/nvim-lspconfig',
       'williamboman/mason.nvim',
@@ -113,7 +103,6 @@ if (packer) then
       { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
       'nvim-telescope/telescope-file-browser.nvim'
     }
-    use 'davidgranstrom/osc.nvim'
 
     if PACKER_BOOTSTRAP then
       require('packer').sync()
@@ -190,11 +179,6 @@ vim.g.terminal_color_3                 = '#ac882f'
 vim.g.bookmark_no_default_key_mappings = 1
 vim.g.loaded_netrw                     = 1
 vim.g.loaded_netrwPlugin               = 1
-vim.g.vimwiki_list = {{
-  path = '~/cloud/org',
-  syntax = 'markdown',
-  ext = '.md'
-}}
 
 --
 -- nvim-tree
@@ -361,7 +345,6 @@ if (telescope) then
   local actions = require('telescope.actions')
   telescope.load_extension('fzf')
   telescope.load_extension('file_browser')
-  telescope.load_extension('vimwiki')
   telescope.setup {
     defaults = {
       initial_mode = 'insert',
@@ -524,9 +507,8 @@ map('', '<leader>D', ":put =strftime('### %A %Y-%m-%d %H:%M:%S')<CR>")
 -- lsp
 map('', 'K', ':Lspsaga hover_doc ++quiet<cr>')
 map('', '<leader>i', ':Lspsaga peek_definition<cr>')
-map('', '<leader>lr', ':Lspsaga lsp_finder<cr>')
 map('', '<leader>lo', ':Lspsaga outline<cr>')
-map('', '<leader>gd', ':Lspsaga lsp_finder<cr>')
+map('', '<leader>gd', ':Lspsaga finder<cr>')
 map('', '<leader>d', ':Lspsaga show_line_diagnostics<cr>')
 
 -- terminal
@@ -538,11 +520,10 @@ map('i', '<C-z>', '<C-w>W')
 -- telescope
 map('', '<leader>ff', ':Telescope find_files<cr>')
 map('', '<leader>fg', ':Telescope live_grep<cr>')
-map('', '<leader>ft', ':NvimTreeToggle<cr>')
+map('', '<leader>ft', ':Telescoe file_browser<cr>')
 map('', '<leader>fb', ':Telescope buffers<cr>')
 map('', '<leader>fh', ':Telescope help_tags<cr>')
 map('', '<leader>fd', ':Telescope diagnostics<cr>')
-map('', '<leader>fw', ':Telescope vimwiki<cr>')
 
 -- bookmarks
 map('', '<leader>ma', ':BookmarkShowAll<cr>')
@@ -582,8 +563,6 @@ map('n', '<leader>rv', ':so ~/code/dotfiles/config/nvim/init.lua<cr>')
 
 map('v', '<', '<gv')
 map('v', '>', '>gv')
-
-map('n', '<leader>F', ':Neoformat<cr>')
 
 
 --
