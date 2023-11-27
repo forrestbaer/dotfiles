@@ -7,12 +7,17 @@
 
 ### Installation
 
-  - run install.sh
+  - `./install`
 
 ### Dependencies
 
-  - alacritty
-  - git / gh
-  - neovim
-  - fzf / ripgrep
-  - tmux
+  - [alacritty](https://github.com/alacritty/alacritty)
+
+  ```
+    brew install bat \
+    gh \
+    neovim \
+    fzf \
+    ripgrep \
+    tmux \
+  ```

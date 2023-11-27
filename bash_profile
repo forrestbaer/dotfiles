@@ -38,6 +38,7 @@ PROMPT_DIRTRIM=2
 
 alias vim='nvim'
 alias vi='nvim'
+alias cat='bat'
 alias ls='ls -GhF'
 alias ll='ls -GhlFa'
 alias mv='mv -i'
@@ -66,12 +67,7 @@ export LSCOLORS=dxfxcxdxGxegedabagacad
 export SHELL=/opt/homebrew/bin/bash
 export EDITOR=nvim
 export PS1='$? [\[\e[0;97m\]\w\[\e[0m\]] \[\e[0;90m\]\$ \[\e[0m\]'
-export PATH=/bin:/usr/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:$PATH
-
-# Setting PATH for Python 3.12
-# The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:${PATH}"
-export PATH
+export PATH=/bin:/usr/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:~/bin:$PATH
 
 for f in /opt/homebrew/etc/bash_completion.d/*; do source $f; done
 
@@ -83,21 +79,4 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-source ~/.env
