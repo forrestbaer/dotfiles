@@ -44,7 +44,7 @@ alias ll='ls -GhlFa'
 alias mv='mv -i'
 alias md='mkdir'
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
-alias editkb='cd ~/code/qmk_firmware && vi ./keyboards/keyboardio/atreus/keymaps/mine/keymap.c'
+alias editkb='cd ~/code/qmk && vi ./keyboards/keyboardio/atreus/keymaps/mine/keymap.c'
 
 # Git
 alias gs='git status'
@@ -58,9 +58,16 @@ alias gco='git checkout $(git branch | fzf| tr -d "[:space:]")'
 alias gcx="git checkout \$(git branch -a | sed -E 's/remotes\/([a-zA-Z-]*\/)//' | grep -v '\*|HEAD' | sort |uniq | fzf --select-1)"
 alias glog='git log -p --'
 
+alias sudo='sudo '
 alias tmux='tmux new -As0'
 alias cddf='cd ~/code/dotfiles'
 alias fixq='sudo xattr -rd com.apple.quarantine'
+alias size='du -hs * 2>/dev/null | grep "^...M" | sort -h'
+
+fin() {
+  sudo find / -name $1 2>/dev/null
+}
+
 
 export CLICOLOR=1
 export LSCOLORS=dxfxcxdxGxegedabagacad

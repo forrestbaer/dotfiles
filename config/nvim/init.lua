@@ -100,8 +100,8 @@ if (packer) then
     }
     use {
       'nvim-telescope/telescope.nvim',
-      { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
-      'nvim-telescope/telescope-file-browser.nvim'
+      'nvim-telescope/telescope-file-browser.nvim',
+      { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     }
 
     if PACKER_BOOTSTRAP then
@@ -165,7 +165,8 @@ vim.opt.splitbelow     = true
 vim.opt.grepprg        = 'rg'
 vim.opt.updatetime     = 150
 vim.opt.undofile       = true
-vim.opt.undodir        = '/tmp'
+vim.opt.undodir        = '/Users/forrestbaer/tmp'
+vim.opt.undolevels     = 2000
 vim.opt.helpheight     = 15
 vim.opt.completeopt    = 'menuone,noselect,noinsert'
 vim.opt.omnifunc       = 'syntaxcomplete#Complete'
@@ -188,14 +189,15 @@ if (nvimtree) then
   nvimtree.setup{}
 end
 
+
 --
 -- lsp / mason
 --
-local lsp_servers = { 'lua_ls', 'tsserver', 'html', 'bashls', 'eslint', 'jsonls', 'emmet_ls', 'pyright' }
+local lsp_servers = { 'lua_ls', 'tsserver', 'html', 'bashls', 'eslint', 'jsonls', 'emmet_ls', 'pyright', 'clangd'  }
 
 local mason = check_package('mason')
 if (mason) then
-  require('mason').setup {}
+  mason.setup {}
   require('mason-lspconfig').setup {
     ensure_installed = lsp_servers
   }
@@ -520,7 +522,7 @@ map('i', '<C-z>', '<C-w>W')
 -- telescope
 map('', '<leader>ff', ':Telescope find_files<cr>')
 map('', '<leader>fg', ':Telescope live_grep<cr>')
-map('', '<leader>ft', ':Telescoe file_browser<cr>')
+map('', '<leader>ft', ':Telescope file_browser<cr>')
 map('', '<leader>fb', ':Telescope buffers<cr>')
 map('', '<leader>fh', ':Telescope help_tags<cr>')
 map('', '<leader>fd', ':Telescope diagnostics<cr>')
