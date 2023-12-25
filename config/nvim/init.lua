@@ -172,7 +172,7 @@ if (treesitter) then
   treesitter.setup {}
 
   require('nvim-treesitter.configs').setup {
-    ensure_installed = { 'python', 'c', 'cpp', 'regex', 'javascript', 'lua', 'typescript', 'html', 'vim' },
+    ensure_installed = { 'vim', 'python', 'c', 'cpp', 'regex', 'javascript', 'lua', 'typescript', 'html', 'vimdoc' },
     incremental_selection = {
       enable = true,
       keymaps = {
