@@ -38,66 +38,23 @@ if (packer) then
   }
 
   require('packer').startup({ function(use)
-    use 'nvim-lua/plenary.nvim'
-    use 'airblade/vim-gitgutter'
+    use 'wbthomason/packer.nvim'
     use 'forrestbaer/minimal_dark'
-    use 'MattesGroeger/vim-bookmarks'
-    use 'MunifTanjim/nui.nvim'
+    use 'nvim-lua/plenary.nvim'
     use {
       'junegunn/fzf.vim',
-      requires = { 'junegunn/fzf', run = ':call fzf#install()' }
+      cmd = { 'fzf#install()' }
     }
-    use 'norcalli/nvim-colorizer.lua'
-    use 'nvim-tree/nvim-web-devicons'
-    use 'nvim-lualine/lualine.nvim'
     use 'tpope/vim-surround'
     use 'tpope/vim-repeat'
     use 'tpope/vim-commentary'
-    use 'tpope/vim-fugitive'
-    use 'github/copilot.vim'
-    use 'svermeulen/vim-easyclip'
-    use 'wbthomason/packer.nvim'
-    use {
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-cmdline',
-      'hrsh7th/cmp-emoji',
-      'hrsh7th/nvim-cmp',
-      'hrsh7th/cmp-nvim-lua',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
-      'dcampos/nvim-snippy',
-      'dcampos/cmp-snippy'
-    }
-    use {
-      'stevearc/oil.nvim',
-      config = function() require('oil').setup{
-        columns = {
-          'icon', 'size', 'mtime',
-        },
-        view_options = {
-          show_hidden = true,
-        }
-      }
-      end
-    }
     use 'nvim-treesitter/nvim-treesitter'
     use {
       'neovim/nvim-lspconfig',
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
     }
-    use {
-      'glepnir/lspsaga.nvim',
-      branch = 'main',
-      config = function()
-        require('lspsaga').setup {
-          diagnostic = { show_code_action = false, },
-          lightbulb = { enable = false },
-          ui = { title = false }
-        }
-      end
-    }
+
     use {
       'nvim-telescope/telescope.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
@@ -139,7 +96,6 @@ end
 -- options
 --
 vim.opt.termguicolors  = true
-vim.opt.guifont        = 'Iosevka Nerd Font:h18'
 vim.opt.fileencoding   = 'utf-8'
 vim.opt.backspace      = 'indent,eol,start'
 vim.opt.tabstop        = 2
@@ -172,22 +128,10 @@ vim.opt.completeopt    = 'menuone,noselect,noinsert'
 vim.opt.omnifunc       = 'syntaxcomplete#Complete'
 vim.opt.clipboard      = 'unnamed'
 
-vim.g.python3_host_prog = '/Library/Frameworks/Python.framework/Versions/3.12/bin/python3'
 vim.g.mapleader                        = ','
 vim.g.maplocalleader                   = ','
-vim.g.gitgutter_terminal_reports_focus = 0
-vim.g.terminal_color_3                 = '#ac882f'
-vim.g.bookmark_no_default_key_mappings = 1
 vim.g.loaded_netrw                     = 1
 vim.g.loaded_netrwPlugin               = 1
-
---
--- nvim-tree
---
-local nvimtree = check_package('nvim-tree')
-if (nvimtree) then
-  nvimtree.setup{}
-end
 
 
 --
@@ -204,91 +148,20 @@ if (mason) then
 end
 
 local lspconfig = check_package('lspconfig')
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local cmp = check_package('cmp')
-if (cmp) then
-   cmp.setup({
-    snippet = {
-      expand = function(args)
-        require('snippy').expand_snippet(args.body)
-      end,
-    },
-    window = {
-      completion = cmp.config.window.bordered(),
-      documentation = cmp.config.window.bordered(),
-    },
-    mapping = cmp.mapping.preset.insert({
-      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = false }),
-    }),
-    sources = {
-      { name = 'nvim_lsp' },
-      { name = 'snippy' },
-      -- { name = 'buffer' },
-      { name = 'emoji' },
-      { name = 'nvim_lua' },
-      { name = 'nvim_lsp_signature_help' }
-    }
-  })
-
-  cmp.setup.filetype('gitcommit', {
-    sources = cmp.config.sources({
-      { name = 'cmp_git' },
-    }, {
-      { name = 'buffer' },
-    })
-  })
-
-  cmp.setup.cmdline({ '/', '?' }, {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = {
-      { name = 'buffer' }
-    }
-  })
-
-  cmp.setup.cmdline(':', {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = cmp.config.sources({
-      { name = 'path' }
-    }, {
-      { name = 'cmdline' }
-    })
-  })
-
-  if (lspconfig) then
-    for _, lsp in ipairs(lsp_servers) do
-      lspconfig[lsp].setup {
-        capabilities = capabilities
-      }
-    end
-
-    lspconfig.pyright.setup {
-      filetypes = {"python"},
-      settings = {
-        python = {
-          analsys = {
-            autoSearchPaths = true,
-            useLibraryCodeForTypes = true,
-            diagnosticMode = 'openFilesOnly',
-          }
-        }
-      }
-    }
-
-    lspconfig.lua_ls.setup {
-      settings = {
-        Lua = {
-          runtime = { version = 'LuaJIT' },
-          diagnostics = { globals = {'vim'} },
-          telemetry = { enable = false },
-        }
-      },
-    }
-
+if (lspconfig) then
+  for _, lsp in ipairs(lsp_servers) do
+    lspconfig[lsp].setup {}
   end
+
+  lspconfig.lua_ls.setup {
+    settings = {
+      Lua = {
+        runtime = { version = 'LuaJIT' },
+        diagnostics = { globals = {'vim'} },
+        telemetry = { enable = false },
+      }
+    },
+  }
 end
 
 --
@@ -311,29 +184,10 @@ if (treesitter) then
     },
     highlight = {
       enable = true,
-      additional_vim_regex_highlighting = true,
     },
     indent = {
       enable = true,
     },
-    playground = {
-      enable = true,
-      disable = {},
-      updatetime = 25,
-      persist_queries = false,
-      keybindings = {
-        toggle_query_editor = 'o',
-        toggle_hl_groups = 'i',
-        toggle_injected_languages = 't',
-        toggle_anonymous_nodes = 'a',
-        toggle_language_display = 'I',
-        focus_language = 'f',
-        unfocus_language = 'F',
-        update = 'R',
-        goto_node = '<cr>',
-        show_help = '?',
-      },
-    }
   }
 else
   vim.cmd('lua TSUpdate')
@@ -393,113 +247,6 @@ end
 
 
 --
--- devicons
---
-local devicons = check_package('nvim-web-devicons')
-if (devicons) then
-  devicons.setup { default = true }
-end
-
-
---
--- lualine
---
-local lualine = check_package('lualine')
-if (lualine) then
-  lualine.setup {
-    options = {
-      icons_enabled = true,
-      fmt = string.lower,
-      theme = 'auto',
-      component_separators = { left = '', right = '' },
-      section_separators = { left = '', right = '' },
-      always_divide_middle = true,
-      color = {
-        fg = '#CCCCCC',
-        bg = '#222222'
-      }
-    },
-    sections = {
-      lualine_a = {
-        { 'mode',
-          separator = { right = '' },
-          color = function (section)
-            local mode = vim.api.nvim_get_mode().mode
-            local fgc = '#000000'
-
-            if (mode == 'n') then
-              if (vim.bo.modified) then
-                return { fg = fgc, bg = '#008834' }
-              else
-                return { fg = fgc, bg = '#00AF87' }
-              end
-            elseif (mode == 'v') then
-              return { fg = fgc, bg = '#EEEEEE' }
-            elseif (mode == 'i') then
-              return { fg = fgc, bg = '#A0A0A0' }
-            end
-
-          end}
-      },
-      lualine_b = {
-        {
-          'filename',
-          file_status = true,
-          newfile_status = true,
-          path = 3,
-          shorting_target = 40,
-          symbols = {
-            modified = '*',
-            readonly = '-',
-            unnamed = '[No Name]',
-            newfile = '[New]',
-          },
-          separator = { right = '' },
-          color = { fg = '#999999' }
-        },
-        { 'diff', colored = false, separator = { right = '' }},
-        { 'diagnostics',
-          colored = true,
-          padding = 2,
-          separator = { right = '' },
-          sections = { 'error', 'warn', 'info' } }
-      },
-      lualine_c = {
-        { '', separator = { right = '' } },
-      },
-      lualine_x = {
-        { 'encoding', separator = { left = '' } },
-        { 'filetype', colored = true, color = { bg = '#222222' } }
-      },
-      lualine_y = {
-        { 'progress', 'location', color = { fg = '#FFFFFF' } }
-      },
-      lualine_z = { {
-        'location',
-        separator = { left = '' },
-        color = { fg = '#000000', bg = '#009933' }
-      }
-      }
-    },
-  }
-end
-
-
-
---
--- colorizer
---
-local colorizer = check_package('colorizer')
-if (colorizer) then
-  colorizer.setup {
-    '*';
-    css = { rgb_fn = true; };
-    html = { names = false; }
-  }
-end
-
-
---
 -- key mappings
 --
 
@@ -507,17 +254,11 @@ end
 map('', '<leader>D', ":put =strftime('### %A %Y-%m-%d %H:%M:%S')<CR>")
 
 -- lsp
-map('', 'K', ':Lspsaga hover_doc ++quiet<cr>')
-map('', '<leader>i', ':Lspsaga peek_definition<cr>')
-map('', '<leader>lo', ':Lspsaga outline<cr>')
-map('', '<leader>gd', ':Lspsaga finder<cr>')
-map('', '<leader>d', ':Lspsaga show_line_diagnostics<cr>')
-
--- terminal
-map('', '<C-w>', '<C-W>W')
-map('t', '<C-z>', '<C-\\><C-n>')
-map('n', '<C-z>', '<C-w>W')
-map('i', '<C-z>', '<C-w>W')
+map('', '<leader>i', ':lua vim.lsp.buf.hover()<cr>')
+map('', '<leader>I', ':lua vim.lsp.buf.type_definition()<cr>')
+map('', '<leader>gd', ':lua vim.lsp.buf.definition()<cr>')
+map('', '<leader>gD', ':lua vim.lsp.buf.declaration()<cr>')
+map('', '<leader>d', ':lua vim.diagnostic.open_float<cr>')
 
 -- telescope
 map('', '<leader>ff', ':Telescope find_files<cr>')
@@ -526,30 +267,6 @@ map('', '<leader>ft', ':Telescope file_browser<cr>')
 map('', '<leader>fb', ':Telescope buffers<cr>')
 map('', '<leader>fh', ':Telescope help_tags<cr>')
 map('', '<leader>fd', ':Telescope diagnostics<cr>')
-
--- bookmarks
-map('', '<leader>ma', ':BookmarkShowAll<cr>')
-map('', '<leader>mm', ':BookmarkToggle<cr>')
-map('', '<leader>mi', ':BookmarkAnnotate<cr>')
-map('', '<leader>mn', ':BookmarkNext<cr>')
-map('', '<leader>mp', ':BookmarkPrev<cr>')
-map('', '<leader>mc', ':BookmarkClear<cr>')
-map('', '<leader>mx', ':BookmarkClearAll<cr>')
-
--- git
-map('n', '<leader>gxo', ':<plug>git-conflict-ours<cr>')
-map('n', '<leader>gxt', ':<plug>git-conflict-theirs<cr>')
-map('n', '<leader>gxb', ':<plug>git-conflict-both<cr>')
-map('n', '<leader>gxn', ':<plug>git-conflict-next-conflict<cr>')
-map('n', '<leader>gxp', ':<plug>git-conflict-prev-conflict<cr>')
-map('n', '<leader>gg', ':Git<cr>')
-map('n', '<leader>gl', ':Git log --<cr>')
-map('n', '<leader>gB', ':Git blame<cr>')
-map('n', '<leader>gb', ':Telescope git_branches<cr>')
-map('n', '<leader>gP', ':Git push<cr>')
-map('n', '<leader>gp', ':Git pull<cr>')
-map('n', '<leader>gs', ':Git status<cr>')
-map('n', '<leader>gc', ':Git commit<cr>')
 
 -- vim
 map('', '<Space>', ':silent noh<Bar>echo<cr>')
@@ -585,6 +302,3 @@ vim.api.nvim_create_autocmd('BufEnter', {
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'markdown', command = 'set awa'
 })
-
--- some commands to remember to do something with:
--- TSHighlightCapturesUnderCursor
