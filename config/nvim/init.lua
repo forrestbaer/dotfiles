@@ -49,6 +49,7 @@ if (packer) then
     use 'tpope/vim-repeat'
     use 'tpope/vim-commentary'
     use 'nvim-treesitter/nvim-treesitter'
+    use 'nvim-lualine/lualine.nvim'
     use {
       'neovim/nvim-lspconfig',
       'williamboman/mason.nvim',
@@ -241,6 +242,90 @@ if (telescope) then
           },
         },
       },
+    },
+  }
+end
+
+
+---
+--- lualine
+---
+local lualine = check_package('lualine')
+if (lualine) then
+  lualine.setup {
+    options = {
+      icons_enabled = true,
+      fmt = string.lower,
+      theme = 'auto',
+      component_separators = { left = '', right = '' },
+      section_separators = { left = '', right = '' },
+      always_divide_middle = true,
+      color = {
+        fg = '#CCCCCC',
+        bg = '#222222'
+      }
+    },
+    sections = {
+      lualine_a = {
+        { 'mode',
+          separator = { right = '' },
+          color = function (section)
+            local mode = vim.api.nvim_get_mode().mode
+            local fgc = '#000000'
+
+            if (mode == 'n') then
+              if (vim.bo.modified) then
+                return { fg = fgc, bg = '#008834' }
+              else
+                return { fg = fgc, bg = '#00AF87' }
+              end
+            elseif (mode == 'v') then
+              return { fg = fgc, bg = '#EEEEEE' }
+            elseif (mode == 'i') then
+              return { fg = fgc, bg = '#A0A0A0' }
+            end
+
+          end}
+      },
+      lualine_b = {
+        {
+          'filename',
+          file_status = true,
+          newfile_status = true,
+          path = 3,
+          shorting_target = 40,
+          symbols = {
+            modified = '*',
+            readonly = '-',
+            unnamed = '[No Name]',
+            newfile = '[New]',
+          },
+          separator = { right = '' },
+          color = { fg = '#999999' }
+        },
+        { 'diff', colored = false, separator = { right = '' }},
+        { 'diagnostics',
+          colored = true,
+          padding = 2,
+          separator = { right = '' },
+          sections = { 'error', 'warn', 'info' } }
+      },
+      lualine_c = {
+        { '', separator = { right = '' } },
+      },
+      lualine_x = {
+        { 'encoding', separator = { left = '' } },
+        { 'filetype', colored = true, color = { bg = '#222222' } }
+      },
+      lualine_y = {
+        { 'progress', 'location', color = { fg = '#FFFFFF' } }
+      },
+      lualine_z = { {
+        'location',
+        separator = { left = '' },
+        color = { fg = '#000000', bg = '#009933' }
+      }
+      }
     },
   }
 end
