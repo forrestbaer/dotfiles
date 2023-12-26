@@ -1,8 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-links_made=0
-
-folders="config/nvim bin"
+folders="config/nvim bin .gnupg"
 files="alacritty.yml bash_profile gitconfig tmux.conf config/nvim/init.lua bin/rfv screenrc"
 
 for folder in $folders; do
@@ -16,3 +14,13 @@ done
 
 mkdir -p ~/bin
 cp ${PWD}/bin/* ~/bin
+
+echo ""
+echo "!! Don't forget to link gnupg private/public folders !!"
+echo ""
+
+# export USB_DIR = something
+# cd ~/.gnupg
+# rm -rf private-keys-v1.d public-keys.d
+# ln -s ${USB_DIR}/p/gpg/pk private-keys-v1.d
+# ln -s ${USB_DIR}/p/gpg/pub public-keys.d

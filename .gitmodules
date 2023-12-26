@@ -1,3 +1,0 @@
-[submodule "tmux-weather"]
-	path = tmux-weather
-	url = https://github.com/xamut/tmux-weather.git

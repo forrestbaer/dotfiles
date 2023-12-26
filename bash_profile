@@ -27,15 +27,21 @@ shopt -s autocd 2> /dev/null
 shopt -s dirspell 2> /dev/null
 shopt -s cdspell 2> /dev/null
 
-CDPATH=".:~:~/code"
-HISTSIZE=500000
-HISTFILESIZE=100000
-HISTCONTROL="erasedups:ignoreboth"
-HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
-HISTTIMEFORMAT='%F %T '
-PROMPT_COMMAND='history -a'
-PROMPT_DIRTRIM=2
+GPG_TTY=$(tty)
+export GPG_TTY
 
+export CDPATH=".:~:~/code"
+export HISTSIZE=500000
+export HISTFILESIZE=100000
+export HISTCONTROL="erasedups:ignoreboth"
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+export HISTTIMEFORMAT="%F %T "
+export PROMPT_COMMAND="history -a"
+export PROMPT_DIRTRIM=2
+
+export PASSWORD_STORE_DIR="/Volumes/HOM/p/pass"
+
+alias cp='cp -r'
 alias vim='nvim'
 alias vi='nvim'
 alias cat='bat'
@@ -43,6 +49,8 @@ alias ls='ls -GhF'
 alias ll='ls -GhlFa'
 alias mv='mv -i'
 alias md='mkdir'
+alias more='less'
+alias less='less -R'
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
 alias editkb='cd ~/code/qmk && vi ./keyboards/keyboardio/atreus/keymaps/mine/keymap.c'
 
@@ -68,7 +76,6 @@ fin() {
   sudo find / -name $1 2>/dev/null
 }
 
-
 export CLICOLOR=1
 export LSCOLORS=dxfxcxdxGxegedabagacad
 export SHELL=/opt/homebrew/bin/bash
@@ -76,11 +83,17 @@ export EDITOR=nvim
 export PS1='$? [\[\e[0;97m\]\w\[\e[0m\]] \[\e[0;90m\]\$ \[\e[0m\]'
 export PATH=/bin:/usr/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:~/bin:$PATH
 
-for f in /opt/homebrew/etc/bash_completion.d/*; do source $f; done
+# for f in /opt/homebrew/etc/bash_completion.d/*; do source $f; done
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+export PATH="$(pyenv root)/shims:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

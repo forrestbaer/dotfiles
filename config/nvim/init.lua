@@ -45,6 +45,8 @@ if (packer) then
       'junegunn/fzf.vim',
       cmd = { 'fzf#install()' }
     }
+    use 'nvim-tree/nvim-web-devicons'
+    use 'svermeulen/vim-easyclip'
     use 'tpope/vim-surround'
     use 'tpope/vim-repeat'
     use 'tpope/vim-commentary'
@@ -55,13 +57,34 @@ if (packer) then
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
     }
-
+    use 'jamessan/vim-gnupg'
+    use({
+       "dpayne/CodeGPT.nvim",
+       requires = {
+          "MunifTanjim/nui.nvim",
+          "nvim-lua/plenary.nvim",
+       },
+       config = function()
+            require("codegpt.config")
+         end
+    })
     use {
       'nvim-telescope/telescope.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     }
-
+    use {
+      'stevearc/oil.nvim',
+      config = function() require('oil').setup{
+        columns = {
+          'icon', 'size', 'mtime',
+        },
+        view_options = {
+          show_hidden = true,
+        }
+      }
+      end
+    }
     if PACKER_BOOTSTRAP then
       require('packer').sync()
     end
@@ -96,6 +119,7 @@ end
 --
 -- options
 --
+vim.opt.guifont        = 'Iosevka Nerd Font:h18'
 vim.opt.termguicolors  = true
 vim.opt.fileencoding   = 'utf-8'
 vim.opt.backspace      = 'indent,eol,start'
@@ -133,6 +157,18 @@ vim.g.mapleader                        = ','
 vim.g.maplocalleader                   = ','
 vim.g.loaded_netrw                     = 1
 vim.g.loaded_netrwPlugin               = 1
+
+
+--
+-- devicons
+--
+local devicons = check_package('nvim-web-devicons')
+if (devicons) then
+  devicons.setup {
+    color_icons = true,
+    default = true
+  }
+end
 
 
 --
@@ -207,7 +243,6 @@ if (telescope) then
       initial_mode = 'insert',
       selection_strategy = 'reset',
       sorting_strategy = 'descending',
-      color_devicons = true,
       file_ignore_patterns = {
         'node_modules',
         'vendor',
@@ -367,6 +402,11 @@ map('n', '<leader>rv', ':so ~/code/dotfiles/config/nvim/init.lua<cr>')
 
 map('v', '<', '<gv')
 map('v', '>', '>gv')
+
+map('', '<C-w>', '<C-W>W')
+map('t', '<C-z>', '<C-\\><C-n>')
+map('n', '<C-z>', '<C-w>W')
+map('i', '<C-z>', '<C-w>W')
 
 
 --

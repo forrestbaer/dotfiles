@@ -12,12 +12,12 @@
 ### Dependencies
 
   - [alacritty](https://github.com/alacritty/alacritty)
-
-  ```
-    brew install bat \
-    gh \
-    neovim \
-    fzf \
-    ripgrep \
-    tmux \
-  ```
+  - bat
+  - gh-cli
+  - neovim
+  - fzf
+  - ripgrep/rg
+  - tmux
+  - chatgpt-cli
+  - gnupg
+  - pass
