@@ -40,7 +40,6 @@ export PROMPT_COMMAND="history -a"
 export PROMPT_DIRTRIM=2
 
 export PASSWORD_STORE_DIR="/Volumes/HOM/p/pass"
-export USB_DRIVE="/media/HOM"
 
 alias cp='cp -r'
 alias vim='nvim'

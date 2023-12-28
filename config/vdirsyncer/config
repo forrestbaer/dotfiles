@@ -15,7 +15,7 @@ metadata = ["displayname"]
 #   `null` - abort when collisions occur (default)
 #   `"a wins"` - assume a's items to be more up-to-date
 #   `"b wins"` - assume b's items to be more up-to-date
-# conflict_resolution = "b wins"
+conflict_resolution = ["command", "nvim", "-d"]
 
 [storage forrest_contacts_local]
 type = "filesystem"
@@ -34,6 +34,7 @@ password.fetch = ["command", "pass", "Mail/f@frrst.xyz"]
 a = "forrest_calendar_local"
 b = "forrest_calendar_remote"
 
+conflict_resolution = ["command", "nvim", "-d"]
 collections = [["config_name", "calendar", "574b1c99-ad60-4399-bb23-207ef9613ca2"]]
 
 metadata = ["displayname", "color"]
