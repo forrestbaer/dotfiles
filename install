@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-folders="config/nvim bin .gnupg"
-files="alacritty.yml bash_profile gitconfig tmux.conf config/nvim/init.lua bin/rfv screenrc"
+folders="config/khard config/task config/task/hooks config/vdirsyncer config/nvim bin .gnupg .vdirsyncer"
+files="alacritty.yml bash_profile gitconfig config/khard/khard.conf tmux.conf config/nvim/init.lua config/vdirsyncer/config screenrc taskrc visidatarc"
 
 for folder in $folders; do
   mkdir -p ~/.$folder
@@ -19,7 +19,6 @@ echo ""
 echo "!! Don't forget to link gnupg private/public folders !!"
 echo ""
 
-# export USB_DIR = something
 # cd ~/.gnupg
 # rm -rf private-keys-v1.d public-keys.d
 # ln -s ${USB_DIR}/p/gpg/pk private-keys-v1.d

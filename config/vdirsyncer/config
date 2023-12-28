@@ -1,0 +1,50 @@
+[general]
+status_path = "~/.vdirsyncer/status/"
+
+# CARDDAV
+[pair forrest_contacts]
+a = "forrest_contacts_local"
+b = "forrest_contacts_remote"
+
+collections = [["config_name", "contacts", "Default"]]
+
+# Synchronize the "display name" property into a local file (~/.contacts/displayname).
+metadata = ["displayname"]
+
+# To resolve a conflict the following values are possible:
+#   `null` - abort when collisions occur (default)
+#   `"a wins"` - assume a's items to be more up-to-date
+#   `"b wins"` - assume b's items to be more up-to-date
+# conflict_resolution = "b wins"
+
+[storage forrest_contacts_local]
+type = "filesystem"
+path = "~/h/p"
+fileext = ".vcf"
+
+[storage forrest_contacts_remote]
+type = "carddav"
+url = "https://carddav.fastmail.com/dav/addressbooks/user/forrest@forrestbaer.com/Default"
+username = "forrest@forrestbaer.com"
+password.fetch = ["command", "pass", "Mail/f@frrst.xyz"]
+
+# CALDAV
+
+[pair forrest_calendar]
+a = "forrest_calendar_local"
+b = "forrest_calendar_remote"
+
+collections = [["config_name", "calendar", "574b1c99-ad60-4399-bb23-207ef9613ca2"]]
+
+metadata = ["displayname", "color"]
+
+[storage forrest_calendar_local]
+type = "filesystem"
+path = "~/h/p"
+fileext = ".ics"
+
+[storage forrest_calendar_remote]
+type = "caldav"
+url = "https://caldav.fastmail.com/dav/calendars/user/forrest@forrestbaer.com/574b1c99-ad60-4399-bb23-207ef9613ca2"
+username = "forrest@forrestbaer.com"
+password.fetch = ["command", "pass", "Mail/f@frrst.xyz"]

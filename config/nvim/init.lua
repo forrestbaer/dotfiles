@@ -137,6 +137,7 @@ vim.opt.pumheight      = 20
 vim.opt.ignorecase     = true
 vim.opt.smartcase      = true
 vim.opt.remap          = true
+vim.opt.wrap           = false
 vim.opt.timeout        = false
 vim.opt.guicursor      = 'i:ver20-blinkon100,n:blinkon100'
 vim.opt.linebreak      = true
