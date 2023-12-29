@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-folders="config/khard config/task config/task/hooks config/vdirsyncer config/nvim bin .gnupg .vdirsyncer"
-files="alacritty.yml bash_profile gitconfig config/khard/khard.conf tmux.conf config/nvim/init.lua config/vdirsyncer/config screenrc taskrc visidatarc"
+folders="config/khal config/khard config/task config/task/hooks config/vdirsyncer config/nvim bin gnupg vdirsyncer"
+files="alacritty.yml bash_profile gitconfig config/khal/config config/khard/khard.conf tmux.conf config/nvim/init.lua config/vdirsyncer/config screenrc taskrc visidatarc"
 
 for folder in $folders; do
   mkdir -p ~/.$folder

@@ -147,7 +147,7 @@ vim.opt.splitbelow     = true
 vim.opt.grepprg        = 'rg'
 vim.opt.updatetime     = 150
 vim.opt.undofile       = true
-vim.opt.undodir        = '/Users/forrestbaer/tmp'
+vim.opt.undodir        = '/home/monk/tmp'
 vim.opt.undolevels     = 2000
 vim.opt.helpheight     = 15
 vim.opt.completeopt    = 'menuone,noselect,noinsert'
@@ -175,7 +175,7 @@ end
 --
 -- lsp / mason
 --
-local lsp_servers = { 'lua_ls', 'tsserver', 'html', 'bashls', 'eslint', 'jsonls', 'emmet_ls', 'pyright', 'clangd'  }
+local lsp_servers = {'lua_ls','tsserver','html','bashls','eslint','jsonls','emmet_ls','pyright'}
 
 local mason = check_package('mason')
 if (mason) then

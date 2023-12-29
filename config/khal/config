@@ -1,0 +1,15 @@
+[calendars]
+
+[[personal]]
+path = ~/h/p/calendar
+type = calendar
+
+[locale]
+timeformat = %H:%M
+dateformat = %m/%d/%Y
+longdateformat = %m/%d/%Y
+datetimeformat = %m/%d/%Y %H:%M
+longdatetimeformat = %m/%d/%Y %H:%M
+
+[default]
+default_calendar = personal

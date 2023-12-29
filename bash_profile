@@ -39,14 +39,16 @@ export HISTTIMEFORMAT="%F %T "
 export PROMPT_COMMAND="history -a"
 export PROMPT_DIRTRIM=2
 
-export PASSWORD_STORE_DIR="/Volumes/HOM/p/pass"
+export PASSWORD_STORE_DIR="/home/monk/h/p/pass"
 
 alias cp='cp -r'
 alias vim='nvim'
 alias vi='nvim'
-alias cat='bat'
-alias ls='ls -GhF'
-alias ll='ls -GhlFa'
+alias cat='batcat'
+alias ls='ls --color=auto'
+alias ll='ls --color=auto -l'
+alias lsa='ls -A'
+alias lla='ll -A'
 alias mv='mv -i'
 alias md='mkdir'
 alias more='less'
@@ -78,25 +80,20 @@ fin() {
 
 export CLICOLOR=1
 export LSCOLORS=dxfxcxdxGxegedabagacad
-export SHELL=/opt/homebrew/bin/bash
+export SHELL=/bin/bash
 export EDITOR=nvim
 export PS1='$? [\[\e[0;97m\]\w\[\e[0m\]] \[\e[0;90m\]\$ \[\e[0m\]'
-export PATH=/bin:/usr/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:~/.local/bin:~/bin:$PATH
+export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:$PATH
+export GNUPGHOME=/home/monk/h/p/gpg
 
-# for f in /opt/homebrew/etc/bash_completion.d/*; do source $f; done
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
-export PATH="$(pyenv root)/shims:$PATH"
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+source /usr/share/doc/fzf/examples/key-bindings.bash
+. "$HOME/.cargo/env"

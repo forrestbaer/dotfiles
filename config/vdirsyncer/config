@@ -26,7 +26,7 @@ fileext = ".vcf"
 type = "carddav"
 url = "https://carddav.fastmail.com/dav/addressbooks/user/forrest@forrestbaer.com/Default"
 username = "forrest@forrestbaer.com"
-password.fetch = ["command", "pass", "Mail/f@frrst.xyz"]
+password.fetch = ["command", "pass", "vdirsyncer"]
 
 # CALDAV
 
@@ -48,4 +48,4 @@ fileext = ".ics"
 type = "caldav"
 url = "https://caldav.fastmail.com/dav/calendars/user/forrest@forrestbaer.com/574b1c99-ad60-4399-bb23-207ef9613ca2"
 username = "forrest@forrestbaer.com"
-password.fetch = ["command", "pass", "Mail/f@frrst.xyz"]
+password.fetch = ["command", "pass", "vdirsyncer"]
