@@ -1,11 +1,11 @@
 window:
   dimensions:
-    columns: 123
-    lines: 52
+    columns: 30 
+    lines: 15
 
   position:
-    x: 20
-    y: 40
+    x: 0
+    y: 0
 
   padding:
     x: 10
@@ -19,12 +19,12 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background and no title bar buttons
-  decorations: buttonless
+  decorations: none
 
   #opacity: 1.0
 
 shell:
-  program: /opt/homebrew/bin/bash
+  program: /bin/bash
   args:
     - --login
 
@@ -33,26 +33,29 @@ scrolling:
 
 font:
   normal:
-    family: Iosevka Nerd Font
-    style: Extralight
+    family: Iosevka Term
+    style: Regluar
 
   bold:
-    family: Iosevka Nerd Font
+    family: Iosevka Term
     style: Regular
+
+  italic:
+    family: Iosevka Term
+    style: Italic
 
   size: 20.0
 
   offset:
     x: 0
-    y: 2
+    y: 0
 
   glyph_offset:
     x: 0
-    y: 2
+    y: 0
 
   builtin_box_drawing: true
-
-draw_bold_text_with_bright_colors: true
+  draw_bold_text_with_bright_colors: true
 
 colors:
   primary:
@@ -91,6 +94,3 @@ cursor:
    shape: Block
    blinking: On
   blink_interval: 350
-
-mouse:
-  hide_when_typing: false

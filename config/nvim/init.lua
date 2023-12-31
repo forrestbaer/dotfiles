@@ -24,6 +24,10 @@ vim.api.nvim_create_user_command(
 )
 
 
+    -- use {
+    --   'junegunn/fzf.vim',
+    --   cmd = { 'fzf#install()' }
+    -- }
 --
 -- packer/plugins
 --
@@ -41,10 +45,6 @@ if (packer) then
     use 'wbthomason/packer.nvim'
     use 'forrestbaer/minimal_dark'
     use 'nvim-lua/plenary.nvim'
-    use {
-      'junegunn/fzf.vim',
-      cmd = { 'fzf#install()' }
-    }
     use 'nvim-tree/nvim-web-devicons'
     use 'svermeulen/vim-easyclip'
     use 'tpope/vim-surround'
@@ -52,11 +52,9 @@ if (packer) then
     use 'tpope/vim-commentary'
     use 'nvim-treesitter/nvim-treesitter'
     use 'nvim-lualine/lualine.nvim'
-    use {
-      'neovim/nvim-lspconfig',
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-    }
+    use 'neovim/nvim-lspconfig'
+    use 'williamboman/mason.nvim'
+    use 'williamboman/mason-lspconfig.nvim'
     use 'jamessan/vim-gnupg'
     use({
        "dpayne/CodeGPT.nvim",
@@ -68,23 +66,15 @@ if (packer) then
             require("codegpt.config")
          end
     })
+    use  {
+      'nvim-telescope/telescope-fzf-native.nvim',
+      run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+    }
     use {
       'nvim-telescope/telescope.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
-      { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     }
-    use {
-      'stevearc/oil.nvim',
-      config = function() require('oil').setup{
-        columns = {
-          'icon', 'size', 'mtime',
-        },
-        view_options = {
-          show_hidden = true,
-        }
-      }
-      end
-    }
+    use 'tidalcycles/vim-tidal'
     if PACKER_BOOTSTRAP then
       require('packer').sync()
     end
@@ -119,7 +109,7 @@ end
 --
 -- options
 --
-vim.opt.guifont        = 'Iosevka Nerd Font:h18'
+vim.opt.guifont        = 'Iosevka Term:h18'
 vim.opt.termguicolors  = true
 vim.opt.fileencoding   = 'utf-8'
 vim.opt.backspace      = 'indent,eol,start'
