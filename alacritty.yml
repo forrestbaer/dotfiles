@@ -44,7 +44,7 @@ font:
     family: Iosevka Term
     style: Italic
 
-  size: 20.0
+  size: 15.0
 
   offset:
     x: 0

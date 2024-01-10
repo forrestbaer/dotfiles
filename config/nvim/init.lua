@@ -24,10 +24,6 @@ vim.api.nvim_create_user_command(
 )
 
 
-    -- use {
-    --   'junegunn/fzf.vim',
-    --   cmd = { 'fzf#install()' }
-    -- }
 --
 -- packer/plugins
 --
@@ -42,6 +38,10 @@ if (packer) then
   }
 
   require('packer').startup({ function(use)
+    use {
+      'junegunn/fzf.vim',
+      cmd = { 'fzf#install()' }
+    }
     use 'wbthomason/packer.nvim'
     use 'forrestbaer/minimal_dark'
     use 'nvim-lua/plenary.nvim'
@@ -121,7 +121,7 @@ vim.opt.signcolumn     = 'yes'
 vim.opt.number         = true
 vim.opt.numberwidth    = 3
 vim.opt.hidden         = true
-vim.opt.mouse          = 'a'
+vim.opt.mouse          = ''
 vim.opt.autoread       = true
 vim.opt.pumheight      = 20
 vim.opt.ignorecase     = true
@@ -137,18 +137,18 @@ vim.opt.splitbelow     = true
 vim.opt.grepprg        = 'rg'
 vim.opt.updatetime     = 150
 vim.opt.undofile       = true
-vim.opt.undodir        = '/home/monk/tmp'
+vim.opt.undodir        = '/home/monk/tmp/nvim'
 vim.opt.undolevels     = 2000
 vim.opt.helpheight     = 15
 vim.opt.completeopt    = 'menuone,noselect,noinsert'
 vim.opt.omnifunc       = 'syntaxcomplete#Complete'
-vim.opt.clipboard      = 'unnamed'
 
 vim.g.mapleader                        = ','
 vim.g.maplocalleader                   = ','
 vim.g.loaded_netrw                     = 1
 vim.g.loaded_netrwPlugin               = 1
 
+vim.opt.clipboard      =  'unnamedplus'
 
 --
 -- devicons
@@ -165,7 +165,7 @@ end
 --
 -- lsp / mason
 --
-local lsp_servers = {'lua_ls','tsserver','html','bashls','eslint','jsonls','emmet_ls','pyright'}
+local lsp_servers = {'lua_ls','tsserver','zls','html','bashls','eslint','jsonls','emmet_ls','pyright'}
 
 local mason = check_package('mason')
 if (mason) then
@@ -283,8 +283,8 @@ if (lualine) then
       icons_enabled = true,
       fmt = string.lower,
       theme = 'auto',
-      component_separators = { left = '', right = '' },
-      section_separators = { left = '', right = '' },
+      component_separators = { left = '', right = '' },
+      section_separators = { left = '', right = '' },
       always_divide_middle = true,
       color = {
         fg = '#CCCCCC',
@@ -294,7 +294,6 @@ if (lualine) then
     sections = {
       lualine_a = {
         { 'mode',
-          separator = { right = '' },
           color = function (section)
             local mode = vim.api.nvim_get_mode().mode
             local fgc = '#000000'
@@ -318,7 +317,7 @@ if (lualine) then
           'filename',
           file_status = true,
           newfile_status = true,
-          path = 3,
+          path = 4,
           shorting_target = 40,
           symbols = {
             modified = '*',
@@ -326,21 +325,21 @@ if (lualine) then
             unnamed = '[No Name]',
             newfile = '[New]',
           },
-          separator = { right = '' },
           color = { fg = '#999999' }
         },
-        { 'diff', colored = false, separator = { right = '' }},
-        { 'diagnostics',
-          colored = true,
-          padding = 2,
-          separator = { right = '' },
-          sections = { 'error', 'warn', 'info' } }
+        { 'diff', colored = false},
       },
       lualine_c = {
-        { '', separator = { right = '' } },
+        { 'diagnostics',
+          sources = { 'nvim_diagnostic', 'nvim_lsp' },
+          colored = true,
+          padding = 1,
+          sections = { 'error', 'warn', 'info' },
+          color = { fg = '#CCCCCC', bg = '#000' }
+        },
       },
       lualine_x = {
-        { 'encoding', separator = { left = '' } },
+        { 'encoding'},
         { 'filetype', colored = true, color = { bg = '#222222' } }
       },
       lualine_y = {
@@ -348,7 +347,6 @@ if (lualine) then
       },
       lualine_z = { {
         'location',
-        separator = { left = '' },
         color = { fg = '#000000', bg = '#009933' }
       }
       }

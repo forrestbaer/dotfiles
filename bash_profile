@@ -44,8 +44,8 @@ export PASSWORD_STORE_DIR="/home/monk/h/p/pass"
 alias cp='cp -r'
 alias vim='nvim'
 alias vi='nvim'
-alias cat='batcat'
-alias ls='ls --color=auto'
+alias cat='bat'
+alias ls='exa --git --no-user --changed --octal-permissions --no-permissions --no-time -laFG'
 alias ll='ls --color=auto -l'
 alias lsa='ls -A'
 alias lla='ll -A'
@@ -79,12 +79,12 @@ fin() {
 }
 
 export CLICOLOR=1
-# export LS_COLORS=dxfxcxdxGxegedabagacad
-# export LS_COLORS='di=33:fi=:ln=:pi=:so=:bd=:cd=:or='
+export LS_COLORS=dxfxcxdxGxegedabagacad
+export LS_COLORS='di=33:fi=:ln=:pi=:so=:bd=:cd=:or='
 export LS_COLORS='di=33'
 export EDITOR=nvim
 export PS1='$? [\[\e[0;97m\]\w\[\e[0m\]] \[\e[0;90m\]\$ \[\e[0m\]'
-export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:$PATH
+export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:~/.cargo/bin:$PATH
 export GNUPGHOME=/home/monk/h/p/gpg
 
 
@@ -96,8 +96,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+[ -s "$HOME/.dir_colors" ] && eval $(dircolors ~/.dir_colors)
 
-source /usr/share/doc/fzf/examples/key-bindings.bash
+source /usr/share/fzf/shell/key-bindings.bash
