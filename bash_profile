@@ -8,6 +8,9 @@ if [[ $TERM != 'dumb' ]]; then
     export TERM=screen-256color
 fi
 
+# rwxr-xr-x
+umask 022
+
 set -o noclobber
 set -o vi
 
@@ -45,16 +48,17 @@ alias cp='cp -r'
 alias vim='nvim'
 alias vi='nvim'
 alias cat='bat'
-alias ls='exa --no-user --changed --octal-permissions --no-permissions --no-time -laFG'
-alias ll='ls --color=auto -l'
-alias lsa='ls -A'
-alias lla='ll -A'
+alias ls='ls -h --color=auto'
+alias ll='ls -l'
+alias lsa='ls -a'
+alias lla='ll -a'
 alias mv='mv -i'
 alias md='mkdir'
 alias more='less'
 alias less='less -R'
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
 alias editkb='cd ~/code/qmk && vi ./keyboards/keyboardio/atreus/keymaps/mine/keymap.c'
+alias t='task'
 
 # Git
 alias gs='git status'
@@ -79,14 +83,11 @@ fin() {
 }
 
 export CLICOLOR=1
-export LS_COLORS=dxfxcxdxGxegedabagacad
-export LS_COLORS='di=33:fi=:ln=:pi=:so=:bd=:cd=:or='
-export LS_COLORS='di=33'
 export EDITOR=nvim
+export LS_COLORS='di=37'
 export PS1='$? [\[\e[0;97m\]\w\[\e[0m\]] \[\e[0;90m\]\$ \[\e[0m\]'
 export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:~/.cargo/bin:$PATH
 export GNUPGHOME=/home/monk/h/p/gpg
-
 
 # bun
 export BUN_INSTALL="$HOME/.bun"

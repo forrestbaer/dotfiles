@@ -1,9 +1,7 @@
 #!/bin/bash
 
 sudo dnf install \ \
-  aajohan-comfortaa-fonts \
   alacritty \
-  anaconda \
   arm-none-eabi-gcc \
   autoconf \
   automake \
@@ -21,18 +19,11 @@ sudo dnf install \ \
   git-delta \
   gitui \
   gh \
-  gnome-shell-extension-user-theme \
   golang \
   khal \
   khard \
   kicad \
   kitty \
-  langpacks-en \
-  libhandy-devel \
-  libusb-compat \
-  libusb1-devel \
-  livesys-scripts \
-  lm_sensors \
   make \
   meson \
   neovim \
@@ -46,3 +37,6 @@ sudo dnf install \ \
   visidata \
   vlc \
   vlc-plugin-pipewire \
+  gcc-c++ \
+  ffmpeg-free \
+  nasm
