@@ -24,6 +24,7 @@ sudo dnf install \ \
   khard \
   kicad \
   kitty \
+  lsd \
   make \
   meson \
   neovim \
