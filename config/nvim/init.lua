@@ -57,6 +57,12 @@ if (packer) then
     use 'williamboman/mason-lspconfig.nvim'
     use 'jamessan/vim-gnupg'
     use({
+    "stevearc/oil.nvim",
+    config = function()
+      require("oil").setup()
+    end,
+    })
+    use({
        "dpayne/CodeGPT.nvim",
        requires = {
           "MunifTanjim/nui.nvim",
@@ -148,6 +154,9 @@ vim.g.maplocalleader                   = ','
 vim.g.loaded_netrw                     = 1
 vim.g.loaded_netrwPlugin               = 1
 
+vim.g.tidal_target                     = 'tmux'
+vim.g.tidal_default_config             = {socket_name = "default", target_pane = ":1.1"}
+
 vim.opt.clipboard      =  'unnamedplus'
 
 --
@@ -165,7 +174,7 @@ end
 --
 -- lsp / mason
 --
-local lsp_servers = {'lua_ls','tsserver','zls','html','bashls','eslint','jsonls','emmet_ls','pyright'}
+local lsp_servers = {'lua_ls','tsserver','zls','html','bashls','eslint','jsonls','emmet_ls','pylsp'}
 
 local mason = check_package('mason')
 if (mason) then
@@ -367,7 +376,7 @@ map('', '<leader>i', ':lua vim.lsp.buf.hover()<cr>')
 map('', '<leader>I', ':lua vim.lsp.buf.type_definition()<cr>')
 map('', '<leader>gd', ':lua vim.lsp.buf.definition()<cr>')
 map('', '<leader>gD', ':lua vim.lsp.buf.declaration()<cr>')
-map('', '<leader>d', ':lua vim.diagnostic.open_float<cr>')
+map('', '<leader>d', ':lua vim.diagnostic.open_float()<cr>')
 
 -- telescope
 map('', '<leader>ff', ':Telescope find_files<cr>')

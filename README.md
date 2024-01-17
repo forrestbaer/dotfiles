@@ -9,15 +9,4 @@
 
   - `./install`
 
-### Dependencies
-
-  - [alacritty](https://github.com/alacritty/alacritty)
-  - bat
-  - gh-cli
-  - neovim
-  - fzf
-  - ripgrep/rg
-  - tmux
-  - chatgpt-cli
-  - gnupg
-  - pass
+probably gonna move all this to a new nix config

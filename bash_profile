@@ -42,8 +42,8 @@ export HISTTIMEFORMAT="%F %T "
 export PROMPT_COMMAND="history -a"
 export PROMPT_DIRTRIM=2
 
-export PASSWORD_STORE_DIR="/home/monk/h/p/pass"
 
+alias sudo='sudo '
 alias cp='cp -r'
 alias vim='nvim'
 alias vi='nvim'
@@ -55,10 +55,12 @@ alias lla='ll -a'
 alias mv='mv -i'
 alias md='mkdir'
 alias more='less'
-alias less='less -R'
+alias less='less -RX'
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
 alias editkb='cd ~/code/qmk && vi ./keyboards/keyboardio/atreus/keymaps/mine/keymap.c'
 alias t='task'
+alias ps='ps -au'
+alias sync-norns='rsync -chavzP we@norns.local:~/dust/audio/tape .'
 
 # Git
 alias gs='git status'
@@ -72,10 +74,7 @@ alias gco='git checkout $(git branch | fzf| tr -d "[:space:]")'
 alias gcx="git checkout \$(git branch -a | sed -E 's/remotes\/([a-zA-Z-]*\/)//' | grep -v '\*|HEAD' | sort |uniq | fzf --select-1)"
 alias glog='git log -p --'
 
-alias sudo='sudo '
-alias tmux='tmux new -As0'
 alias cddf='cd ~/code/dotfiles'
-alias fixq='sudo xattr -rd com.apple.quarantine'
 alias size='du -hs * 2>/dev/null | grep "^...M" | sort -h'
 
 fin() {
@@ -87,16 +86,9 @@ export EDITOR=nvim
 export LS_COLORS='di=37'
 export PS1='$? [\[\e[0;97m\]\w\[\e[0m\]] \[\e[0;90m\]\$ \[\e[0m\]'
 export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:~/.cargo/bin:$PATH
-export GNUPGHOME=/home/monk/h/p/gpg
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH=$BUN_INSTALL/bin:$PATH
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 [ -s "$HOME/.dir_colors" ] && eval $(dircolors ~/.dir_colors)
 
-source /usr/share/fzf/shell/key-bindings.bash
+# export GNUPGHOME=/home/monk/h/p/gpg
+# export PASSWORD_STORE_DIR="/home/monk/h/p/pass"
+# source /usr/share/fzf/shell/key-bindings.bash

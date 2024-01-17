@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-folders="config/khal config/khard config/task config/task/hooks config/vdirsyncer config/nvim bin gnupg vdirsyncer config/lsd"
-files="dir_colors fonts alacritty.yml bash_profile gitconfig config/khal/config config/khard/khard.conf tmux.conf config/lsd/config.yaml config/lsd/colors.yaml config/nvim/init.lua config/vdirsyncer/config screenrc taskrc visidatarc"
+folders="config/nvim bin config/lsd"
+files="dir_colors fonts alacritty.yml bash_profile gitconfig tmux.conf config/lsd/config.yaml config/lsd/colors.yaml config/nvim/init.lua taskrc"
 
 for folder in $folders; do
   mkdir -p ~/.$folder
