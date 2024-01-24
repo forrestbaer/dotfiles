@@ -33,7 +33,6 @@ shopt -s cdspell 2> /dev/null
 GPG_TTY=$(tty)
 export GPG_TTY
 
-export CDPATH=".:~:~/code"
 export HISTSIZE=500000
 export HISTFILESIZE=100000
 export HISTCONTROL="erasedups:ignoreboth"
@@ -41,7 +40,6 @@ export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 export HISTTIMEFORMAT="%F %T "
 export PROMPT_COMMAND="history -a"
 export PROMPT_DIRTRIM=2
-
 
 alias sudo='sudo '
 alias cp='cp -r'
@@ -52,6 +50,7 @@ alias ls='lsd'
 alias ll='lsd -l'
 alias lsa='ls -a'
 alias lla='ll -a'
+
 alias mv='mv -i'
 alias md='mkdir'
 alias more='less'
@@ -61,6 +60,7 @@ alias editkb='cd ~/code/qmk && vi ./keyboards/keyboardio/atreus/keymaps/mine/key
 alias t='task'
 alias ps='ps -au'
 alias sync-norns='rsync -chavzP we@norns.local:~/dust/audio/tape .'
+alias dnf='sudo dnf '
 
 # Git
 alias gs='git status'
@@ -81,6 +81,8 @@ fin() {
   sudo find / -name $1 2>/dev/null
 }
 
+export DF=~/code/dotfiles
+
 export CLICOLOR=1
 export EDITOR=nvim
 export LS_COLORS='di=37'
@@ -89,6 +91,4 @@ export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:~/.cargo/bin:$PATH
 
 [ -s "$HOME/.dir_colors" ] && eval $(dircolors ~/.dir_colors)
 
-# export GNUPGHOME=/home/monk/h/p/gpg
-# export PASSWORD_STORE_DIR="/home/monk/h/p/pass"
-# source /usr/share/fzf/shell/key-bindings.bash
+source /usr/share/fzf/shell/key-bindings.bash
