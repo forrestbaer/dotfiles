@@ -5,11 +5,11 @@ then
 fi
 
 if [[ $TERM != 'dumb' ]]; then
-    export TERM=screen-256color
+    export TERM=xterm
 fi
 
 # rwxr-xr-x
-umask 022
+# umask 022
 
 set -o noclobber
 set -o vi
@@ -76,6 +76,7 @@ alias glog='git log -p --'
 
 alias cddf='cd ~/code/dotfiles'
 alias size='du -hs * 2>/dev/null | grep "^...M" | sort -h'
+alias windows='hyprctl clients -j | grep class'
 
 fin() {
   sudo find / -name $1 2>/dev/null
@@ -92,3 +93,7 @@ export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:~/.cargo/bin:$PATH
 [ -s "$HOME/.dir_colors" ] && eval $(dircolors ~/.dir_colors)
 
 source /usr/share/fzf/shell/key-bindings.bash
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH=$BUN_INSTALL/bin:$PATH

@@ -1,25 +1,10 @@
 #!/usr/bin/env bash
 
-folders="config/nvim bin config/lsd"
-files="dir_colors fonts alacritty.toml bash_profile gitconfig tmux.conf config/lsd/config.yaml config/lsd/colors.yaml config/nvim/init.lua taskrc"
+mkdir -p ~/.config/nvim
+mkdir -p ~/.fonts
+mkdir -p ~/.bin
 
-for folder in $folders; do
-  mkdir -p ~/.$folder
-done
-
-for file in $files; do
-  rm ~/.$file
-  ln -sfn ${PWD}/$file ~/.$file
-done
-
-mkdir -p ~/bin
-cp ${PWD}/bin/* ~/bin
-
-echo ""
-echo "!! Don't forget to link gnupg private/public folders !!"
-echo ""
-
-# cd ~/.gnupg
-# rm -rf private-keys-v1.d public-keys.d
-# ln -s ${USB_DIR}/p/gpg/pk private-keys-v1.d
-# ln -s ${USB_DIR}/p/gpg/pub public-keys.d
+ln -sfn ${PWD}/config/nvim/init.lua ~/.config/nvim/init.lua
+ln -sfn ${PWD}/gitconfig ~/.gitconfig
+ln -sfn ${PWD}/tmux.conf ~/.tmux.conf
+ln -sfn ${PWD}/taskrc ~/.taskrc

@@ -48,7 +48,6 @@ if (packer) then
     use 'williamboman/mason.nvim'
     use 'williamboman/mason-lspconfig.nvim'
     use 'eraserhd/parinfer-rust'
-    use 'jamessan/vim-gnupg'
     use({
     "stevearc/oil.nvim",
     config = function()
@@ -59,7 +58,6 @@ if (packer) then
       'nvim-telescope/telescope.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
     }
-    use 'tidalcycles/vim-tidal'
     if PACKER_BOOTSTRAP then
       require('packer').sync()
     end
@@ -129,12 +127,9 @@ vim.g.maplocalleader                   = ","
 vim.g.loaded_netrw                     = 1
 vim.g.loaded_netrwPlugin               = 1
 
-vim.g.tidal_target                     = "tmux"
-vim.g.tidal_default_config             = {socket_name = "default", target_pane = ":1.1"}
-
 vim.opt.clipboard      =  "unnamedplus"
 
-local lsp_servers = {"lua_ls","tsserver","html","bashls","eslint","jsonls","emmet_ls","pylsp"}
+local lsp_servers = { "lua_ls", "tsserver", "html", "bashls", "eslint", "jsonls", "emmet_ls" }
 
 local mason = check_package("mason")
 if (mason) then
@@ -166,7 +161,7 @@ if (treesitter) then
   treesitter.setup {}
 
   require("nvim-treesitter.configs").setup {
-    ensure_installed = { "vim", "python", "c", "cpp", "regex", "javascript", "lua", "typescript", "html", "vimdoc" },
+    ensure_installed = { "vim", "c", "regex", "javascript", "lua", "typescript", "html", "vimdoc" },
     highlight = { enable = true, },
     indent = { enable = true, },
   }
