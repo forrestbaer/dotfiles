@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# put this in your userscripts folder
+
+notice () {
+    echo "message-info '$*'" > "$QUTE_FIFO"
+}
+
+STRIPPED=$(echo "$QUTE_URL" | awk -F[/:] '{print $4}' | sed -e 's/www\.//')
+pass -c $STRIPPED
+
+notice "Copied password to clipboard for the next 45s"

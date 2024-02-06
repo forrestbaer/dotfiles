@@ -9,7 +9,7 @@ if [[ $TERM != 'dumb' ]]; then
 fi
 
 # rwxr-xr-x
-# umask 022
+umask 022
 
 set -o noclobber
 set -o vi
@@ -30,8 +30,7 @@ shopt -s autocd 2> /dev/null
 shopt -s dirspell 2> /dev/null
 shopt -s cdspell 2> /dev/null
 
-GPG_TTY=$(tty)
-export GPG_TTY
+export GRIM_DEFAULT_DIR=~/img/screenshots
 
 export HISTSIZE=500000
 export HISTFILESIZE=100000
@@ -88,7 +87,7 @@ export CLICOLOR=1
 export EDITOR=nvim
 export LS_COLORS='di=37'
 export PS1='$? [\[\e[0;97m\]\w\[\e[0m\]] \[\e[0;90m\]\$ \[\e[0m\]'
-export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:~/.cargo/bin:$PATH
+export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:~/.cargo/bin:~/go/bin:~/.config/emacs/bin:$PATH
 
 [ -s "$HOME/.dir_colors" ] && eval $(dircolors ~/.dir_colors)
 
@@ -97,3 +96,26 @@ source /usr/share/fzf/shell/key-bindings.bash
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
+
+# this is for vterm integration
+vterm_printf() {
+    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ]); then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
+
+GPG_TTY=$(tty)
+export GPG_TTY
+export PINENTRY_USER_DATA="USE_CURSES=1"
+
+if status is-interactive
+    alias gpgfix="gpgconf --kill all && gpg-agent"
+else
+    gpgconf --kill all && gpg-agent
+end

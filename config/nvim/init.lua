@@ -48,11 +48,29 @@ if (packer) then
     use 'williamboman/mason.nvim'
     use 'williamboman/mason-lspconfig.nvim'
     use 'eraserhd/parinfer-rust'
+    use 'norcalli/nvim-colorizer.lua'
+    use 'airblade/vim-gitgutter'
+    use {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      'hrsh7th/cmp-emoji',
+      'hrsh7th/nvim-cmp',
+      'hrsh7th/cmp-nvim-lua',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
+      'dcampos/nvim-snippy',
+      'dcampos/cmp-snippy'
+    }
+    use {
+      'nvimdev/lspsaga.nvim',
+      after = 'nvim-lspconfig'
+    }
     use({
-    "stevearc/oil.nvim",
-    config = function()
-      require("oil").setup()
-    end,
+      "stevearc/oil.nvim",
+      config = function()
+        require("oil").setup()
+      end,
     })
     use {
       'nvim-telescope/telescope.nvim',
@@ -122,10 +140,10 @@ vim.opt.helpheight     = 15
 vim.opt.completeopt    = "menuone,noselect,noinsert"
 vim.opt.omnifunc       = "syntaxcomplete#Complete"
 
-vim.g.mapleader                        = ","
-vim.g.maplocalleader                   = ","
-vim.g.loaded_netrw                     = 1
-vim.g.loaded_netrwPlugin               = 1
+vim.g.mapleader          = ","
+vim.g.maplocalleader     = ","
+vim.g.loaded_netrw       = 1
+vim.g.loaded_netrwPlugin = 1
 
 vim.opt.clipboard      =  "unnamedplus"
 
@@ -140,19 +158,94 @@ if (mason) then
 end
 
 local lspconfig = check_package("lspconfig")
-if (lspconfig) then
-  for _, lsp in ipairs(lsp_servers) do
-    lspconfig[lsp].setup {}
-  end
+local cmp = check_package('cmp')
+if (cmp) then
+   local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-  lspconfig.lua_ls.setup {
-    settings = {
-      Lua = {
-        runtime = { version = "LuaJIT" },
-        diagnostics = { globals = {"vim"} },
-        telemetry = { enable = false },
-      }
+   cmp.setup({
+    snippet = {
+      expand = function(args)
+        require('snippy').expand_snippet(args.body)
+      end,
     },
+    window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    }),
+    sources = {
+      { name = 'nvim_lsp' },
+      { name = 'snippy' },
+      -- { name = 'buffer' },
+      { name = 'emoji' },
+      { name = 'nvim_lua' },
+      { name = 'nvim_lsp_signature_help' }
+    }
+  })
+
+  cmp.setup.filetype('gitcommit', {
+    sources = cmp.config.sources({
+      { name = 'cmp_git' },
+    }, {
+      { name = 'buffer' },
+    })
+  })
+
+  cmp.setup.cmdline({ '/', '?' }, {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    })
+  })
+
+  if (lspconfig) then
+    for _, lsp in ipairs(lsp_servers) do
+      lspconfig[lsp].setup {
+        capabilities = capabilities,
+      }
+    end
+
+    lspconfig.lua_ls.setup {
+      settings = {
+        Lua = {
+          runtime = { version = "LuaJIT" },
+          diagnostics = { globals = {"vim"} },
+          telemetry = { enable = false },
+        }
+      },
+    }
+  end
+end
+
+local lspsaga = check_package("lspsaga")
+if (lspsaga) then
+  lspsaga.setup {}
+end
+
+local colorizer = check_package("colorizer")
+if (colorizer) then
+  colorizer.setup {
+    "css",
+    "javascript",
+    "typescript",
+    "html",
+    "vim",
+    "lua",
   }
 end
 
@@ -300,9 +393,13 @@ map("", "<leader>D", ":put =strftime('### %A %Y-%m-%d %H:%M:%S')<CR>")
 -- lsp
 map("", "<leader>i", ":lua vim.lsp.buf.hover()<cr>")
 map("", "<leader>I", ":lua vim.lsp.buf.type_definition()<cr>")
-map("", "<leader>gd", ":lua vim.lsp.buf.definition()<cr>")
-map("", "<leader>gD", ":lua vim.lsp.buf.declaration()<cr>")
+map("", "<leader>gd", ":Lspsaga peek_definition<cr>")
+map("", "<leader>gD", ":Lspsaga goto_definition<cr>")
 map("", "<leader>d", ":lua vim.diagnostic.open_float()<cr>")
+map("", "<leader>ls", ":lua vim.lsp.buf.document_symbol()<cr>")
+map("n", "<leader>ca", ":Lspsaga code_action<cr>")
+map("n", "<leader>cr", ":Lspsaga rename<cr>")
+map("n", "<leader>co", ":Lspsaga outline<cr>")
 
 -- telescope
 map("", "<leader>ff", ":Telescope find_files<cr>")
@@ -311,12 +408,6 @@ map("", "<leader>ft", ":Telescope file_browser<cr>")
 map("", "<leader>fb", ":Telescope buffers<cr>")
 map("", "<leader>fh", ":Telescope help_tags<cr>")
 map("", "<leader>fd", ":Telescope diagnostics<cr>")
-
-map("", "<leader>i", ":lua vim.lsp.buf.hover()<cr>")
-map("", "<leader>I", ":lua vim.lsp.buf.type_definition()<cr>")
-map("", "<leader>gd", ":lua vim.lsp.buf.definition()<cr>")
-map("", "<leader>gD", ":lua vim.lsp.buf.declaration()<cr>")
-map("", "<leader>d", ":lua vim.diagnostic.open_float()<cr>")
 
 map("", "<Space>", ":silent noh<Bar>echo<cr>")
 map("n", "U", "<C-r>")
@@ -332,6 +423,10 @@ map("", "<C-w>", "<C-W>W")
 map("t", "<C-z>", "<C-\\><C-n>")
 map("n", "<C-z>", "<C-w>W")
 map("i", "<C-z>", "<C-w>W")
+
+map("", "<leader>rv", ":source ~/.config/nvim/init.lua<cr>")
+map("", "<leader>ev", ":e ~/.config/nvim/init.lua<cr>")
+
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   command = "silent! lua vim.highlight.on_yank()",
