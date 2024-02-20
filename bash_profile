@@ -8,9 +8,6 @@ if [[ $TERM != 'dumb' ]]; then
     export TERM=xterm
 fi
 
-# rwxr-xr-x
-umask 022
-
 set -o noclobber
 set -o vi
 
@@ -30,8 +27,6 @@ shopt -s autocd 2> /dev/null
 shopt -s dirspell 2> /dev/null
 shopt -s cdspell 2> /dev/null
 
-export GRIM_DEFAULT_DIR=~/img/screenshots
-
 export HISTSIZE=500000
 export HISTFILESIZE=100000
 export HISTCONTROL="erasedups:ignoreboth"
@@ -45,8 +40,8 @@ alias cp='cp -r'
 alias vim='nvim'
 alias vi='nvim'
 alias cat='bat'
-alias ls='lsd'
-alias ll='lsd -l'
+alias ls='ls'
+alias ll='ls -l'
 alias lsa='ls -a'
 alias lla='ll -a'
 
@@ -57,9 +52,7 @@ alias less='less -RX'
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
 alias editkb='cd ~/code/qmk && vi ./keyboards/keyboardio/atreus/keymaps/mine/keymap.c'
 alias t='task'
-alias ps='ps -au'
 alias sync-norns='rsync -chavzP we@norns.local:~/dust/audio/tape .'
-alias dnf='sudo dnf '
 
 # Git
 alias gs='git status'
@@ -75,44 +68,35 @@ alias glog='git log -p --'
 
 alias cddf='cd ~/code/dotfiles'
 alias size='du -hs * 2>/dev/null | grep "^...M" | sort -h'
-alias windows='hyprctl clients -j | grep class'
-alias gpgfix="gpgconf --kill all && gpg-agent"
 
 fin() {
   "sudo find / -name $1 2>/dev/null"
 }
 
-export DF=~/code/dotfiles
-
 export CLICOLOR=1
 export EDITOR=nvim
-export LS_COLORS='di=37'
-export PS1='$? [\[\e[0;97m\]\w\[\e[0m\]] \[\e[0;90m\]\$ \[\e[0m\]'
-export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:~/.cargo/bin:~/go/bin:~/.config/emacs/bin:~/.ghcup/bin:$PATH
+export LSCOLORS=dxfxcxdxGxegedabagacad
+
+[[ -r "/usr/local/etc/bash_completion.d/git-prompt.sh" ]] && . "/usr/local/etc/bash_completion.d/git-prompt.sh"
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+[[ -r "/usr/local/etc/bash_completion.d/git-completion.bash" ]] && . "/usr/local/etc/bash_completion.d/git-completion.bash"
+[[ -r "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" ]] && . "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash"
+[[ -r "/Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh" ]] && . "/Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh"
+
+export GIT_PS1_SHOWDIRTYSTATE=1
+
+export PS1='$? [\[\e[0;97m\]\w\[\e[0m\]] $(__git_ps1 "\[\e[0;38;5;242m\](\[\e[0;38;5;237m\]%s\[\e[0;38;5;242m\])") \[\e[0;90m\]\$ \[\e[0m\]'
+
+export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:~/.cargo/bin:~/go/bin:/opt/homebrew/bin:/usr/local/bin:/opt/homebrew/sbin:$PATH
 
 [ -s "$HOME/.dir_colors" ] && eval "$(dircolors ~/.dir_colors)"
 
-source /usr/share/fzf/shell/key-bindings.bash
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH=$BUN_INSTALL/bin:$PATH
-
-# this is for vterm integration
-vterm_printf() {
-    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ]); then
-        # Tell tmux to pass the escape sequences through
-        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
-    elif [ "${TERM%%-*}" = "screen" ]; then
-        # GNU screen (screen, screen-256color, screen-256color-bce)
-        printf "\eP\e]%s\007\e\\" "$1"
-    else
-        printf "\e]%s\e\\" "$1"
-    fi
-}
+for f in /opt/homebrew/etc/bash_completion.d/*; do source $f; done
 
 GPG_TTY=$(tty)
 export GPG_TTY
 export PINENTRY_USER_DATA="USE_CURSES=1"
+
+export FZF_DEFAULT_OPTS='--color=bg+:#222222,bg:#000000,border:#6B6B6B,spinner:#00A800,hl:#AA00AA,fg:#D9D9D9,header:#00A800,info:#A4722C,pointer:#00AAAA,marker:#55F7F7,fg+:#D9D9D9,preview-bg:#000000,prompt:#A4722C,hl+:#55F7F7'
 
 # sshfs remote:dir localdir .. .woah...
