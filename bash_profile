@@ -100,3 +100,4 @@ export PINENTRY_USER_DATA="USE_CURSES=1"
 export FZF_DEFAULT_OPTS='--color=bg+:#222222,bg:#000000,border:#6B6B6B,spinner:#00A800,hl:#AA00AA,fg:#D9D9D9,header:#00A800,info:#A4722C,pointer:#00AAAA,marker:#55F7F7,fg+:#D9D9D9,preview-bg:#000000,prompt:#A4722C,hl+:#55F7F7'
 
 # sshfs remote:dir localdir .. .woah...
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
