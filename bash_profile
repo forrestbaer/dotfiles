@@ -76,9 +76,10 @@ alias glog='git log -p --'
 alias cddf='cd ~/code/dotfiles'
 alias size='du -hs * 2>/dev/null | grep "^...M" | sort -h'
 alias windows='hyprctl clients -j | grep class'
+alias gpgfix="gpgconf --kill all && gpg-agent"
 
 fin() {
-  sudo find / -name $1 2>/dev/null
+  "sudo find / -name $1 2>/dev/null"
 }
 
 export DF=~/code/dotfiles
@@ -87,9 +88,9 @@ export CLICOLOR=1
 export EDITOR=nvim
 export LS_COLORS='di=37'
 export PS1='$? [\[\e[0;97m\]\w\[\e[0m\]] \[\e[0;90m\]\$ \[\e[0m\]'
-export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:~/.cargo/bin:~/go/bin:~/.config/emacs/bin:$PATH
+export PATH=/bin:/usr/bin:/usr/local/sbin:~/.local/bin:~/bin:~/.cargo/bin:~/go/bin:~/.config/emacs/bin:~/.ghcup/bin:$PATH
 
-[ -s "$HOME/.dir_colors" ] && eval $(dircolors ~/.dir_colors)
+[ -s "$HOME/.dir_colors" ] && eval "$(dircolors ~/.dir_colors)"
 
 source /usr/share/fzf/shell/key-bindings.bash
 
@@ -114,8 +115,4 @@ GPG_TTY=$(tty)
 export GPG_TTY
 export PINENTRY_USER_DATA="USE_CURSES=1"
 
-if status is-interactive
-    alias gpgfix="gpgconf --kill all && gpg-agent"
-else
-    gpgconf --kill all && gpg-agent
-end
+# sshfs remote:dir localdir .. .woah...
