@@ -42,13 +42,13 @@ if (packer) then
     use 'tpope/vim-repeat'
     use 'tpope/vim-commentary'
     use 'nvim-treesitter/nvim-treesitter'
-    use 'github/copilot.vim'
     use 'nvim-lualine/lualine.nvim'
     use 'neovim/nvim-lspconfig'
     use 'williamboman/mason.nvim'
     use 'williamboman/mason-lspconfig.nvim'
     use 'eraserhd/parinfer-rust'
     use 'norcalli/nvim-colorizer.lua'
+    use 'MunifTanjim/prettier.nvim'
     use 'airblade/vim-gitgutter'
     use {
       'hrsh7th/cmp-nvim-lsp',
@@ -386,6 +386,12 @@ if (lualine) then
     },
   }
 end
+
+
+local prettier = require("prettier")
+prettier.setup({
+  bin = 'prettier'
+})
 
 
 map("", "<leader>D", ":put =strftime('### %A %Y-%m-%d %H:%M:%S')<CR>")
