@@ -333,7 +333,7 @@ if (lualine) then
 
             if (mode == "n") then
               if (vim.bo.modified) then
-                return { fg = fgc, bg = "#008834" }
+                return { fg = "#CCC", bg = "#880033" }
               else
                 return { fg = fgc, bg = "#00AF87" }
               end
