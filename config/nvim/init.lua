@@ -39,6 +39,7 @@ if (packer) then
     use 'nvim-tree/nvim-web-devicons'
     use 'svermeulen/vim-easyclip'
     use 'tpope/vim-surround'
+    use 'tpope/vim-fugitive'
     use 'tpope/vim-repeat'
     use 'tpope/vim-commentary'
     use 'nvim-treesitter/nvim-treesitter'
@@ -61,10 +62,6 @@ if (packer) then
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'dcampos/nvim-snippy',
       'dcampos/cmp-snippy'
-    }
-    use {
-      'nvimdev/lspsaga.nvim',
-      after = 'nvim-lspconfig'
     }
     use({
       "stevearc/oil.nvim",
@@ -232,11 +229,6 @@ if (cmp) then
   end
 end
 
-local lspsaga = check_package("lspsaga")
-if (lspsaga) then
-  lspsaga.setup {}
-end
-
 local colorizer = check_package("colorizer")
 if (colorizer) then
   colorizer.setup {
@@ -393,19 +385,17 @@ prettier.setup({
   bin = 'prettier'
 })
 
-
 map("", "<leader>D", ":put =strftime('### %A %Y-%m-%d %H:%M:%S')<CR>")
 
 -- lsp
 map("", "<leader>i", ":lua vim.lsp.buf.hover()<cr>")
 map("", "<leader>I", ":lua vim.lsp.buf.type_definition()<cr>")
-map("", "<leader>gd", ":Lspsaga peek_definition<cr>")
-map("", "<leader>gD", ":Lspsaga goto_definition<cr>")
+map("", "<leader>gd", ":lua vim.lsp.buf.definition()<cr>")
+map("", "<leader>gD", ":lua vim.lsp.buf.declaration()<cr>")
 map("", "<leader>d", ":lua vim.diagnostic.open_float()<cr>")
 map("", "<leader>ls", ":lua vim.lsp.buf.document_symbol()<cr>")
-map("n", "<leader>ca", ":Lspsaga code_action<cr>")
-map("n", "<leader>cr", ":Lspsaga rename<cr>")
-map("n", "<leader>co", ":Lspsaga outline<cr>")
+map("n", "<leader>ca", ":lua vim.lsp.buf.code_action()<cr>")
+map("n", "<leader>cr", ":lua vim.lsp.buf.rename()<cr>")
 
 -- telescope
 map("", "<leader>ff", ":Telescope find_files<cr>")

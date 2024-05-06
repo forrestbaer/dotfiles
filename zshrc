@@ -14,3 +14,5 @@ source ~/.zsh/nvm.zsh
 source ~/.zsh/options.zsh
 source ~/.zsh/prompt.zsh
 source ~/.zsh/completion.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
