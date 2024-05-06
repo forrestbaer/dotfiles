@@ -41,5 +41,7 @@ zstyle ':completion:*' use-cache off
 
 autoload -U +X bashcompinit && bashcompinit
 
-source /usr/local/opt/fzf/shell/completion.zsh
-source /usr/local/opt/fzf/shell/key-bindings.zsh
+if [[ -d /usr/local/opt/fzf/shell ]]; then
+  source /usr/local/opt/fzf/shell/completion.zsh
+  source /usr/local/opt/fzf/shell/key-bindings.zsh
+fi
