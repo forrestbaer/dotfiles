@@ -8,5 +8,3 @@
 ### Installation
 
   - `./install`
-
-probably gonna move all this to a new nix config

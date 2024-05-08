@@ -63,12 +63,12 @@ if (packer) then
       'dcampos/nvim-snippy',
       'dcampos/cmp-snippy'
     }
-    use({
+    use {
       "stevearc/oil.nvim",
       config = function()
         require("oil").setup()
       end,
-    })
+    }
     use {
       'nvim-telescope/telescope.nvim',
       'nvim-telescope/telescope-file-browser.nvim',
