@@ -38,6 +38,7 @@ alias work='tmuxinator start work'
 # easy directory jump
 
 alias cdds='cd ~/code/design-system'
-alias cdma='cd ~/code/connect/my-account'
+alias cdc='cd ~/code/connect/my-account'
+alias cdma='cd ~/code/wds-accounts-healthcare'
 alias cddf='cd ~/code/dotfiles'
 alias cds='cd ~/store'

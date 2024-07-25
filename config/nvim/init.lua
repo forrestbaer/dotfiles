@@ -37,6 +37,7 @@ if (packer) then
     use 'forrestbaer/minimal_dark'
     use 'nvim-lua/plenary.nvim'
     use 'nvim-tree/nvim-web-devicons'
+    use 'github/copilot.vim'
     use 'svermeulen/vim-easyclip'
     use 'tpope/vim-surround'
     use 'tpope/vim-fugitive'
@@ -262,17 +263,18 @@ if (telescope) then
     defaults = {
       initial_mode = "insert",
       selection_strategy = "reset",
-      sorting_strategy = "descending",
+      wrap_results = true,
+      sorting_strategy = "ascending",
       file_ignore_patterns = {
         "node_modules",
         "vendor",
         "__tests__",
         "__snapshots__",
       },
-      layout_strategy = "vertical",
+      layout_strategy = "horizontal",
       layout_config = {
-        preview_height = 0.4,
-        width = 0.8,
+        preview_width = 80,
+        width = 0.9,
         height = 0.9,
       },
       mappings = {
