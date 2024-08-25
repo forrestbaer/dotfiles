@@ -420,12 +420,14 @@ map("", "<leader>fd", ":Telescope diagnostics<cr>")
 
 -- git
 map("", "<leader>gs", ":Git<cr>")
+map("", "<leader>ga", ":Git add .<cr>")
 map("", "<leader>gc", ":Git commit<cr>")
 map("", "<leader>gp", ":Git push<cr>")
 map("", "<leader>gP", ":Git pull<cr>")
 map("", "<leader>gF", ":Git fetch<cr>")
 map("", "<leader>gb", ":Git blame<cr>")
 
+-- other neovim
 map("", "<Space>", ":silent noh<Bar>echo<cr>")
 map("n", "U", "<C-r>")
 map("n", "<leader>q", ":q!<cr>")
