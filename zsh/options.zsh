@@ -1,4 +1,3 @@
-setopt auto_cd
 setopt auto_pushd
 setopt pushd_ignore_dups
 setopt pushd_silent
@@ -7,10 +6,9 @@ setopt list_packed
 setopt rec_exact
 setopt no_case_glob
 setopt extendedglob
-setopt append_history
 setopt hist_ignore_dups
 setopt hist_find_no_dups
-setopt inc_append_history
+setopt share_history
 setopt no_hup
 setopt no_beep
 setopt prompt_subst

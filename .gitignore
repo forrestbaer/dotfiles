@@ -1,2 +1,3 @@
 .DS_store
 zsh/zsh-autosuggestions/
+config/nvim/plugin

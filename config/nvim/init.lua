@@ -38,7 +38,6 @@ if (packer) then
     use 'nvim-lua/plenary.nvim'
     use 'nvim-tree/nvim-web-devicons'
     use 'github/copilot.vim'
-    use 'svermeulen/vim-easyclip'
     use 'tpope/vim-surround'
     use 'tpope/vim-fugitive'
     use 'tpope/vim-repeat'
@@ -50,7 +49,6 @@ if (packer) then
     use 'williamboman/mason-lspconfig.nvim'
     use 'eraserhd/parinfer-rust'
     use 'norcalli/nvim-colorizer.lua'
-    use 'MunifTanjim/prettier.nvim'
     use 'airblade/vim-gitgutter'
     use {
       'hrsh7th/cmp-nvim-lsp',
@@ -270,6 +268,8 @@ if (telescope) then
         "vendor",
         "__tests__",
         "__snapshots__",
+        "ttf",
+        "otf",
       },
       layout_strategy = "horizontal",
       layout_config = {
@@ -381,23 +381,16 @@ if (lualine) then
   }
 end
 
-
-local prettier = require("prettier")
-prettier.setup({
-  bin = 'prettier'
-})
-
 map("", "<leader>D", ":put =strftime('### %A %Y-%m-%d %H:%M:%S')<CR>")
 
 -- lsp
 map("", "<leader>i", ":lua vim.lsp.buf.hover()<cr>")
 map("", "<leader>I", ":lua vim.lsp.buf.type_definition()<cr>")
-map("", "<leader>gd", ":lua vim.lsp.buf.definition()<cr>")
-map("", "<leader>gD", ":lua vim.lsp.buf.declaration()<cr>")
-map("", "<leader>d", ":lua vim.diagnostic.open_float()<cr>")
-map("", "<leader>ls", ":lua vim.lsp.buf.document_symbol()<cr>")
+map("", "<leader>d", ":lua vim.lsp.buf.definition()<cr>")
+map("", "<leader>D", ":lua vim.lsp.buf.declaration()<cr>")
+map("", "<leader>x", ":lua vim.diagnostic.open_float()<cr>")
 map("n", "<leader>ca", ":lua vim.lsp.buf.code_action()<cr>")
-map("n", "<leader>cr", ":lua vim.lsp.buf.rename()<cr>")
+map("n", "<leader>r", ":lua vim.lsp.buf.rename()<cr>")
 
 -- telescope
 map("", "<leader>ff", ":Telescope find_files<cr>")
@@ -406,6 +399,10 @@ map("", "<leader>ft", ":Telescope file_browser<cr>")
 map("", "<leader>fb", ":Telescope buffers<cr>")
 map("", "<leader>fh", ":Telescope help_tags<cr>")
 map("", "<leader>fd", ":Telescope diagnostics<cr>")
+
+-- git
+map("", "<leader>gs", ":Git<cr>")
+map("", "<leader>gc", ":Git commit<cr>")
 
 map("", "<Space>", ":silent noh<Bar>echo<cr>")
 map("n", "U", "<C-r>")
