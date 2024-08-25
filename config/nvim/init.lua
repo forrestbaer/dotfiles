@@ -406,7 +406,7 @@ map("", "<leader>i", ":lua vim.lsp.buf.hover()<cr>")
 map("", "<leader>I", ":lua vim.lsp.buf.type_definition()<cr>")
 map("", "<leader>d", ":lua vim.lsp.buf.definition()<cr>")
 map("", "<leader>D", ":lua vim.lsp.buf.declaration()<cr>")
-map("", "<leader>x", ":lua vim.diagnostic.open_float()<cr>")
+map("", "<leader>p", ":lua vim.diagnostic.open_float()<cr>")
 map("n", "<leader>ca", ":lua vim.lsp.buf.code_action()<cr>")
 map("n", "<leader>r", ":lua vim.lsp.buf.rename()<cr>")
 
@@ -433,18 +433,13 @@ map("n", "U", "<C-r>")
 map("n", "<leader>q", ":q!<cr>")
 map("n", "<leader>s", ":w!<cr>")
 map("n", "<leader>n", ":ene<cr>")
-map("n", "<leader>x", ":bd<cr>")
+map("n", "<leader>x", ":close<cr>")
 
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 
-map("", "<C-w>", "<C-W>W")
-map("t", "<C-z>", "<C-\\><C-n>")
-map("n", "<C-z>", "<C-w>W")
-map("i", "<C-z>", "<C-w>W")
-
 map("", "<leader>rv", ":source ~/.config/nvim/init.lua<cr>")
-map("", "<leader>ev", ":e ~/.config/nvim/init.lua<cr>")
+map("", "<leader>ev", ":cd ~/.config/nvim<cr>:e init.lua<cr>")
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   command = "silent! lua vim.highlight.on_yank()",
