@@ -281,7 +281,6 @@ end
 local telescope = check_package("telescope")
 if (telescope) then
   local actions = require("telescope.actions")
-  telescope.load_extension("file_browser")
   telescope.setup {
     defaults = {
       initial_mode = "insert",
@@ -314,15 +313,6 @@ if (telescope) then
         find_files = {
           follow = true,
           hidden = true,
-        },
-      },
-      extensions = {
-        file_browser = {
-          mappings = {
-            i = {
-              ["<esc>"] = actions.close,
-            },
-          },
         },
       },
     },
@@ -381,6 +371,8 @@ if (lualine) then
           color = { fg = "#999999" }
         },
         { "diff", colored = false},
+        { "branch" },
+        { "fugitive" },
       },
       lualine_c = {
         { "diagnostics",
