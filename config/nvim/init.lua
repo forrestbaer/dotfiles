@@ -403,6 +403,10 @@ map("", "<leader>fd", ":Telescope diagnostics<cr>")
 -- git
 map("", "<leader>gs", ":Git<cr>")
 map("", "<leader>gc", ":Git commit<cr>")
+map("", "<leader>gp", ":Git push<cr>")
+map("", "<leader>gP", ":Git pull<cr>")
+map("", "<leader>gF", ":Git fetch<cr>")
+map("", "<leader>gb", ":Git blame<cr>")
 
 map("", "<Space>", ":silent noh<Bar>echo<cr>")
 map("n", "U", "<C-r>")
@@ -421,7 +425,6 @@ map("i", "<C-z>", "<C-w>W")
 
 map("", "<leader>rv", ":source ~/.config/nvim/init.lua<cr>")
 map("", "<leader>ev", ":e ~/.config/nvim/init.lua<cr>")
-
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   command = "silent! lua vim.highlight.on_yank()",
