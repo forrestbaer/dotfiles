@@ -37,7 +37,17 @@ if (packer) then
     use 'forrestbaer/minimal_dark'
     use 'nvim-lua/plenary.nvim'
     use 'nvim-tree/nvim-web-devicons'
-    use 'github/copilot.vim'
+    use {
+      "zbirenbaum/copilot.lua",
+      cmd = "Copilot",
+      event = "InsertEnter",
+      config = function()
+        require("copilot").setup({
+          suggestion = { enabled = false },
+          panel = { enabled = false },
+        })
+      end,
+    }
     use 'tpope/vim-surround'
     use 'tpope/vim-fugitive'
     use 'tpope/vim-repeat'
@@ -50,6 +60,13 @@ if (packer) then
     use 'eraserhd/parinfer-rust'
     use 'norcalli/nvim-colorizer.lua'
     use 'airblade/vim-gitgutter'
+    use {
+      "zbirenbaum/copilot-cmp",
+      after = { "copilot.lua" },
+      config = function ()
+        require("copilot_cmp").setup()
+      end
+    }
     use {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
@@ -69,9 +86,16 @@ if (packer) then
       end,
     }
     use {
-      'nvim-telescope/telescope.nvim',
-      'nvim-telescope/telescope-file-browser.nvim',
+      "nvim-neo-tree/neo-tree.nvim",
+      branch = "v3.x",
+      requires = {
+        "nvim-lua/plenary.nvim",
+        "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+        "MunifTanjim/nui.nvim",
+        -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+      }
     }
+    use 'nvim-telescope/telescope.nvim'
     if PACKER_BOOTSTRAP then
       require('packer').sync()
     end
@@ -176,6 +200,7 @@ if (cmp) then
       ['<CR>'] = cmp.mapping.confirm({ select = false }),
     }),
     sources = {
+      { name = 'copilot' },
       { name = 'nvim_lsp' },
       { name = 'snippy' },
       -- { name = 'buffer' },
@@ -270,6 +295,7 @@ if (telescope) then
         "__snapshots__",
         "ttf",
         "otf",
+        "png",
       },
       layout_strategy = "horizontal",
       layout_config = {
@@ -395,7 +421,7 @@ map("n", "<leader>r", ":lua vim.lsp.buf.rename()<cr>")
 -- telescope
 map("", "<leader>ff", ":Telescope find_files<cr>")
 map("", "<leader>fg", ":Telescope live_grep<cr>")
-map("", "<leader>ft", ":Telescope file_browser<cr>")
+map("", "<leader>ft", ":Neotree toggle bottom<cr>")
 map("", "<leader>fb", ":Telescope buffers<cr>")
 map("", "<leader>fh", ":Telescope help_tags<cr>")
 map("", "<leader>fd", ":Telescope diagnostics<cr>")
