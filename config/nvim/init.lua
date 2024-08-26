@@ -268,7 +268,6 @@ end
 local treesitter = check_package("nvim-treesitter")
 if (treesitter) then
   treesitter.setup {}
-
   require("nvim-treesitter.configs").setup {
     ensure_installed = { "vim", "c", "regex", "javascript", "lua", "typescript", "html", "vimdoc" },
     highlight = { enable = true, },
@@ -343,9 +342,9 @@ if (lualine) then
 
             if (mode == "n") then
               if (vim.bo.modified) then
-                return { fg = "#CCC", bg = "#880033" }
+                return { fg = "#CCC", bg = "#ba2a2a" }
               else
-                return { fg = fgc, bg = "#00AF87" }
+                return { fg = fgc, bg = "#5fafaf" }
               end
             elseif (mode == "v") then
               return { fg = fgc, bg = "#EEEEEE" }
@@ -392,7 +391,7 @@ if (lualine) then
       },
       lualine_z = { {
         "location",
-        color = { fg = "#000000", bg = "#009933" }
+        color = { fg = "#000000", bg = "#3b753b" }
       }
       }
     },
