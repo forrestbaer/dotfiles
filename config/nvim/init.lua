@@ -10,6 +10,12 @@ vim.api.nvim_create_user_command(
   { range = "%" }
 )
 
+vim.api.nvim_create_user_command(
+  "InsDate",
+  ":put =strftime('%A %Y-%m-%d %H:%M:%S')",
+  {}
+)
+
 local check_package = function(package)
   local status_ok, pkg = pcall(require, package)
   if not status_ok then
@@ -144,7 +150,6 @@ vim.opt.pumheight      = 20
 vim.opt.ignorecase     = true
 vim.opt.smartcase      = true
 vim.opt.remap          = true
-vim.opt.wrap           = false
 vim.opt.timeout        = false
 vim.opt.guicursor      = "i:ver20-blinkon100,n:blinkon100"
 vim.opt.linebreak      = true
@@ -257,6 +262,7 @@ local colorizer = check_package("colorizer")
 if (colorizer) then
   colorizer.setup {
     "css",
+    "markdown",
     "javascript",
     "typescript",
     "html",
@@ -269,7 +275,7 @@ local treesitter = check_package("nvim-treesitter")
 if (treesitter) then
   treesitter.setup {}
   require("nvim-treesitter.configs").setup {
-    ensure_installed = { "vim", "c", "regex", "javascript", "lua", "typescript", "html", "vimdoc" },
+    ensure_installed = { "vim", "c", "regex", "javascript", "lua", "typescript", "html", "vimdoc", "markdown" },
     highlight = { enable = true, },
     indent = { enable = true, },
   }
@@ -398,7 +404,6 @@ if (lualine) then
   }
 end
 
-map("", "<leader>D", ":put =strftime('### %A %Y-%m-%d %H:%M:%S')<CR>")
 
 -- lsp
 map("", "<leader>i", ":lua vim.lsp.buf.hover()<cr>")
@@ -453,5 +458,9 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "markdown", command = "set awa"
+  pattern = "markdown",
+  callback = function(ev)
+    vim.cmd(':set awa')
+    vim.cmd(':set wrap')
+  end
 })

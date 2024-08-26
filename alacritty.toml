@@ -41,7 +41,7 @@ builtin_box_drawing = true
 size = 26.0
 
 [font.bold]
-family = "Iosevka Nerd Font"
+family = "MicroKnight"
 style = "Regular"
 
 [font.glyph_offset]
@@ -49,12 +49,12 @@ x = 0
 y = 2
 
 [font.normal]
-family = "Iosevka Nerd Font"
-style = "Extralight"
+family = "MicroKnight"
+style = "Regular"
 
 [font.offset]
-x = 0
-y = 2
+x = 3
+y = 12
 
 [mouse]
 hide_when_typing = false
