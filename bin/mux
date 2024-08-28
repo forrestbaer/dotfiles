@@ -1,0 +1,11 @@
+#!/bin/sh
+
+tmux new-session -d -n "main"
+tmux split-window -h
+tmux select-pane -t 1
+tmux split-window -v
+tmux new-window -n "mon"
+tmux split-window -h
+tmux select-pane -t 1
+tmux split-window -v
+tmux -2 attach-session -d
