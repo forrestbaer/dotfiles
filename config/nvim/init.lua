@@ -110,6 +110,9 @@ if (packer) then
       }
     }
     use 'nvim-telescope/telescope.nvim'
+    use 'ray-x/go.nvim'
+    use 'ray-x/guihua.lua' -- recommended if need floating window support
+
     if PACKER_BOOTSTRAP then
       require('packer').sync()
     end
@@ -180,7 +183,7 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.opt.clipboard      =  "unnamedplus"
 
-local lsp_servers = { "lua_ls", "tsserver", "html", "bashls", "eslint", "jsonls", "emmet_ls" }
+local lsp_servers = { "lua_ls", "tsserver", "html", "bashls", "eslint", "jsonls", "emmet_ls", "gopls" }
 
 local mason = check_package("mason")
 if (mason) then
@@ -289,6 +292,11 @@ if (treesitter) then
   }
 else
   vim.cmd("lua TSUpdate")
+end
+
+local goplug = check_package("go")
+if (goplug) then
+  goplug.setup {}
 end
 
 local telescope = check_package("telescope")
@@ -472,6 +480,15 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.cmd(':set awa')
     vim.cmd(':set wrap')
   end
+})
+
+local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+   require('go.format').goimports()
+  end,
+  group = format_sync_grp,
 })
 
 --local M = {}
