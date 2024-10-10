@@ -43,17 +43,6 @@ if (packer) then
     use 'forrestbaer/minimal_dark'
     use 'nvim-lua/plenary.nvim'
     use 'nvim-tree/nvim-web-devicons'
-    use {
-      "zbirenbaum/copilot.lua",
-      cmd = "Copilot",
-      event = "InsertEnter",
-      config = function()
-        require("copilot").setup({
-          suggestion = { enabled = false },
-          panel = { enabled = false },
-        })
-      end,
-    }
     use 'tpope/vim-surround'
     use 'tpope/vim-fugitive'
     use 'tpope/vim-repeat'
@@ -63,16 +52,10 @@ if (packer) then
     use 'neovim/nvim-lspconfig'
     use 'williamboman/mason.nvim'
     use 'williamboman/mason-lspconfig.nvim'
-    use 'eraserhd/parinfer-rust'
     use 'norcalli/nvim-colorizer.lua'
     use 'airblade/vim-gitgutter'
-    use {
-      "zbirenbaum/copilot-cmp",
-      after = { "copilot.lua" },
-      config = function ()
-        require("copilot_cmp").setup()
-      end
-    }
+    use 'davidmh/mdx.nvim'
+    use 'LokiChaos/vim-tintin'
     use {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
@@ -83,7 +66,8 @@ if (packer) then
       'hrsh7th/cmp-nvim-lua',
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'dcampos/nvim-snippy',
-      'dcampos/cmp-snippy'
+      'dcampos/cmp-snippy',
+      'honza/vim-snippets'
     }
     use {
       "sourproton/tunnell.nvim",
@@ -109,9 +93,20 @@ if (packer) then
         -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
       }
     }
+    use {
+      "ahmedkhalf/project.nvim",
+      config = function()
+        require("project_nvim").setup {
+          -- your configuration comes here
+          -- or leave it empty to use the default settings
+          -- refer to the configuration section below
+        }
+      end
+    }
     use 'nvim-telescope/telescope.nvim'
-    use 'ray-x/go.nvim'
     use 'ray-x/guihua.lua' -- recommended if need floating window support
+    use 'davidgranstrom/scnvim'
+    use 'windwp/nvim-ts-autotag'
 
     if PACKER_BOOTSTRAP then
       require('packer').sync()
@@ -183,7 +178,7 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.opt.clipboard      =  "unnamedplus"
 
-local lsp_servers = { "lua_ls", "tsserver", "html", "bashls", "eslint", "jsonls", "emmet_ls", "gopls" }
+local lsp_servers = { "mdx_analyzer", "astro", "lua_ls", "ts_ls", "html", "bashls", "eslint", "jsonls", "emmet_ls" }
 
 local mason = check_package("mason")
 if (mason) then
@@ -216,13 +211,12 @@ if (cmp) then
       ['<CR>'] = cmp.mapping.confirm({ select = false }),
     }),
     sources = {
-      { name = 'copilot' },
+      { name = 'nvim_lua' },
+      { name = 'nvim_lsp_signature_help' },
       { name = 'nvim_lsp' },
       { name = 'snippy' },
       -- { name = 'buffer' },
       { name = 'emoji' },
-      { name = 'nvim_lua' },
-      { name = 'nvim_lsp_signature_help' }
     }
   })
 
@@ -279,6 +273,7 @@ if (colorizer) then
     "html",
     "vim",
     "lua",
+    "json",
   }
 end
 
@@ -286,17 +281,10 @@ local treesitter = check_package("nvim-treesitter")
 if (treesitter) then
   treesitter.setup {}
   require("nvim-treesitter.configs").setup {
-    ensure_installed = { "vim", "c", "regex", "javascript", "lua", "typescript", "html", "vimdoc", "markdown" },
+    ensure_installed = { "astro", "vim", "c", "regex", "javascript", "lua", "typescript", "html", "vimdoc", "markdown" },
     highlight = { enable = true, },
     indent = { enable = true, },
   }
-else
-  vim.cmd("lua TSUpdate")
-end
-
-local goplug = check_package("go")
-if (goplug) then
-  goplug.setup {}
 end
 
 local telescope = check_package("telescope")
@@ -420,6 +408,25 @@ if (lualine) then
   }
 end
 
+local scnvim = check_package("scnvim")
+if (scnvim) then
+  scnvim.setup({})
+end
+
+local nta = check_package("nvim-ts-autotag")
+if (nta) then
+  nta.setup({
+    aliases = {
+      ["astro"] = "html",
+    }
+  })
+end
+
+local mdx = check_package('mdx')
+if (mdx) then
+  mdx.setup({})
+end
+
 
 -- lsp
 map('i', '<c-d>', "<c-r>=strftime('%A %Y-%m-%d %H:%M:%S')<cr>")
@@ -481,103 +488,3 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.cmd(':set wrap')
   end
 })
-
-local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.go",
-  callback = function()
-   require('go.format').goimports()
-  end,
-  group = format_sync_grp,
-})
-
---local M = {}
-
---local defaults = {
---    tmux_target = "{right-of}",
---    cell_header = "// @",
---}
-
----- Sets buffer-variables `cell_header` and `tmux_target` to values given by user via `vim.fn.input`
---local function config()
---    -- cell_header
---    vim.b.cell_header = vim.fn.input({
---        prompt = "Cell header: ",
---        -- autocomplete with current cell header if exists, otherwise autocomplete with global
---        default = vim.b.cell_header and vim.b.cell_header or defaults.cell_header,
---    })
-
---    -- tmux_target
---    vim.b.tmux_target = vim.fn.input({
---        prompt = "Tmux target pane: ",
---        -- autocomplete with current target if exists, otherwise autocomplete with global
---        default = vim.b.tmux_target and vim.b.tmux_target or defaults.tmux_target,
---    })
---end
-
----- Tunnells range `r` to target
-----
----- Reads `r.line1` and `r.line2`
---local function tunnell_range(r)
---    -- load buffer with range from `r.line1` to `r.line2`
---    vim.cmd("silent " .. r.line1 .. "," .. r.line2 .. ":w !tmux load-buffer - ")
-
---    -- tunnell lines
---    local target = vim.b.tmux_target and vim.b.tmux_target or defaults.tmux_target
---    vim.fn.system("tmux paste-buffer -dpr -t " .. target)
-
---    -- tunnell <CR> to run cell in REPL
---    vim.fn.system("tmux send-keys -t " .. target .. " Enter")
---end
-
----- Tunnells cell to target
-----
----- Cursor does not have to be on the cell header, but anywhere inside the cell
---local function tunnell_cell()
---    -- load cell_header
---    local cell_header = vim.b.cell_header and vim.b.cell_header or defaults.cell_header
-
---    -- define start of cell
---    -- 'b'  search Backward instead of forward
---    -- 'c'  accept a match at the Cursor position
---    -- 'n'  do Not move the cursor
---    -- 'W'  don't Wrap around the end of the file
---    local start_line = vim.fn.search(cell_header, "bcnW")
---    print(start_line)
-
---    -- if no header is found above cursor, do nothing
---    if start_line == 0 then
---        print("No cell header found above cursor!")
---        return
---    end
-
---    -- define end of cell
---    local end_line = vim.fn.search(cell_header, "nW")
-
---    -- if no header found below cursor, cursor is in the last cell so end line should be the
---    -- last line of the file. Otherwise, end line is one line above next cell header
---    if end_line == 0 then
---        end_line = vim.fn.line("$")
---    else
---        end_line = end_line - 1
---    end
-
---    -- tunnell cell range
---    tunnell_range({ line1 = start_line + 2, line2 = end_line })
-
---    -- put cursor on next cell
---    -- vim.cmd("silent /" .. cell_header)
---end
-
----- create user commands
---vim.api.nvim_create_user_command("TunnellConfig", config, {})
---vim.api.nvim_create_user_command("TunnellRange", tunnell_range, { range = true })
---vim.api.nvim_create_user_command("TunnellCell", tunnell_cell, {})
-
----- Setup function for users to call from their plugin managers
---function M.setup(user_config)
---    -- merge user-config with defaults
---    defaults = vim.tbl_deep_extend("force", defaults, user_config or {})
---end
-
---return M

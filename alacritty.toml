@@ -38,23 +38,23 @@ shape = "Block"
 
 [font]
 builtin_box_drawing = true
-size = 26.0
+size = 28.0
 
 [font.bold]
-family = "MicroKnight"
+family = "Iosevka Nerd Font"
 style = "Regular"
 
 [font.glyph_offset]
 x = 0
-y = 2
+y = 0
 
 [font.normal]
-family = "MicroKnight"
+family = "Iosevka Nerd Font"
 style = "Regular"
 
 [font.offset]
-x = 3
-y = 12
+x = 0
+y = 0
 
 [mouse]
 hide_when_typing = false

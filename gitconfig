@@ -1,6 +1,6 @@
 [user]
     name = Forrest Baer
-    email = forrest@forrestbaer.com
+    email = f@frrst.xyz
 
 [interactive]
     diffFilter = delta --color-only --dark
@@ -52,8 +52,10 @@
 
 [credential "https://github.com"]
 	  helper = !gh auth git-credential
+
 [push]
 	autoSetupRemote = true
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
