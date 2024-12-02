@@ -65,7 +65,7 @@ history = 50000
 [selection]
 save_to_clipboard = true
 
-[shell]
+[terminal.shell]
 args = ["-l"]
 program = "/bin/zsh"
 
@@ -84,3 +84,5 @@ y = 10
 [window.position]
 x = 20
 y = 40
+
+[terminal]
