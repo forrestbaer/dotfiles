@@ -2,14 +2,6 @@
     name = Forrest Baer
     email = f@frrst.xyz
 
-[interactive]
-    diffFilter = delta --color-only --dark
-
-[delta]
-    line-numbers = true
-    navigate = true
-    side-by-side = true
-
 [merge]
     conflictstyle = zdiff3
     tool = nvim
@@ -20,9 +12,6 @@
 
 [mergetool "nvim"]
     cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
-
-[diff]
-    colorMoved = default
 
 [color]
     branch = auto
@@ -49,6 +38,7 @@
 [core]
     autocrlf = false
     pager = delta
+	quotepath = false
 
 [credential "https://github.com"]
 	  helper = !gh auth git-credential

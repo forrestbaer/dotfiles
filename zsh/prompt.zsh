@@ -7,9 +7,9 @@ function set_prompt() {
   else
       isroot='%F{cyan}'
   fi
-  
-  PS1='%(?.%F{green}√.%F{red}%?)%f %b%F{7}%3~ %B%F{7}\$ %b%F{7}'
- 
+
+  PS1='%(?.%F{green}√ %b%F{7}[$isroot%m%F{7}].%F{red}%?)%f %b%F{7}%3~ %B%F{7}\$ %b%F{7}'
+
   if [ -n "$branch_name" ]; then
   RPROMPT='%F{magenta}$branch_name%f'
   fi
@@ -23,6 +23,6 @@ function git_author_name() {
   git config --get user.name | sed 's/\([a-zA-Z+]\)[a-zA-Z]* */\1/g' | tr '[A-Z]' '[a-z]'
 }
 
-precmd() { 
+precmd() {
   set_prompt
 }

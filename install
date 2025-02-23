@@ -1,12 +1,23 @@
 #!/usr/bin/env bash
 
 mkdir -p ~/.config/nvim
+mkdir -p ~/.config/ghostty
 mkdir -p ~/.fonts
 mkdir -p ~/.bin
+mkdir -p ~/.gdbinit.d
 
 ln -sfn ${PWD}/zshrc ~/.zshrc
 ln -sfn ${PWD}/zsh ~/.zsh
+ln -sfn ${PWD}/gdbinit.d/init ~/.gdbinit.d/init
 ln -sfn ${PWD}/config/nvim/init.lua ~/.config/nvim/init.lua
+ln -sfn ${PWD}/config/ghostty/config ~/.config/ghostty/config
 ln -sfn ${PWD}/gitconfig ~/.gitconfig
 ln -sfn ${PWD}/tmux.conf ~/.tmux.conf
-ln -sfn ${PWD}/alacritty.toml ~/.alacritty.toml
+
+if [[ ! -f ~/.gdbinit ]]; then
+  wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit ~/.gdbinit
+fi
+
+if [[ ! -d ~/.zsh/zsh-autosuggestions ]]; then
+  git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+fi

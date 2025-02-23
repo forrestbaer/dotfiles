@@ -56,6 +56,9 @@ if (packer) then
     use 'airblade/vim-gitgutter'
     use 'davidmh/mdx.nvim'
     use 'LokiChaos/vim-tintin'
+    use 'henry-hsieh/riscv-asm-vim'
+    use 'junegunn/vim-easy-align'
+    use 'joshuavial/aider.nvim'
     use {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
@@ -177,14 +180,15 @@ vim.g.loaded_netrw       = 1
 vim.g.loaded_netrwPlugin = 1
 
 vim.opt.clipboard      =  "unnamedplus"
+vim.g.riscv_asm_all_enable = true
 
-local lsp_servers = { "mdx_analyzer", "astro", "lua_ls", "ts_ls", "html", "bashls", "eslint", "jsonls", "emmet_ls" }
+local language_servers = { "mdx_analyzer", "lua_ls", "ts_ls", "html", "bashls",  "jsonls", "emmet_ls", "biome" }
 
 local mason = check_package("mason")
 if (mason) then
   mason.setup {}
   require("mason-lspconfig").setup {
-    ensure_installed = lsp_servers
+    ensure_installed = language_servers
   }
 end
 
@@ -237,7 +241,7 @@ if (cmp) then
 
   cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
-    sources = cmp.config.sources({
+  sources = cmp.config.sources({
       { name = 'path' }
     }, {
       { name = 'cmdline' }
@@ -245,7 +249,7 @@ if (cmp) then
   })
 
   if (lspconfig) then
-    for _, lsp in ipairs(lsp_servers) do
+    for _, lsp in ipairs(language_servers) do
       lspconfig[lsp].setup {
         capabilities = capabilities,
       }
@@ -263,6 +267,11 @@ if (cmp) then
   end
 end
 
+local aider = check_package('aider')
+if (aider) then
+aider.setup({})
+end
+
 local colorizer = check_package("colorizer")
 if (colorizer) then
   colorizer.setup {
@@ -270,6 +279,8 @@ if (colorizer) then
     "markdown",
     "javascript",
     "typescript",
+    "typescriptreact",
+    "react",
     "html",
     "vim",
     "lua",
@@ -281,7 +292,7 @@ local treesitter = check_package("nvim-treesitter")
 if (treesitter) then
   treesitter.setup {}
   require("nvim-treesitter.configs").setup {
-    ensure_installed = { "astro", "vim", "c", "regex", "javascript", "lua", "typescript", "html", "vimdoc", "markdown" },
+    ensure_installed = { "vim", "c", "regex", "javascript", "lua", "typescript", "html", "vimdoc", "markdown", "yaml", "csv", "make", "asm" },
     highlight = { enable = true, },
     indent = { enable = true, },
   }
@@ -455,13 +466,16 @@ map("", "<leader>gP", ":Git pull<cr>")
 map("", "<leader>gF", ":Git fetch<cr>")
 map("", "<leader>gb", ":Git blame<cr>")
 
+-- easyalign
+map("", "<leader>ea", ":EasyAlign<cr>")
+
 -- other neovim
 map("", "<Space>", ":silent noh<Bar>echo<cr>")
 map("n", "U", "<C-r>")
 map("n", "<leader>q", ":q!<cr>")
 map("n", "<leader>s", ":w!<cr>")
 map("n", "<leader>n", ":ene<cr>")
-map("n", "<leader>x", ":close<cr>")
+map("n", "<leader>x", ":bd<cr>")
 
 map("v", "<", "<gv")
 map("v", ">", ">gv")
@@ -487,4 +501,17 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.cmd(':set awa')
     vim.cmd(':set wrap')
   end
+})
+
+vim.filetype.add({
+  pattern = {
+    ['.[sS]'] = 'riscv_asm',
+  },
+})
+
+vim.api.nvim_create_autocmd('BufRead', {
+  pattern = { '*.[sS]' },
+  callback = function()
+    vim.cmd('set filetype=riscv_asm')
+  end,
 })

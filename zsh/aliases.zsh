@@ -1,5 +1,4 @@
 alias weather='curl -s "wttr.in/?format=%l:+%c+%t+%h+%P+%m\n"'
-alias ytaudio='youtube-dl --extract-audio --audio-quality 0 --audio-format mp3 -o "~/store/music/%(title)s-%(id)s.%(ext)s"'
 
 alias ls='ls -GhF'
 alias ll='ls -GhlFa'
@@ -12,7 +11,6 @@ alias dh='dirs -v'
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
 
 alias p='f() { qlmanage -p $1 2> /dev/null};f'
-alias browse='w3m google.com'
 
 # Git
 
@@ -32,14 +30,7 @@ alias vim='nvim'
 # tmux
 
 alias tmux='tmux new -As0'
-alias home='tmuxinator start home'
-alias work='tmuxinator start work'
 
 # easy directory jump
 
-alias cdds='cd ~/code/design-system'
-alias cdc='cd ~/code/connect/my-account'
-alias cdma='cd ~/code/wds-accounts-healthcare'
 alias cddf='cd ~/code/dotfiles'
-alias cds='cd ~/store'
-alias cdorg='cd ~/cloud/org'

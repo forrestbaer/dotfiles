@@ -1,0 +1,7 @@
+set architecture riscv:rv32
+set processor riscv:rv32
+set breakpoint pending on
+set confirm off
+set history save on
+set prompt rv32
+dashboard registers -style column-major True
