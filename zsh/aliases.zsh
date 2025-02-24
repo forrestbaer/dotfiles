@@ -6,7 +6,6 @@ alias la='ls -GalaF'
 alias mv='mv -i'
 alias c='clear'
 alias md='mkdir'
-alias cat='bat'
 alias dh='dirs -v'
 alias pf="fzf --preview='less {}' --bind shift-up:preview-page-up,shift-down:preview-page-down"
 
