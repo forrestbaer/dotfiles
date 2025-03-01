@@ -1,10 +1,7 @@
-# Forrest's unix environment setup
+you'll want:
 
-### General Configuration:
-
-  - Font: Iosevka Nerdfont (contains glyphs).. in ./fonts
-  - Make key repeat as fast as possible
-
-### Installation
-
-  - `./install`
+	zsh
+	[tmux](https://github.com/tmux/tmux)
+	[neovim](https://github.com/neovim/neovim.git)
+	[fzy](https://github.com/jhawthorn/fzy)
+	[ripgrep](https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation)

@@ -1,47 +1,61 @@
-zmodload -i zsh/complist
+# +---------+
+# | General |
+# +---------+
 
-setopt menu_complete
-unsetopt flowcontrol
-setopt auto_menu
-setopt complete_in_word
-setopt always_to_end
+zmodload zsh/complist
 
+autoload -U compinit; compinit
+_comp_options+=(globdots) # With hidden files
+compdef vman="man"
+
+# Ztyle pattern
+# :completion:<function>:<completer>:<command>:<argument>:<tag>
+
+# Define completers
+zstyle ':completion:*' completer _extensions _complete _approximate
+
+# Use cache for commands using cache
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
+# Complete the alias when _expand_alias is used as a function
+zstyle ':completion:*' complete true
+
+zle -C alias-expension complete-word _generic
+bindkey '^Xa' alias-expension
+zstyle ':completion:alias-expension:*' completer _expand_alias
+
+# Use cache for commands which use it
+
+# Allow you to select in a menu
 zstyle ':completion:*' menu select
+
+# Autocomplete options for cd instead of directory stack
 zstyle ':completion:*' complete-options true
+
 zstyle ':completion:*' file-sort modification
-zstyle ':completion:*' list-colors ${(s.:.)ZLS_COLORS}
 
-zstyle ':completion:*:expand:*' keep-prefix true tag-order all-expansions
-zstyle ':completion:*:*:*:*:*' menu select
 
-zstyle ':completion:*:default' list-colors '' "ma=48;5;53;1"
+zstyle ':completion:*:*:*:*:corrections' format '%F{yellow}!- %d (errors: %e) -!%f'
+zstyle ':completion:*:*:*:*:descriptions' format '%F{blue}-- %D %d --%f'
+zstyle ':completion:*:*:*:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:*:*:*:warnings' format ' %F{red}-- no matches found --%f'
+# zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+# Colors for files and directory
+zstyle ':completion:*:*:*:*:default' list-colors ${(s.:.)LS_COLORS}
 
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*:descriptions' format "- %{${fg[yellow]}%}%d%{${reset_color}%} -"
-zstyle ':completion:*:messages' format '%d'
-zstyle ':completion:*:warnings' format 'No matches for: %d'
-zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
+# Only display some tags for the command cd
+zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
+# zstyle ':completion:*:complete:git:argument-1:' tag-order !aliases
+
+# Required for completion to be in good groups (named after the tags)
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' list-separator '#'
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-zstyle ':completion:*:prefix:*' add-space true
 
-zstyle ':completion:*:scp:*' tag-order files 'hosts:-domain:domain'
-zstyle ':completion:*:scp:*' group-order files all-files users hosts-domain hosts-host hosts-ipaddr
-zstyle ':completion:*:ssh:*' tag-order 'hosts:-domain:domain'
-zstyle ':completion:*:ssh:*' group-order hosts-domain hosts-host users hosts-ipaddr
+zstyle ':completion:*:*:-command-:*:*' group-order aliases builtins functions commands
 
-zstyle ':completion:*' users off
-zstyle ':completion:*:*:kill:*' verbose yes
-zstyle ':completion:*:rm:*' ignore-line yes
-zstyle ':completion:*:manuals'       separate-sections true
-zstyle ':completion:*:manuals.(^1*)' insert-sections   true
-zstyle ':completion:*' use-cache off
+# See ZSHCOMPWID "completion matching control"
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
-autoload -U +X bashcompinit && bashcompinit
+zstyle ':completion:*' keep-prefix true
 
-if [[ -d /usr/local/opt/fzf/shell ]]; then
-  source /usr/local/opt/fzf/shell/completion.zsh
-  source /usr/local/opt/fzf/shell/key-bindings.zsh
-fi
+zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
+

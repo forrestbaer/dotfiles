@@ -1,23 +1,71 @@
 #!/usr/bin/env bash
 
-mkdir -p ~/.config/nvim
-mkdir -p ~/.config/ghostty
-mkdir -p ~/.fonts
 mkdir -p ~/.bin
-mkdir -p ~/.gdbinit.d
+mkdir -p ~/.tmp
 
-ln -sfn ${PWD}/zshrc ~/.zshrc
-ln -sfn ${PWD}/zsh ~/.zsh
-ln -sfn ${PWD}/gdbinit.d/init ~/.gdbinit.d/init
-ln -sfn ${PWD}/config/nvim/init.lua ~/.config/nvim/init.lua
-ln -sfn ${PWD}/config/ghostty/config ~/.config/ghostty/config
-ln -sfn ${PWD}/gitconfig ~/.gitconfig
-ln -sfn ${PWD}/tmux.conf ~/.tmux.conf
+printf "Installing dotfiles... "
 
-if [[ ! -f ~/.gdbinit ]]; then
-  wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit ~/.gdbinit
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    if [[ ! -d ~/.config/ghostty ]]; then
+        printf "@@ Linking up ghostty config\n\n"
+        mkdir -p ~/.config/ghostty
+        ln -sfn ${PWD}/config/ghostty/config ~/.config/ghostty/config
+    fi
+fi
+
+if [[ ! -f ~/.gdbinit ]] || [[ ! -d ~/.gdbinit.d ]]; then
+    if [[ ! -f ~/.gdbinit ]]; then
+        printf "@@ Downloading up gdb-dashboard\n\n"
+        wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit ~/.gdbinit
+    fi
+    if [[ ! -d ~/.gdbinit.d ]]; then
+        printf "@@ Linking up our default gdb init"
+        mkdir ~/.gdbinit.d
+        ln -sfn ${PWD}/gdbinit.d/init ~/.gdbinit.d/init
+    fi
 fi
 
 if [[ ! -d ~/.zsh/zsh-autosuggestions ]]; then
-  git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+	printf "\n@@ Setting up zsh-autosuggestions\n\n"
+	git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 fi
+
+if [[ ! -d ~/.fonts ]]; then
+	printf "\n@@ Downloading Iosevka\n\n"
+	mkdir ~/.fonts
+	curl -s 'https://api.github.com/repos/be5invis/Iosevka/releases/latest' | \
+		jq -r ".assets[] | \
+		.browser_download_url" | \
+		egrep -i 'PkgTTC-Iosevka(Aile|Etoile|-)' | \
+		xargs -n 1 curl -L -O --output-dir ~/.font
+    if [[ ! -x "$(command -v unzip)" ]]; then
+        printf "\nYou're gonna need unzip to open these font archives.\nMight wanna install that with your package manager.\n"
+    else
+        # unzip the fonts into ~/.fonts and delete the archives
+        cd ~/.fonts && ls | xargs -n 1 unzip && cd - && rm ~/.fonts/*.zip
+    fi
+fi
+
+if [[ ! -d ~/.config/nvim ]]; then
+	declare -a pkgs=( \
+		"tpope/vim-surround" \
+		"tpope/vim-commentary" \
+		"forrestbaer/minimal_dark" \
+		"junegunn/vim-easy-align" \
+	)
+	printf "\n@@ Setting up neovim\n"
+	mkdir -p ~/.config/nvim/pack/vendor/opt
+	ln -sfn ${PWD}/config/nvim/init.vim ~/.config/nvim/init.vim
+	printf "@@ Adding plugins\n"
+	for i in "${pkgs[@]}"
+	do
+		git clone https://github.com/${i} ~/.config/nvim/pack/vendor/opt/${i#*/}
+		echo
+	done
+fi
+
+[ ! -f ~/.gitconfig ] && ln -sfnv ${PWD}/gitconfig ~/.gitconfig
+[ ! -f ~/.zshrc ] && ln -sfnv ${PWD}/zshrc ~/.zshrc
+[ ! -f ~/.tmux.conf ] && ln -sfnv ${PWD}/tmux.conf ~/.tmux.conf
+
+printf "done!\n"

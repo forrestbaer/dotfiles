@@ -1,3 +1,7 @@
+function vii() {
+  [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
+}
+
 function set_prompt() {
   branch_name=$(git_branch_name)
   author_name=$(git_author_name)
@@ -8,10 +12,10 @@ function set_prompt() {
       isroot='%F{cyan}'
   fi
 
-  PS1='%(?.%F{green}√ %b%F{7}[$isroot%m%F{7}].%F{red}%?)%f %b%F{7}%3~ %B%F{7}\$ %b%F{7}'
+  PS1='%(?.%F{green}√ %b%F{7}[$isroot%m%F{7}].%F{red}%?)%f %b%F{7}%3~ %B%F{7}$(vii)\$ %b%F{7}'
 
   if [ -n "$branch_name" ]; then
-  RPROMPT='%F{magenta}$branch_name%f'
+    RPROMPT='%F{magenta}$branch_name%f'
   fi
 }
 
