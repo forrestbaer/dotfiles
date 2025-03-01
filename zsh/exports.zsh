@@ -2,7 +2,7 @@ export EDITOR="nvim"
 export SHELL=/bin/zsh
 
 if [[ $TERM != 'dumb' ]]; then
-    export TERM=screen-256color
+    export TERM=xterm-256color
 fi
 
 export CLICOLOR=1
