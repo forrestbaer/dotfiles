@@ -8,7 +8,6 @@ packadd colorizer
 
 " basic settings
 syntax on
-colorscheme minimal_dark
 
 set path+=**
 set tags+=tags;$HOME
@@ -39,12 +38,6 @@ set statusline +=%2*/%L%*               "total lines
 set statusline +=%1*%4v\ %*             "virtual column number
 set statusline +=%5*0x%04B\ %*          "character under cursor
 
-hi User1 guifg=#eeeeee guibg=#111111
-hi User2 guifg=#999999 guibg=#111111
-hi User3 guifg=#6f5faf guibg=#111111
-hi User4 guifg=#af875f guibg=#111111
-hi User5 guifg=#cccc88 guibg=#111111
-
 if executable("rg")
     set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading
     set grepformat+=%l:%f:%c:%m
@@ -66,24 +59,28 @@ let g:fzf_vim.tags_command = 'ctags -R'
 let g:airline#extensions#tabline#formatter = 'default'
 
 " keymaps
+
+" file / buffer / grep operations
 nnoremap <leader>ff :silent Files<cr>
 nnoremap <leader>fb :silent Buffers<cr>
 nnoremap <leader>fg :silent RG!<cr>
 nnoremap <leader>ft :silent Tags!<cr>
 nnoremap <leader>fd :silent GFiles?!<cr>
 
+" help
+nnoremap <leader>h :silent Helptags<cr>
+
+" save / kill / quit
 nnoremap <leader>s :w<cr>
-nnoremap <leader>x :bd<cr>
+nnoremap <leader>x :bd!<cr>
 nnoremap <leader>q :q!<cr>
 
+" edit init.vim or load init.vim
 nnoremap <leader>rv :source ~/.config/nvim/init.vim<cr>:echo "vimrc reloaded..."<cr>
 nnoremap <leader>ev :e ~/.config/nvim/init.vim<cr>
 
-" binary file operations
-nnoremap <leader>bd :%!xxd<cr>:set ft=xxd<cr>
-nnoremap <leader>br :%!xxd -r<cr>:set ft=elf<cr>
-
-nnoremap <Space> :silent noh<cr>
+" clear search results with space
+nnoremap <Space>:silent noh<cr>
 
 " highlight lines when yanked, 100ms
 augroup highlight_yank
@@ -91,26 +88,88 @@ augroup highlight_yank
     au TextYankPost * silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=100})
 augroup END
 
-function! Grep(...)
-	return system(join([&grepprg] + [expandcmd(join(a:000, ' '))], ' '))
-endfunction
-
-command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr Grep(<f-args>)
-command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr Grep(<f-args>)
-
-cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() ==# 'grep')  ? 'Grep'  : 'grep'
-cnoreabbrev <expr> lgrep (getcmdtype() ==# ':' && getcmdline() ==# 'lgrep') ? 'LGrep' : 'lgrep'
-
-augroup quickfix
-	autocmd!
-	autocmd QuickFixCmdPost cgetexpr cwindow
-	autocmd QuickFixCmdPost lgetexpr lwindow
-augroup END
-
 " for some of our files, we want an empty line at end of file
-function! AddLastLine()
+function! s:add_last_line()
     if getline('$') !~ "^$"
         call append(line('$'), '')
     endif
 endfunction
-autocmd BufWritePre *.s\|*.c\|*.h call AddLastLine()
+autocmd BufWritePre *.s\|*.c\|*.h call s:add_last_line()
+
+" clean up lines ending with whitespace
+function! s:trim_end_lines ()
+    let sc = getpos(".")
+    silent! %s/\s*$//g
+    call setpos('.', sc)
+endfunction
+autocmd BufWritePre * call s:trim_end_lines()
+
+" hex editing cursor stuff, follows position assuming -g 2 -c 16
+function! s:highlight()
+    if exists('s:match') && s:match != -1
+        call matchdelete(s:match)
+        unlet s:match
+    endif
+    let syn = synIDattr(synID(line('.'), col('.'), 1), 'name')
+    if syn != ''
+        return
+    endif
+    let c = col('.') - 10
+    if c % 5 == 0
+        return
+    endif
+    let c = c / 5 * 2 + (c % 5 > 2 ? 1 : 0)
+    let s:match = matchadd('MatchedBinary', '\%' . (c+52) .  'c\%' . line('.') . 'l')
+endfunction
+
+" auto binary disassembly / reassembly handling
+" nnoremap <leader>bd :%!xxd -g 2 -c 16<cr>:set ft=xxd<cr>
+" nnoremap <leader>br :%!xxd -r<cr>:set ft=elf<cr>
+augroup Binary
+    au!
+    au BufReadPre *.bin,*.hex,*.elf,*.o setlocal binary
+    au BufReadPost *
+                \ if &binary |
+                \   silent exe "%!xxd -g 2 -c 16" |
+                \   silent exe "set ft=XXD" |
+                \   redraw |
+                \ endif
+    au BufUnload *
+                \ if &binary |
+                \   setlocal! binary |
+                \ endif
+    au BufWritePre *
+                \ if &binary |
+                \  let oldro=&ro | let &ro=0 |
+                \  let oldma=&ma | let &ma=1 |
+                \  silent exe "%!xxd -r -g 2 -c 16" |
+                \  let &ma=oldma | let &ro=oldro |
+                \  unlet oldma | unlet oldro |
+                \ endif
+    au BufWritePost *
+                \ if &binary |
+                \  let oldro=&ro | let &ro=0 |
+                \  let oldma=&ma | let &ma=1 |
+                \  silent exe "%!xxd -g 2 -c 16" |
+                \  exe "set nomod" |
+                \  let &ma=oldma | let &ro=oldro |
+                \  unlet oldma | unlet oldro |
+                \ endif
+augroup END
+
+" run the higlight when we move our cursor
+augroup XXD
+    au!
+    autocmd CursorMoved <buffer> call s:highlight()
+augroup END
+
+" colorscheme last word
+colorscheme minimal_dark
+
+hi User1 guifg=#eeeeee guibg=#111111
+hi User2 guifg=#999999 guibg=#111111
+hi User3 guifg=#6f5faf guibg=#111111
+hi User4 guifg=#af875f guibg=#111111
+hi User5 guifg=NvimLightYellow guibg=#111111
+hi MatchedBinary guifg=#111111 guibg=#6f5faf
+hi def link lCursor Cursor
