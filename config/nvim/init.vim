@@ -37,13 +37,13 @@ set statusline +=%2*%m%*                "modified flag
 set statusline +=%1*%=%5l%*             "current line
 set statusline +=%2*/%L%*               "total lines
 set statusline +=%1*%4v\ %*             "virtual column number
-set statusline +=%2*0x%04B\ %*          "character under cursor
+set statusline +=%5*0x%04B\ %*          "character under cursor
 
 hi User1 guifg=#eeeeee guibg=#111111
 hi User2 guifg=#999999 guibg=#111111
 hi User3 guifg=#6f5faf guibg=#111111
 hi User4 guifg=#af875f guibg=#111111
-hi User5 guifg=#eeee40 guibg=#111111
+hi User5 guifg=#cccc88 guibg=#111111
 
 if executable("rg")
     set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading
@@ -59,7 +59,7 @@ let g:netrw_list_hide=netrw_gitignore#Hide()	" hide .gitignore files
 let g:netrw_list_hide=',\(^\|\s\s\)\zs\.\S\+'	" hide dotfiles?
 
 let g:fzf_vim = {}
-let g:fzf_vim.preview_window=['up,60%', 'ctrl-/']
+let g:fzf_vim.preview_window=[]
 let g:fzf_vim.buffers_jump = 1
 let g:fzf_vim.tags_command = 'ctags -R'
 
@@ -106,3 +106,11 @@ augroup quickfix
 	autocmd QuickFixCmdPost cgetexpr cwindow
 	autocmd QuickFixCmdPost lgetexpr lwindow
 augroup END
+
+" for some of our files, we want an empty line at end of file
+function! AddLastLine()
+    if getline('$') !~ "^$"
+        call append(line('$'), '')
+    endif
+endfunction
+autocmd BufWritePre *.s\|*.c\|*.h call AddLastLine()
