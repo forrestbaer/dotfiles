@@ -1,17 +1,18 @@
-" global settings
-let g:mapleader=","				" set leader to comma
-let g:netrw_banner=0				" disable banner
-let g:netrw_alto=1				" splits to the bottom
-let g:netrw_altv=0
-let g:netrw_liststyle=3				" tree view
-let g:netrw_list_hide=netrw_gitignore#Hide()	" hide .gitignore files
-let g:netrw_list_hide=',\(^\|\s\s\)\zs\.\S\+'	" hide dotfiles?
+" packadd our packages
+packadd vim-commentary
+packadd vim-surround
+packadd vim-easy-align
+packadd vim-easyclip
+packadd fzf.vim
+packadd colorizer
 
 " basic settings
 syntax on
 colorscheme minimal_dark
 
 set path+=**
+set tags+=tags;$HOME
+set rtp+=~/.fzf
 set expandtab
 set number
 set nowrap
@@ -28,18 +29,48 @@ set scrolloff=4
 set helpheight=15
 set clipboard="unnamedplus"
 
+set statusline=
+set statusline +=%1*\ %n\ %*            "buffer number
+set statusline +=%3*%y%*                "file type
+set statusline +=%4*\ %<%F%*            "full path
+set statusline +=%2*%m%*                "modified flag
+set statusline +=%1*%=%5l%*             "current line
+set statusline +=%2*/%L%*               "total lines
+set statusline +=%1*%4v\ %*             "virtual column number
+set statusline +=%2*0x%04B\ %*          "character under cursor
+
+hi User1 guifg=#eeeeee guibg=#111111
+hi User2 guifg=#999999 guibg=#111111
+hi User3 guifg=#6f5faf guibg=#111111
+hi User4 guifg=#af875f guibg=#111111
+hi User5 guifg=#eeee40 guibg=#111111
+
 if executable("rg")
     set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading
     set grepformat+=%l:%f:%c:%m
 endif
 
-" packadd our packages
-packadd vim-commentary
-packadd vim-surround
-packadd vim-easy-align
+" global settings
+let g:mapleader=","				                " set leader to comma
+let g:netrw_banner=0				            " disable banner
+let g:netrw_altv=1
+let g:netrw_liststyle=3				            " tree view
+let g:netrw_list_hide=netrw_gitignore#Hide()	" hide .gitignore files
+let g:netrw_list_hide=',\(^\|\s\s\)\zs\.\S\+'	" hide dotfiles?
+
+let g:fzf_vim = {}
+let g:fzf_vim.preview_window=['up,60%', 'ctrl-/']
+let g:fzf_vim.buffers_jump = 1
+let g:fzf_vim.tags_command = 'ctags -R'
+
+let g:airline#extensions#tabline#formatter = 'default'
 
 " keymaps
-nnoremap <leader>fg :silent Grep<Space>
+nnoremap <leader>ff :silent Files<cr>
+nnoremap <leader>fb :silent Buffers<cr>
+nnoremap <leader>fg :silent RG!<cr>
+nnoremap <leader>ft :silent Tags!<cr>
+nnoremap <leader>fd :silent GFiles?!<cr>
 
 nnoremap <leader>s :w<cr>
 nnoremap <leader>x :bd<cr>

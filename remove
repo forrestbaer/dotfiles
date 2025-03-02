@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+printf "Removing dotfile links.. \n"
+
+rm -rf ~/.config/ghostty
+rm -rf ~/.config/nvim
+rm -rf ~/.gdb*
+rm -rf ~/.zsh*
+rm -rf ~/.fzf*
+[ -f ~/.gitconfig ] && rm ~/.gitconfig
+[ -f ~/.tmux.conf ] && rm ~/.tmux.conf
+[ -f ~/.ctags ] && rm ~/.ctags
+
+printf "done!\n"
