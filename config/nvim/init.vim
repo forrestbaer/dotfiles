@@ -1,6 +1,7 @@
 " packadd our packages
 packadd vim-commentary
 packadd vim-surround
+packadd vim-repeat
 packadd vim-easy-align
 packadd vim-easyclip
 packadd fzf.vim

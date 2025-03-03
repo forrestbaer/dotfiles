@@ -2,11 +2,13 @@
 
 printf "Removing dotfile links.. \n"
 
-rm -rf ~/.config/ghostty
-rm -rf ~/.config/nvim
-rm -rf ~/.gdb*
-rm -rf ~/.zsh*
-rm -rf ~/.fzf*
+[ -d ~/.config/ghostty ] && rm -rf ~/.config/ghostty
+[ -d ~/.config/i3 ] && rm -rf ~/.config/i3
+[ -d ~/.config/nvim ] && rm -rf ~/.config/nvim
+[ -d ~/.gdbinit.d ] && rm -rf ~/.gdb*
+[ -d ~/.zsh ] && rm -rf ~/.zsh
+[ -f ~/.zshrc ] && rm -rf ~/.zshrc
+[ -d ~/.fzf ] && rm -rf ~/.fzf*
 [ -f ~/.gitconfig ] && rm ~/.gitconfig
 [ -f ~/.tmux.conf ] && rm ~/.tmux.conf
 [ -f ~/.ctags ] && rm ~/.ctags

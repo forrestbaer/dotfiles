@@ -60,11 +60,12 @@ if [ ! -d ~/.config/nvim ]; then
 	declare -a pkgs=( \
 		"tpope/vim-surround" \
 		"tpope/vim-commentary" \
+		"tpope/vim-repeat" \
 		"forrestbaer/minimal_dark" \
 		"junegunn/vim-easy-align" \
-        "junegunn/fzf.vim" \
-        "svermeulen/vim-easyclip" \
-        "lilydjwg/colorizer" \
+    "junegunn/fzf.vim" \
+    "svermeulen/vim-easyclip" \
+    "lilydjwg/colorizer" \
 	)
 	printf "@@ Setting up neovim\n"
 	mkdir -p ~/.config/nvim/pack/vendor/opt
