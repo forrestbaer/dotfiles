@@ -7,16 +7,19 @@ function set_prompt() {
   author_name=$(git_author_name)
 
   if (( $(id -u) ==0 )); then
-      isroot='%F{red}'
+      isroot='%F{#AF5F5F}'
   else
-      isroot='%F{cyan}'
+      isroot='%F{#5fafaf}'
   fi
 
-  PS1='%(?.%F{green}√ %b%F{7}[$isroot%m%F{7}].%F{red}%?)%f %b%F{7}%3~ %B%F{7}$(vii)\$ %b%F{7}'
+  PS1='%(?.%F{green}√ %b%F{7}[$isroot%m%F{7}].%F{#AF5F5F}%?)%f %b%F{7}%3~ %B%F{7}$(vii)\$ %b%F{7}'
+  RPROMPT=''
 
   if [ -n "$branch_name" ]; then
-    RPROMPT='%F{magenta}$branch_name%f'
+    RPROMPT+='%b%F{7}[ %F{#6f5faf}$branch_name%b%F{7} ] '
   fi
+
+  RPROMPT+='%b%F{#183273}%*%b%F{7}'
 }
 
 function git_branch_name() {

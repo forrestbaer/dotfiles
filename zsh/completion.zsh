@@ -34,7 +34,6 @@ zstyle ':completion:*' complete-options true
 
 zstyle ':completion:*' file-sort modification
 
-
 zstyle ':completion:*:*:*:*:corrections' format '%F{yellow}!- %d (errors: %e) -!%f'
 zstyle ':completion:*:*:*:*:descriptions' format '%F{blue}-- %D %d --%f'
 zstyle ':completion:*:*:*:*:messages' format ' %F{purple} -- %d --%f'

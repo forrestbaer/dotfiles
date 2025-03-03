@@ -80,7 +80,7 @@ nnoremap <leader>rv :source ~/.config/nvim/init.vim<cr>:echo "vimrc reloaded..."
 nnoremap <leader>ev :e ~/.config/nvim/init.vim<cr>
 
 " clear search results with space
-nnoremap <Space>:silent noh<cr>
+nnoremap <Space> :silent noh<cr><cr>
 
 " highlight lines when yanked, 100ms
 augroup highlight_yank
@@ -97,12 +97,11 @@ endfunction
 autocmd BufWritePre *.s\|*.c\|*.h call s:add_last_line()
 
 " clean up lines ending with whitespace
-function! s:trim_end_lines ()
+function Trim()
     let sc = getpos(".")
     silent! %s/\s*$//g
     call setpos('.', sc)
 endfunction
-autocmd BufWritePre * call s:trim_end_lines()
 
 " hex editing cursor stuff, follows position assuming -g 2 -c 16
 function! s:highlight()
@@ -121,6 +120,14 @@ function! s:highlight()
     let c = c / 5 * 2 + (c % 5 > 2 ? 1 : 0)
     let s:match = matchadd('MatchedBinary', '\%' . (c+52) .  'c\%' . line('.') . 'l')
 endfunction
+
+" run the higlight when we move our cursor
+augroup XXD
+    if &binary
+        au!
+        autocmd CursorMoved <buffer> call s:highlight()
+    endif
+augroup END
 
 " auto binary disassembly / reassembly handling
 " nnoremap <leader>bd :%!xxd -g 2 -c 16<cr>:set ft=xxd<cr>
@@ -155,12 +162,6 @@ augroup Binary
                 \  let &ma=oldma | let &ro=oldro |
                 \  unlet oldma | unlet oldro |
                 \ endif
-augroup END
-
-" run the higlight when we move our cursor
-augroup XXD
-    au!
-    autocmd CursorMoved <buffer> call s:highlight()
 augroup END
 
 " colorscheme last word

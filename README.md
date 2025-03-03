@@ -8,6 +8,7 @@ you'll want:
     - [ gitui ](https://github.com/gitui-org/gitui)
     - [ fd ](https://github.com/sharkdp/fd)
     - [ go ](https://go.dev)
+    - [ hexyl ](https://github.com/sharkdp/hexyl)
 
 these are installed with the install script
     - [ fzf ](https://github.com/junegunn/fzf)

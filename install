@@ -73,12 +73,17 @@ if [ ! -d ~/.config/nvim ]; then
 	for i in "${pkgs[@]}"
 	do
 		git clone https://github.com/${i} ~/.config/nvim/pack/vendor/opt/${i#*/}
-		echo
 	done
 fi
 
 [ ! -f ~/.gitconfig ] && ln -sfnv ${PWD}/gitconfig ~/.gitconfig
 [ ! -f ~/.tmux.conf ] && ln -sfnv ${PWD}/tmux.conf ~/.tmux.conf
 [ ! -f ~/.ctags ] && ln -sfnv ${PWD}/ctags ~/.ctags
+
+if [ "$(uname -s)" == "Linux" ] && [ ! -d ~/.config/i3 ]; then
+    printf "@@ Getting i3 going\n"
+    mkdir -p ~/.config/i3
+    ln -sfn ${PWD}/config/i3/config ~/.config/i3/config
+fi
 
 printf "done!\n"
