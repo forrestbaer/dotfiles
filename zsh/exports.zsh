@@ -6,4 +6,4 @@ export EDITOR="nvim"
 export SHELL=/bin/zsh
 export TERM=xterm-256color
 export CLICOLOR=1
-export LS_COLORS="ex=38;5;208;1"
+export LSCOLORS="xxfxcxdxHxegedabagacadah"
