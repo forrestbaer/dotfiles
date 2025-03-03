@@ -9,12 +9,17 @@ packadd colorizer
 " basic settings
 syntax on
 
+set nocompatible
 set path+=**
 set tags+=tags;$HOME
 set rtp+=~/.fzf
 set expandtab
 set number
 set nowrap
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
 set smartcase
 set smartindent
 set wildmenu
@@ -22,8 +27,8 @@ set undofile
 set undodir=/tmp
 set undolevels=2000
 set updatetime=150
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set scrolloff=4
 set helpheight=15
 set clipboard="unnamedplus"

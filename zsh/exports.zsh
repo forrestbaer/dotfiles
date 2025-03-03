@@ -4,6 +4,6 @@ export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --e
 export PATH=/usr/local/bin:/usr/local/sbin:~/.local/bin:~/bin:/bin:/usr/bin:/opt/homebrew/bin:$PATH
 export EDITOR="nvim"
 export SHELL=/bin/zsh
-export TERM=xterm-256color
+export TERM=screen-256color
 export CLICOLOR=1
 export LSCOLORS="xxfxcxdxHxegedabagacadah"
