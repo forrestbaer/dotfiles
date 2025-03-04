@@ -7,7 +7,12 @@ you'll want:
     - [ gitui ](https://github.com/gitui-org/gitui)
     - [ fd ](https://github.com/sharkdp/fd)
     - [ go ](https://go.dev)
+    - [ valgrind ](https://valgrind.org)
     - [ hexyl ](https://github.com/sharkdp/hexyl)
 
 these are installed with the install script
     - [ fzf ](https://github.com/junegunn/fzf)
+
+C
+    - C89
+    - 0 unwrapt dependencies
